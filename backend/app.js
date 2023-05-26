@@ -3,6 +3,7 @@ let express = require('express');
 let path = require('path');
 let cookieParser = require('cookie-parser');
 let logger = require('morgan');
+let session = require('express-session');
 const mysql = require("mysql");
 const cors = require("cors");
 
@@ -24,11 +25,27 @@ db.connect((err) => {
 
 app.set('view engine', 'ejs');
 
+app.use(session({
+  secret: 'Plong3eS0usMar1ne',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true, maxAge: 1000 * 60 * 60 * 24 } // 24 heures
+}));
+
 app.use(cors());
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+
+// Middleware de vérification d'authentification et d'autorisation
+const requireAdmin = (req, res, next) => {
+  if (req.session.isAdmin) {
+    next();
+  }else{
+    res.redirect('/');
+  }
+};
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter(db));
