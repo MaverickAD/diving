@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import PropTypes from "prop-types";
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 async function loginUser(credentials) {
   return fetch("http://localhost:5000/users/signin", {
@@ -15,6 +16,7 @@ async function loginUser(credentials) {
 export default function Login({ setToken }) {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const navigate = useNavigate();
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -23,6 +25,11 @@ export default function Login({ setToken }) {
       password,
     });
     setToken(token);
+    if (token.token) {
+      navigate(-1);
+    } else {
+      alert("Wrong email or password");
+    }
   };
 
   return (
