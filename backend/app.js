@@ -10,7 +10,7 @@ const cors = require("cors");
 let app = express();
 
 let indexRouter = require('./routes/index');
-let usersRouter = require('./routes/users');
+let apiUsersRouter = require('./routes/api/users');
 
 const db = mysql.createConnection({
   host: "93.104.215.68",
@@ -48,7 +48,7 @@ const requireAdmin = (req, res, next) => {
 };
 
 app.use('/', indexRouter);
-app.use('/users', usersRouter(db));
+app.use('/api/users', apiUsersRouter(db));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
