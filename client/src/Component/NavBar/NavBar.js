@@ -5,9 +5,23 @@ function NavBar(props) {
   return (
     <>
       <nav>
-        <Link to={"/register"}>Register</Link>
-        <Link to={"/diver"}>Diver</Link>
-        <Link to={"/instructor"}>Instructor</Link>
+        <ul className="flex space-x-4">
+          <li>
+            <Link to={"/register"} className={"hover:text-gray-300"}>
+              Register
+            </Link>
+          </li>
+          <li>
+            <Link to={"/diver"} className={"hover:text-gray-300"}>
+              Diver
+            </Link>
+          </li>
+          <li>
+            <Link to={"/instructor"} className={"hover:text-gray-300"}>
+              Instructor
+            </Link>
+          </li>
+        </ul>
       </nav>
     </>
   );
