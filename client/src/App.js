@@ -16,7 +16,7 @@ function App(props) {
   return (
     <div className={"bg-neutral-200 flex flex-col min-h-screen"}>
       <Header />
-      <main className={"flex-grow overflow-y-auto"}>
+      <main className={"flex flex-grow"}>
         <Routes>
           <Route path={"/"} element={<Home />} />
 

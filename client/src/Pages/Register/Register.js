@@ -60,7 +60,7 @@ function Register(props) {
   todayMinus16Year.setFullYear(todayMinus16Year.getFullYear() - 16);
 
   return (
-    <div className={""}>
+    <div className={"w-full"}>
       <h1 className={"text-2xl font-bold mb-6 text-center"}>Register Form</h1>
       <form
         className={"w-full max-w-3xl mx-auto bg-white p-8 rounded-md shadow-md"}

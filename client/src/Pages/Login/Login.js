@@ -32,7 +32,7 @@ export default function Login({ setToken }) {
   };
 
   return (
-    <div className={""}>
+    <div className={"w-full"}>
       <h1 className={"text-2xl font-bold mb-6 text-center"}>Login</h1>
       <form
         className={"w-full max-w-lg mx-auto bg-white p-8 rounded-md shadow-md"}
