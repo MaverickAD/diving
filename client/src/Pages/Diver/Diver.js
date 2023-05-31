@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
-import NavBar from "../../Component/NavBar/NavBar";
 import useToken from "../../Hook/useToken";
 import { useNavigate } from "react-router-dom";
+import Calendar from "../../Component/Calendar/Calendar";
 
 
 
@@ -19,7 +19,7 @@ function Diver(props) {
     <>
 
       <h1>Diver</h1>
-      <NavBar />
+      <Calendar/>
 
     </>
   );
