@@ -39,7 +39,20 @@ function Register(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    console.log(register);
+    fetch("http://localhost:5000/api/users/signup", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(register),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Success:", data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
   };
 
   //Display the current date minus 16 years in MM/DD/YYYY format
@@ -52,22 +65,6 @@ function Register(props) {
       <form
         className={"w-full max-w-3xl mx-auto bg-white p-8 rounded-md shadow-md"}
         onSubmit={handleSubmit}
-        onSubmit={(event) => {
-          event.preventDefault();
-          fetch("http://localhost:5000/api/users/signup", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(register),
-            }).then((response) => response.json())
-              .then((data) => {
-                console.log("Success:", data);
-              })
-              .catch((error) => {
-                console.error("Error:", error);
-              })
-        }}
       >
         <h2 className={"text-xl font-bold mb-6"}>Personal Information</h2>
         <div className={"grid grid-cols-1 gap-4 sm:grid-cols-2"}>
