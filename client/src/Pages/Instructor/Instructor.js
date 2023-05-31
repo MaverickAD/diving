@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import NavBar from "../../Component/NavBar/NavBar";
 import useToken from "../../Hook/useToken";
 import { useNavigate } from "react-router-dom";
 
@@ -15,8 +14,7 @@ function Instructor(props) {
 
   return (
     <>
-      <h1>Instructor</h1>
-      <NavBar />
+      <h1>Password</h1>
     </>
   );
 }

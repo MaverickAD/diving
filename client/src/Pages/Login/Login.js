@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { useNavigate } from "react-router-dom";
 
 async function loginUser(credentials) {
-  return fetch("http://localhost:5000/users/signin", {
+  return fetch("http://localhost:5000/api/users/signin", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

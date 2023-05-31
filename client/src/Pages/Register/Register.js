@@ -13,17 +13,45 @@ function Register(props) {
     licenseExpirationDate: "",
     medicalCertificateExpirationDate: "",
     password: "",
+    passwordConfirmation: "",
   });
+
+  const [isSubmit, setIsSubmit] = useState(false);
+  const canSubmit = () => {
+    if (
+      register.firstName !== "" &&
+      register.lastName !== "" &&
+      register.email !== "" &&
+      register.birthDate !== "" &&
+      register.diverQualification !== "" &&
+      register.noxQualification !== "" &&
+      register.licenseNumber !== "" &&
+      register.licenseExpirationDate !== "" &&
+      register.medicalCertificateExpirationDate !== "" &&
+      register.password !== "" &&
+      register.passwordConfirmation !== "" &&
+      register.password === register.passwordConfirmation
+    ) {
+      setIsSubmit(true);
+    }
+    console.log(isSubmit);
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    console.log(register);
+  };
+
+  //Display the current date minus 16 years in MM/DD/YYYY format
+  const todayMinus16Year = new Date();
+  todayMinus16Year.setFullYear(todayMinus16Year.getFullYear() - 16);
 
   return (
     <div className={""}>
       <h1 className={"text-2xl font-bold mb-6 text-center"}>Register Form</h1>
       <form
         className={"w-full max-w-3xl mx-auto bg-white p-8 rounded-md shadow-md"}
-        onSubmit={(event) => {
-          event.preventDefault();
-          console.log(register);
-        }}
+        onSubmit={handleSubmit}
       >
         <h2 className={"text-xl font-bold mb-6"}>Personal Information</h2>
         <div className={"grid grid-cols-1 gap-4 sm:grid-cols-2"}>
@@ -36,6 +64,7 @@ function Register(props) {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
                 setRegister({ ...register, firstName: event.target.value });
+                canSubmit();
               }}
             />
           </div>
@@ -49,6 +78,7 @@ function Register(props) {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
                 setRegister({ ...register, lastName: event.target.value });
+                canSubmit();
               }}
             />
           </div>
@@ -62,6 +92,7 @@ function Register(props) {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
                 setRegister({ ...register, email: event.target.value });
+                canSubmit();
               }}
             />
           </div>
@@ -71,9 +102,11 @@ function Register(props) {
             </label>
             <input
               type="date"
+              max={todayMinus16Year.toISOString().split("T")[0]}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
                 setRegister({ ...register, birthDate: event.target.value });
+                canSubmit();
               }}
             />
           </div>
@@ -86,6 +119,7 @@ function Register(props) {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
                 setRegister({ ...register, password: event.target.value });
+                canSubmit();
               }}
             />
           </div>
@@ -97,7 +131,11 @@ function Register(props) {
               type="password"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
-                setRegister({ ...register, password: event.target.value });
+                setRegister({
+                  ...register,
+                  passwordConfirmation: event.target.value,
+                });
+                canSubmit();
               }}
             />
           </div>
@@ -118,6 +156,7 @@ function Register(props) {
                   ...register,
                   diverQualification: event.target.value,
                 });
+                canSubmit();
               }}
             >
               <option value=""></option>
@@ -148,6 +187,7 @@ function Register(props) {
                   ...register,
                   instructorQualification: event.target.value,
                 });
+                canSubmit();
               }}
             >
               <option value=""></option>
@@ -172,6 +212,7 @@ function Register(props) {
                   ...register,
                   noxQualification: event.target.value,
                 });
+                canSubmit();
               }}
             >
               <option value=""></option>
@@ -191,6 +232,7 @@ function Register(props) {
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
                 setRegister({ ...register, licenseNumber: event.target.value });
+                canSubmit();
               }}
             />
           </div>
@@ -201,12 +243,14 @@ function Register(props) {
             </label>
             <input
               type="date"
+              min={new Date().toISOString().split("T")[0]}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
                 setRegister({
                   ...register,
                   licenseExpirationDate: event.target.value,
                 });
+                canSubmit();
               }}
             />
           </div>
@@ -217,12 +261,14 @@ function Register(props) {
             </label>
             <input
               type="date"
+              min={new Date().toISOString().split("T")[0]}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
                 setRegister({
                   ...register,
                   medicalCertificateExpirationDate: event.target.value,
                 });
+                canSubmit();
               }}
             />
           </div>
@@ -231,9 +277,9 @@ function Register(props) {
         <div className={"flex justify-center"}>
           <button
             type={"submit"}
-            className={
-              "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            }
+            className={`bg-blue-500  text-white font-bold py-2 px-4 rounded ${
+              isSubmit ? "hover:bg-blue-700" : "cursor-not-allowed opacity-50"
+            }`}
           >
             Submit
           </button>
