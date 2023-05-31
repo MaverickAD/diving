@@ -16,9 +16,10 @@ function Register(props) {
   });
 
   return (
-    <div className={"register-wrapper"}>
+    <div className={""}>
+      <h1 className={"text-2xl font-bold mb-6 text-center"}>Register Form</h1>
       <form
-        className={"register-form"}
+        className={"w-full max-w-3xl mx-auto bg-white p-8 rounded-md shadow-md"}
         onSubmit={(event) => {
           event.preventDefault();
           fetch("http://localhost:5000/api/users/signup", {
@@ -36,143 +37,219 @@ function Register(props) {
               })
         }}
       >
-        <h1>Register</h1>
-        <label>
-          <p>First Name</p>
-          <input
-            type="text"
-            value= {register.firstname}
-            onChange={(event) => {
-              setRegister({ ...register, firstname: event.target.value });
-            }}
-          />
-        </label>
+        <h2 className={"text-xl font-bold mb-6"}>Personal Information</h2>
+        <div className={"grid grid-cols-1 gap-4 sm:grid-cols-2"}>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              First Name
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({ ...register, firstName: event.target.value });
+              }}
+            />
+          </div>
 
-        <label>
-          <p>Last Name</p>
-          <input
-            type="text"
-            value= {register.lastname}
-            onChange={(event) => {
-              setRegister({ ...register, lastname: event.target.value });
-            }}
-          />
-        </label>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Last Name
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({ ...register, lastName: event.target.value });
+              }}
+            />
+          </div>
 
-        <label>
-          <p>Email</p>
-          <input
-            type="email"
-            value= {register.email}
-            onChange={(event) => {
-              setRegister({ ...register, email: event.target.value });
-            }}
-          />
-        </label>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Email
+            </label>
+            <input
+              type="email"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({ ...register, email: event.target.value });
+              }}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Birth Date
+            </label>
+            <input
+              type="date"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({ ...register, birthDate: event.target.value });
+              }}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Password
+            </label>
+            <input
+              type="password"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({ ...register, password: event.target.value });
+              }}
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Password Confirmation
+            </label>
+            <input
+              type="password"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({ ...register, password: event.target.value });
+              }}
+            />
+          </div>
+        </div>
 
-        <label>
-          <p>Birth Date</p>
-          <input
-            type="date"
-            value= {register.birthDate}
-            onChange={(event) => {
-              setRegister({ ...register, birthDate: event.target.value });
-            }}
-          />
-        </label>
+        <h2 className={"text-xl font-bold my-6"}>Diver Information</h2>
+        <div className={"grid grid-cols-1 gap-4 sm:grid-cols-2"}>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Diver Qualification
+            </label>
+            <select
+              name=""
+              id=""
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({
+                  ...register,
+                  diverQualification: event.target.value,
+                });
+              }}
+            >
+              <option value=""></option>
+              <option value="aucun">Aucun</option>
+              <option value="etoiles-de-mer-1">Etoiles de Mer 1</option>
+              <option value="etoiles-de-mer-2">Etoiles de Mer 2</option>
+              <option value="etoiles-de-mer-3">Etoiles de Mer 3</option>
+              <option value="bronze">Bronze</option>
+              <option value="argent">Argent</option>
+              <option value="or">Or</option>
+              <option value="n1">N1</option>
+              <option value="n2">N2</option>
+              <option value="n3">N3</option>
+              <option value="n4">N4</option>
+            </select>
+          </div>
 
-        <label>
-          <p>Diver Qualification</p>
-          <input
-            type="text"
-            value= {register.diverQualification}
-            onChange={(event) => {
-              setRegister({
-                ...register,
-                diverQualification: event.target.value,
-              });
-            }}
-          />
-        </label>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Instructor Qualification
+            </label>
+            <select
+              name=""
+              id=""
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({
+                  ...register,
+                  instructorQualification: event.target.value,
+                });
+              }}
+            >
+              <option value=""></option>
+              <option value="aucun">Aucun</option>
+              <option value="n1">N1</option>
+              <option value="n2">N2</option>
+              <option value="n3">N3</option>
+              <option value="n4">N4</option>
+            </select>
+          </div>
 
-        <label>
-          <p>Instructor Qualification</p>
-          <input
-            type="text"
-            value= {register.instructorQualification}
-            onChange={(event) => {
-              setRegister({
-                ...register,
-                instructorQualification: event.target.value,
-              });
-            }}
-          />
-        </label>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Nox Qualification
+            </label>
+            <select
+              name=""
+              id=""
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({
+                  ...register,
+                  noxQualification: event.target.value,
+                });
+              }}
+            >
+              <option value=""></option>
+              <option value="aucun">Aucun</option>
+              <option value="nitrox">Nitrox</option>
+              <option value="nitrox-confirme">Nitrox Confirmé</option>
+              <option value="moniteur-nitrox">Moniteur Nitrox</option>
+            </select>
+          </div>
 
-        <label>
-          <p>Nox Qualification</p>
-          <input
-            type="text"
-            value= {register.noxQualification}
-            onChange={(event) => {
-              setRegister({
-                ...register,
-                noxQualification: event.target.value,
-              });
-            }}
-          />
-        </label>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              License Number
+            </label>
+            <input
+              type="text"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({ ...register, licenseNumber: event.target.value });
+              }}
+            />
+          </div>
 
-        <label>
-          <p>License Number</p>
-          <input
-            type="number"
-            value= {register.licenseNumber}
-            onChange={(event) => {
-              setRegister({ ...register, licenseNumber: event.target.value });
-            }}
-          />
-        </label>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              License Expiration Date
+            </label>
+            <input
+              type="date"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({
+                  ...register,
+                  licenseExpirationDate: event.target.value,
+                });
+              }}
+            />
+          </div>
 
-        <label>
-          <p>License Expiration Date</p>
-          <input
-            type="date"
-            value= {register.licenseExpirationDate}
-            onChange={(event) => {
-              setRegister({
-                ...register,
-                licenseExpirationDate: event.target.value,
-              });
-            }}
-          />
-        </label>
+          <div className="mb-4">
+            <label className="block text-gray-700 text-sm font-bold mb-2">
+              Medical Certificate Expiration Date
+            </label>
+            <input
+              type="date"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+              onChange={(event) => {
+                setRegister({
+                  ...register,
+                  medicalCertificateExpirationDate: event.target.value,
+                });
+              }}
+            />
+          </div>
+        </div>
 
-        <label>
-          <p>Medical Certificate Expiration Date</p>
-          <input
-            type="date"
-            value= {register.medicalCertificateExpirationDate}
-            onChange={(event) => {
-              setRegister({
-                ...register,
-                medicalCertificateExpirationDate: event.target.value,
-              });
-            }}
-          />
-        </label>
-
-        <label>
-          <p>Password</p>
-          <input
-            type="password"
-            value= {register.password}
-            onChange={(event) => {
-              setRegister({ ...register, password: event.target.value });
-            }}
-          />
-        </label>
-        <button type={"submit"}>Submit</button>
+        <div className={"flex justify-center"}>
+          <button
+            type={"submit"}
+            className={
+              "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            }
+          >
+            Submit
+          </button>
+        </div>
       </form>
     </div>
   );
