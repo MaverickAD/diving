@@ -11,6 +11,7 @@ let app = express();
 
 let indexRouter = require('./routes/index');
 let apiUsersRouter = require('./routes/api/users');
+let apiDiversRouter = require('./routes/api/divers');
 
 const db = mysql.createConnection({
   host: "93.104.215.68",
@@ -20,6 +21,7 @@ const db = mysql.createConnection({
 });
 
 db.connect((err) => {
+  console.log("Connected to MySQL server");
   if (err) throw err;
 });
 
@@ -49,6 +51,7 @@ const requireAdmin = (req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/api/users', apiUsersRouter(db));
+app.use('/api/divers', apiDiversRouter(db));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

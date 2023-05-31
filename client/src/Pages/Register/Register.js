@@ -2,8 +2,8 @@ import React, { useState } from "react";
 
 function Register(props) {
   const [register, setRegister] = useState({
-    firstName: "",
-    lastName: "",
+    firstname: "",
+    lastname: "",
     email: "",
     birthDate: "",
     diverQualification: "",
@@ -21,7 +21,19 @@ function Register(props) {
         className={"register-form"}
         onSubmit={(event) => {
           event.preventDefault();
-          console.log(register);
+          fetch("http://localhost:5000/api/users/signup", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(register),
+            }).then((response) => response.json())
+              .then((data) => {
+                console.log("Success:", data);
+              })
+              .catch((error) => {
+                console.error("Error:", error);
+              })
         }}
       >
         <h1>Register</h1>
@@ -29,8 +41,9 @@ function Register(props) {
           <p>First Name</p>
           <input
             type="text"
+            value= {register.firstname}
             onChange={(event) => {
-              setRegister({ ...register, firstName: event.target.value });
+              setRegister({ ...register, firstname: event.target.value });
             }}
           />
         </label>
@@ -39,8 +52,9 @@ function Register(props) {
           <p>Last Name</p>
           <input
             type="text"
+            value= {register.lastname}
             onChange={(event) => {
-              setRegister({ ...register, lastName: event.target.value });
+              setRegister({ ...register, lastname: event.target.value });
             }}
           />
         </label>
@@ -49,6 +63,7 @@ function Register(props) {
           <p>Email</p>
           <input
             type="email"
+            value= {register.email}
             onChange={(event) => {
               setRegister({ ...register, email: event.target.value });
             }}
@@ -59,6 +74,7 @@ function Register(props) {
           <p>Birth Date</p>
           <input
             type="date"
+            value= {register.birthDate}
             onChange={(event) => {
               setRegister({ ...register, birthDate: event.target.value });
             }}
@@ -69,6 +85,7 @@ function Register(props) {
           <p>Diver Qualification</p>
           <input
             type="text"
+            value= {register.diverQualification}
             onChange={(event) => {
               setRegister({
                 ...register,
@@ -82,6 +99,7 @@ function Register(props) {
           <p>Instructor Qualification</p>
           <input
             type="text"
+            value= {register.instructorQualification}
             onChange={(event) => {
               setRegister({
                 ...register,
@@ -95,6 +113,7 @@ function Register(props) {
           <p>Nox Qualification</p>
           <input
             type="text"
+            value= {register.noxQualification}
             onChange={(event) => {
               setRegister({
                 ...register,
@@ -108,6 +127,7 @@ function Register(props) {
           <p>License Number</p>
           <input
             type="number"
+            value= {register.licenseNumber}
             onChange={(event) => {
               setRegister({ ...register, licenseNumber: event.target.value });
             }}
@@ -118,6 +138,7 @@ function Register(props) {
           <p>License Expiration Date</p>
           <input
             type="date"
+            value= {register.licenseExpirationDate}
             onChange={(event) => {
               setRegister({
                 ...register,
@@ -131,6 +152,7 @@ function Register(props) {
           <p>Medical Certificate Expiration Date</p>
           <input
             type="date"
+            value= {register.medicalCertificateExpirationDate}
             onChange={(event) => {
               setRegister({
                 ...register,
@@ -144,6 +166,7 @@ function Register(props) {
           <p>Password</p>
           <input
             type="password"
+            value= {register.password}
             onChange={(event) => {
               setRegister({ ...register, password: event.target.value });
             }}
