@@ -1,7 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {Link} from "react-router-dom";
-import LoginButton from "../LoginButton/LoginButton";
-import ProfilButton from "../ProfilButton/ProfilButton";
+import React from "react";
+import { Link } from "react-router-dom";
 
 function Header(props) {
   return (

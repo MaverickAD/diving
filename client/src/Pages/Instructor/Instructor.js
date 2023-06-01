@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 import Calendar from "../../Component/Calendar/Calendar";
+import DiverManagement from "../../Component/DiverManagement/DiverManagement";
 
 function Instructor(props) {
   const [pageSelected, setPageSelected] = React.useState(6);
@@ -63,7 +63,19 @@ function Instructor(props) {
         </div>
 
         <div className={"w-full bg-white mx-2 p-4 rounded-md shadow-md"}>
-          {<Calendar />}
+          {pageSelected === 1 ? (
+            <DiverManagement />
+          ) : pageSelected === 2 ? (
+            <Calendar />
+          ) : pageSelected === 3 ? (
+            <p>Page 3</p>
+          ) : pageSelected === 4 ? (
+            <p>Page 4</p>
+          ) : pageSelected === 5 ? (
+            <p>Page 5</p>
+          ) : (
+            <p>Page 6</p>
+          )}
         </div>
       </div>
     </>
