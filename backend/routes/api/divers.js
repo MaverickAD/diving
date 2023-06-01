@@ -18,5 +18,12 @@ module.exports = (db) => {
         });
     });
 
+    router.get("/all", (req, res) => {
+        db.query("SELECT * FROM Diver", (err, rows) => {
+            if (err) throw err;
+            res.json(rows);
+        });
+    });
+
     return router;
 };
