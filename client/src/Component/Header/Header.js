@@ -22,7 +22,6 @@ function Header(props) {
                 Dive Director
               </Link>
             </li>
-            {token ? <ProfilButton /> : <LoginButton />}
           </ul>
         </nav>
       </div>

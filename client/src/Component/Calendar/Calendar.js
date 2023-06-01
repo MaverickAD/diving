@@ -13,7 +13,7 @@ import {
   SegmentedGroup,
   SegmentedItem,
   localeFr,
-} from "@mobiscroll/react";
+} from '@mobiscroll/react';
 
 setOptions({
   locale: localeFr,

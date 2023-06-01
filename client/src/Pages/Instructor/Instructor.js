@@ -3,20 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Calendar from "../../Component/Calendar/Calendar";
 
 function Instructor(props) {
-  const navigate = useNavigate();
-
-<<<<<<<
-
-=======
-  useEffect(() => {
-    if (!token) {
-      navigate("/login", { replace: true });
-    }
-  }, [token, navigate]);
-
   const [pageSelected, setPageSelected] = React.useState(6);
 
->>>>>>>
   return (
     <>
       <div className={"flex w-full"}>
