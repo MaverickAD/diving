@@ -6,6 +6,9 @@ let logger = require('morgan');
 let session = require('express-session');
 const mysql = require("mysql");
 const cors = require("cors");
+const jwt = require("jsonwebtoken");
+
+const secretKey = 'datadiving';
 
 let app = express();
 
@@ -40,17 +43,8 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-// Middleware de vérification d'authentification et d'autorisation
-const requireAdmin = (req, res, next) => {
-  if (req.session.isAdmin) {
-    next();
-  }else{
-    res.redirect('/');
-  }
-};
-
 app.use('/', indexRouter);
-app.use('/api/users', apiUsersRouter(db));
+app.use('/api/users', apiUsersRouter(db, jwt, secretKey));
 app.use('/api/divers', apiDiversRouter(db));
 
 // catch 404 and forward to error handler

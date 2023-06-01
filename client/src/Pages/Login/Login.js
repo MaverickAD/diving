@@ -1,88 +1,83 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
-import { useNavigate } from "react-router-dom";
+import React, {useState} from "react";
+import axios from 'axios';
+import {Navigate, useNavigate} from "react-router-dom";
 
-async function loginUser(credentials) {
-  return fetch("http://localhost:5000/api/users/signin", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
-  }).then((data) => data.json());
+export default function Login() {
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [token, setToken] = useState();
+    const navigate = useNavigate();
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch("http://localhost:5000/api/users/signin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // Handle the data
+                setToken(data.token);
+                localStorage.setItem("token", data.token);
+                console.log("token : " + data.token + " success: " + data.success );
+                navigate("/", {replace: true});
+            } else {
+                // Handle the error
+                throw new Error('Request failed with status: ' + response.status);
+            }
+        } catch (error) {
+            // Handle any other errors
+            console.error(error);
+        }
+
+            /*if(){
+                setToken(data.token);
+                localStorage.setItem("token", data.token);
+                console.log("token : " + data.token + " success: " + data.success );
+                navigate("/", {replace: true});
+            }else{
+                alert("Email or password incorrect");
+            }*/
+    };
+
+    return (
+        <div className={""}>
+            <h1 className={"text-2xl font-bold mb-6 text-center"}>Login</h1>
+            <form className={"w-full max-w-lg mx-auto bg-white p-8 rounded-md shadow-md"} onSubmit={handleSubmit}>
+                <div className={"mb-4"}>
+                    <label className={"block text-gray-700 text-sm font-bold mb-2"}>
+                        Email :
+                    </label>
+                    <input
+                        type={"email"}
+                        className={
+                            "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        }
+                        onChange={(event) => {
+                            setEmail(event.target.value);
+                        }}
+                    />
+                </div>
+
+                <div className={"mb-4"}>
+                    <label className={"block text-gray-700 text-sm font-bold mb-2"}>
+                        Password :
+                    </label>
+                    <input type={"password"} className={"w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"}
+                        onChange={(event) => {
+                            setPassword(event.target.value);
+                        }}
+                    />
+                </div>
+
+                <div className={"flex justify-center"}>
+                    <button type={"submit"} className={"bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"}> Login </button>
+                </div>
+            </form>
+        </div>
+    );
 }
-
-export default function Login({ setToken }) {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const navigate = useNavigate();
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    const token = await loginUser({
-      email,
-      password,
-    });
-    setToken(token);
-    if (token.token) {
-      navigate(-1);
-    } else {
-      alert("Wrong email or password");
-    }
-  };
-
-  return (
-    <div className={""}>
-      <h1 className={"text-2xl font-bold mb-6 text-center"}>Login</h1>
-      <form
-        className={"w-full max-w-lg mx-auto bg-white p-8 rounded-md shadow-md"}
-        onSubmit={handleSubmit}
-      >
-        <div className={"mb-4"}>
-          <label className={"block text-gray-700 text-sm font-bold mb-2"}>
-            Email :
-          </label>
-          <input
-            type={"email"}
-            className={
-              "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-            }
-            onChange={(event) => {
-              setEmail(event.target.value);
-            }}
-          />
-        </div>
-
-        <div className={"mb-4"}>
-          <label className={"block text-gray-700 text-sm font-bold mb-2"}>
-            Password :
-          </label>
-          <input
-            type={"password"}
-            className={
-              "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-            }
-            onChange={(event) => {
-              setPassword(event.target.value);
-            }}
-          />
-        </div>
-
-        <div className={"flex justify-center"}>
-          <button
-            type={"submit"}
-            className={
-              "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-            }
-          >
-            Login
-          </button>
-        </div>
-      </form>
-    </div>
-  );
-}
-
-Login.propTypes = {
-  setToken: PropTypes.func.isRequired,
-};
