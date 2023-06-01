@@ -3,44 +3,6 @@ let router = express.Router();
 let bcrypt = require("bcrypt");
 
 module.exports = (db, jwt, secretKey) => {
-    // Middleware pour vérifier le rôle de l'utilisateur
-    function checkUserRole(req, res, next) {
-        const email = req.body.email; // Supposons que vous ayez l'ID de l'utilisateur dans req.user
-
-        db.query('SELECT Rank FROM Application_User WHERE Email = ?', [email], (error, results) => {
-            if (error) {
-                console.error(error);
-                return res.sendStatus(500);
-            }
-
-            if (results.length === 0) {
-                return res.sendStatus(404); // Utilisateur non trouvé
-            }
-
-            req.user.role = results[0].rank; // Ajoute le rôle à l'objet request
-            next();
-        });
-    }
-
-    // Middleware pour vérifier le token à chaque requête
-    function authenticateToken(req, res, next) {
-        const token = req.headers['authorization'];
-
-        if (token) {
-            jwt.verify(token, secretKey, (err, decoded) => {
-                if (err) {
-                    return res.sendStatus(403); // Token invalide
-                }
-                console.log("Deja connecté");
-                req.user = decoded; // Ajoute les informations du rôle à l'objet request
-                console.log(req.user);
-                next();
-            });
-        } else {
-            console.log("Pas connecté ou pas de droits");
-            res.sendStatus(401); // Pas de token fourni
-        }
-    }
 
     // GET /users
     router.get("/", (req, res) => {
@@ -160,15 +122,15 @@ module.exports = (db, jwt, secretKey) => {
                         switch (results[0].Rank) {
                             case 2:
                                 console.log("Superadmin")
-                                token = jwt.sign({prenom: results[0].Lastname, rank: 2}, secretKey, {expiresIn: '24h'});
+                                token = jwt.sign({prenom: results[0].Lastname, email: results[0].Email, rank: 2}, secretKey, {expiresIn: '30s'});
                                 break;
                             case 1:
                                 console.log("Administrateur");
-                                token = jwt.sign({prenom: results[0].Lastname, rank: 1}, secretKey, {expiresIn: '24h'});
+                                token = jwt.sign({prenom: results[0].Lastname, email: results[0].Email, rank: 1}, secretKey, {expiresIn: '30s'});
                                 break;
                             case 0:
                                 console.log("Utilisateur normal");
-                                token = jwt.sign({prenom: results[0].Lastname, rank: 0}, secretKey, {expiresIn: '24h'});
+                                token = jwt.sign({prenom: results[0].Lastname, email: results[0].Email, rank: 0}, secretKey, {expiresIn: '30s'});
                                 break;
                             default:
                                 console.log("Erreur lors de la récupération du rank");
@@ -177,18 +139,8 @@ module.exports = (db, jwt, secretKey) => {
                         res.json({success: true, token});
                     });
                 });
-            };
+            }
         });
-    });
-
-    router.get("/admin", authenticateToken, checkUserRole, (req, res) => {
-        if (req.user.role === 1 || req.user.role === 2) {
-            // Traitez la requête pour les administrateurs
-            res.json({message: 'Accès autorisé pour les administrateurs et superadmin'});
-        } else {
-            console.log("Accès interdit pour les autres rôles");
-            res.sendStatus(403); // Accès interdit pour les autres rôles
-        }
     });
 
     return router;

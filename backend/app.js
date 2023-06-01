@@ -34,7 +34,7 @@ app.use(session({
   secret: 'Plong3eS0usMar1ne',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true, maxAge: 1000 * 60 * 60 * 24 } // 24 heures
+  cookie: { secure: true, maxAge: 1000 * 30 } // 24 heures
 }));
 
 app.use(cors());

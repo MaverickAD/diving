@@ -10,6 +10,7 @@ import Instructor from "./Pages/Instructor/Instructor";
 import Header from "./Component/Header/Header";
 import Footer from "./Component/Footer/Footer";
 
+
 function App() {
   return (
     <div className={"bg-neutral-200 flex flex-col min-h-screen"}>
