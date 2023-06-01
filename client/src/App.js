@@ -14,9 +14,9 @@ function App() {
   return (
     <div className={"bg-neutral-200 flex flex-col min-h-screen"}>
       <Header />
-      <main className={"flex-grow overflow-y-auto"}>
-          <Routes>
-              <Route exact path={"/"} element={<Home />} />
+      <main className={"flex flex-grow"}>
+        <Routes>
+          <Route path={"/"} element={<Home />} />
 
               <Route exact path={"/login"} element={<Login />} />
               <Route exact path={"/register"} element={<Register />} />
