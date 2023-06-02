@@ -1,19 +1,10 @@
-import React, { useEffect } from "react";
-import useToken from "../../Hook/useToken";
-import { useNavigate } from "react-router-dom";
+import React, { useState } from "react";
 import Calendar from "../../Component/Calendar/Calendar";
+import DiverManagement from "../../Component/DiverManagement/DiverManagement";
+import SiteManagement from "../../Component/SiteManagement/SiteManagement";
 
 function Instructor(props) {
-  const { token } = useToken();
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if (!token) {
-      navigate("/login", { replace: true });
-    }
-  }, [token, navigate]);
-
-  const [pageSelected, setPageSelected] = React.useState(6);
+  const [pageSelected, setPageSelected] = useState(1);
 
   return (
     <>
@@ -73,7 +64,19 @@ function Instructor(props) {
         </div>
 
         <div className={"w-full bg-white mx-2 p-4 rounded-md shadow-md"}>
-          {<Calendar />}
+          {pageSelected === 1 ? (
+            <DiverManagement />
+          ) : pageSelected === 2 ? (
+            <Calendar />
+          ) : pageSelected === 3 ? (
+            <p>Page 3</p>
+          ) : pageSelected === 4 ? (
+            <p>Page 4</p>
+          ) : pageSelected === 5 ? (
+            <SiteManagement />
+          ) : (
+            <p>Page 6</p>
+          )}
         </div>
       </div>
     </>

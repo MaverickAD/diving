@@ -1,35 +1,54 @@
-import React, { useState } from "react";
-import PropTypes from "prop-types";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-async function loginUser(credentials) {
-  return fetch("http://localhost:5000/api/users/signin", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(credentials),
-  }).then((data) => data.json());
-}
-
-export default function Login({ setToken }) {
+export default function Login() {
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [token, setToken] = useState();
   const navigate = useNavigate();
-
+  useEffect(() => {
+    if (localStorage.getItem("token") !== null) {
+      navigate("/", { replace: true });
+    }
+  }, [navigate]);
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const token = await loginUser({
-      email,
-      password,
-    });
-    setToken(token);
-    if (token.token) {
-      navigate(-1);
-    } else {
-      alert("Wrong email or password");
+    try {
+      const response = await fetch("http://localhost:5000/api/users/signin", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
+      if (response.ok) {
+        const data = await response.json();
+        // Handle the data
+        setToken(data.token);
+        localStorage.setItem("token", data.token);
+        console.log("token : " + data.token + " success: " + data.success);
+        navigate("/", { replace: true });
+      } else {
+        // Handle the error
+        alert("L'email ou le mot de passe est incorrect");
+        throw new Error("Request failed with status: " + response.status);
+      }
+    } catch (error) {
+      // Handle any other errors
+      console.error(error);
     }
+
+    /*if(){
+                setToken(data.token);
+                localStorage.setItem("token", data.token);
+                console.log("token : " + data.token + " success: " + data.success );
+                navigate("/", {replace: true});
+            }else{
+                alert("Email or password incorrect");
+            }*/
   };
+
+  console.log(token);
 
   return (
     <div className={"w-full"}>
@@ -75,14 +94,11 @@ export default function Login({ setToken }) {
               "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
             }
           >
-            Login
+            {" "}
+            Login{" "}
           </button>
         </div>
       </form>
     </div>
   );
 }
-
-Login.propTypes = {
-  setToken: PropTypes.func.isRequired,
-};
