@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useState } from "react";
 import Calendar from "../../Component/Calendar/Calendar";
 import DiverManagement from "../../Component/DiverManagement/DiverManagement";
+import SiteManagement from "../../Component/SiteManagement/SiteManagement";
 
 function Instructor(props) {
-  const [pageSelected, setPageSelected] = React.useState(6);
+  const [pageSelected, setPageSelected] = useState(1);
 
   return (
     <>
@@ -72,7 +73,7 @@ function Instructor(props) {
           ) : pageSelected === 4 ? (
             <p>Page 4</p>
           ) : pageSelected === 5 ? (
-            <p>Page 5</p>
+            <SiteManagement />
           ) : (
             <p>Page 6</p>
           )}

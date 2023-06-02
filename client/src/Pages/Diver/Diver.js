@@ -1,10 +1,6 @@
-import React, { useEffect } from "react";
-import NavBar from "../../Component/NavBar/NavBar";
-import { useNavigate } from "react-router-dom";
+import React from "react";
 
 function Diver(props) {
-  const navigate = useNavigate();
-
   return (
     <>
       <h1>Diver</h1>

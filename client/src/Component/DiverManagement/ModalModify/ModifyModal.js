@@ -1,18 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 
 function ModifyModal(props) {
-  const [showModal, setShowModal] = React.useState(false);
-  const [valueModified, setValueModified] = React.useState({
-    id: props.info.id,
-    firstname: "",
-    lastname: "",
-    diverQualification: "",
-    instructorQualification: "",
-    noxQualification: "",
-    licenseNumber: "",
-    licenseExpirationDate: "",
-    medicalCertificateExpirationDate: "",
-  });
+  const [showModal, setShowModal] = useState(false);
+  const [valueModified, setValueModified] = useState(props.info);
 
   return (
     <>
@@ -42,7 +32,7 @@ function ModifyModal(props) {
                       <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={props.info.firstName}
+                        defaultValue={props.info.Firstname}
                         onChange={(event) => {
                           setValueModified({
                             ...valueModified,
@@ -58,7 +48,7 @@ function ModifyModal(props) {
                       <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={props.info.lastName}
+                        defaultValue={props.info.Lastname}
                         onChange={(event) => {
                           setValueModified({
                             ...valueModified,
@@ -73,6 +63,7 @@ function ModifyModal(props) {
                       </label>
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        defaultValue={props.info.Diver_Qualifications}
                         onChange={(event) => {
                           setValueModified({
                             ...valueModified,
@@ -80,23 +71,23 @@ function ModifyModal(props) {
                           });
                         }}
                       >
-                        <option value="aucun">Aucun</option>
-                        <option value="etoiles-de-mer-1">
+                        <option value="Aucun">Aucun</option>
+                        <option value="Etoiles de Mer 1">
                           Etoiles de Mer 1
                         </option>
-                        <option value="etoiles-de-mer-2">
+                        <option value="Etoiles de Mer 2">
                           Etoiles de Mer 2
                         </option>
-                        <option value="etoiles-de-mer-3">
+                        <option value="Etoiles de Mer 3">
                           Etoiles de Mer 3
                         </option>
-                        <option value="bronze">Bronze</option>
-                        <option value="argent">Argent</option>
-                        <option value="or">Or</option>
-                        <option value="n1">N1</option>
-                        <option value="n2">N2</option>
-                        <option value="n3">N3</option>
-                        <option value="n4">N4</option>
+                        <option value="Bronze">Bronze</option>
+                        <option value="Argent">Argent</option>
+                        <option value="Or">Or</option>
+                        <option value="N1">N1</option>
+                        <option value="N2">N2</option>
+                        <option value="N3">N3</option>
+                        <option value="N4">N4</option>
                       </select>
                     </div>
                     <div className="mb-4">
@@ -105,6 +96,7 @@ function ModifyModal(props) {
                       </label>
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        defaultValue={props.info.Instructor_Qualification}
                         onChange={(event) => {
                           setValueModified({
                             ...valueModified,
@@ -112,11 +104,11 @@ function ModifyModal(props) {
                           });
                         }}
                       >
-                        <option value="aucun">Aucun</option>
-                        <option value="n1">N1</option>
-                        <option value="n2">N2</option>
-                        <option value="n3">N3</option>
-                        <option value="n4">N4</option>
+                        <option value="Aucun">Aucun</option>
+                        <option value="E1">E1</option>
+                        <option value="E2">E2</option>
+                        <option value="E3">E3</option>
+                        <option value="E4">E4</option>
                       </select>
                     </div>
                     <div className="mb-4">
@@ -125,6 +117,7 @@ function ModifyModal(props) {
                       </label>
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        defaultValue={props.info.Nox_Level}
                         onChange={(event) => {
                           setValueModified({
                             ...valueModified,
@@ -132,10 +125,10 @@ function ModifyModal(props) {
                           });
                         }}
                       >
-                        <option value="aucun">Aucun</option>
-                        <option value="nitrox">Nitrox</option>
-                        <option value="nitrox-confirme">Nitrox Confirmé</option>
-                        <option value="moniteur-nitrox">Moniteur Nitrox</option>
+                        <option value="Aucun">Aucun</option>
+                        <option value="NITROX">Nitrox</option>
+                        <option value="NITROX Confirmé">Nitrox Confirmé</option>
+                        <option value="Moniteur NITROX">Moniteur Nitrox</option>
                       </select>
                     </div>
                     <div className="mb-4">
@@ -145,7 +138,7 @@ function ModifyModal(props) {
                       <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={props.info.licenseNumber}
+                        defaultValue={props.info.License_Number}
                         onChange={(event) => {
                           setValueModified({
                             ...valueModified,
@@ -161,7 +154,11 @@ function ModifyModal(props) {
                       <input
                         type="date"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={props.info.licenseExpirationDate}
+                        defaultValue={new Date(
+                          props.info.License_Expiration_Date
+                        )
+                          .toISOString()
+                          .slice(0, 10)}
                         onChange={(event) => {
                           setValueModified({
                             ...valueModified,
@@ -177,9 +174,11 @@ function ModifyModal(props) {
                       <input
                         type="date"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={
-                          props.info.medicalCertificateExpirationDate
-                        }
+                        defaultValue={new Date(
+                          props.info.Medical_Certificate_Expiration_Date
+                        )
+                          .toISOString()
+                          .slice(0, 10)}
                         onChange={(event) => {
                           setValueModified({
                             ...valueModified,
