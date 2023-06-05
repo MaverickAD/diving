@@ -28,9 +28,7 @@ function Instructor(props) {
                 .then(async (data) => {
                     if(data.decoded.rank !== 2){
                         await navigate("/", {replace: true});
-                        alertify.alert('Message', 'Ceci est une alerte.', function(){
-                            alertify.success('Ok');
-                        });
+                        alertify.error('Accès Impossible !');
                     }
                 })
                 .catch((error) => {

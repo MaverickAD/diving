@@ -1,33 +1,38 @@
 import React, { useState } from "react";
+import {useNavigate} from "react-router-dom";
+const { v4: uuidv4 } = require('uuid');
 
 function Register(props) {
+  let navigate = useNavigate();
   const [register, setRegister] = useState({
-    firstname: "",
-    lastname: "",
+    id: uuidv4(),
+    first_name: "",
+    last_name: "",
     email: "",
-    birthDate: "",
-    diverQualification: "",
-    instructorQualification: "",
-    noxQualification: "",
-    licenseNumber: "",
-    licenseExpirationDate: "",
-    medicalCertificateExpirationDate: "",
+    birth_date: "",
+    diver_qualification: "",
+    instructor_qualification: "",
+    nitrox_qualification: "",
+    license_number: "",
+    license_expiration_date: "",
+    medical_expiration_date: "",
     password: "",
     passwordConfirmation: "",
+    theme: "light",
   });
 
   const [isSubmit, setIsSubmit] = useState(false);
   const canSubmit = () => {
     if (
-      register.firstName !== "" &&
-      register.lastName !== "" &&
+      register.first_name !== "" &&
+      register.last_name !== "" &&
       register.email !== "" &&
-      register.birthDate !== "" &&
-      register.diverQualification !== "" &&
-      register.noxQualification !== "" &&
-      register.licenseNumber !== "" &&
-      register.licenseExpirationDate !== "" &&
-      register.medicalCertificateExpirationDate !== "" &&
+      register.birth_date !== "" &&
+      register.diver_qualification !== "" &&
+      register.nitrox_qualification !== "" &&
+      register.license_number !== "" &&
+      register.license_expiration_date !== "" &&
+      register.medical_expiration_date !== "" &&
       register.password !== "" &&
       register.passwordConfirmation !== "" &&
       register.password === register.passwordConfirmation
@@ -57,9 +62,11 @@ function Register(props) {
             }).then((response) => response.json())
               .then((data) => {
                 console.log("Success:", data);
+                navigate("/", {replace: true});
               })
               .catch((error) => {
                 console.error("Error:", error);
+                navigate("/register", {replace: true})
               })
         }}
       >
@@ -73,7 +80,7 @@ function Register(props) {
               type="text"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
-                setRegister({ ...register, firstName: event.target.value });
+                setRegister({ ...register, first_name: event.target.value });
                 canSubmit();
               }}
             />
@@ -87,7 +94,7 @@ function Register(props) {
               type="text"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
-                setRegister({ ...register, lastName: event.target.value });
+                setRegister({ ...register, last_name: event.target.value });
                 canSubmit();
               }}
             />
@@ -115,7 +122,7 @@ function Register(props) {
               max={todayMinus16Year.toISOString().split("T")[0]}
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
-                setRegister({ ...register, birthDate: event.target.value });
+                setRegister({ ...register, birth_date: event.target.value });
                 canSubmit();
               }}
             />
@@ -164,23 +171,23 @@ function Register(props) {
               onChange={(event) => {
                 setRegister({
                   ...register,
-                  diverQualification: event.target.value,
+                  diver_qualification: event.target.value,
                 });
                 canSubmit();
               }}
             >
               <option value=""></option>
-              <option value="aucun">Aucun</option>
-              <option value="etoiles-de-mer-1">Etoiles de Mer 1</option>
-              <option value="etoiles-de-mer-2">Etoiles de Mer 2</option>
-              <option value="etoiles-de-mer-3">Etoiles de Mer 3</option>
-              <option value="bronze">Bronze</option>
-              <option value="argent">Argent</option>
-              <option value="or">Or</option>
-              <option value="n1">N1</option>
-              <option value="n2">N2</option>
-              <option value="n3">N3</option>
-              <option value="n4">N4</option>
+              <option value="1">Aucun</option>
+              <option value="2">Etoiles de Mer 1</option>
+              <option value="3">Etoiles de Mer 2</option>
+              <option value="4">Etoiles de Mer 3</option>
+              <option value="5">Bronze</option>
+              <option value="6">Argent</option>
+              <option value="7">Or</option>
+              <option value="8">N1</option>
+              <option value="9">N2</option>
+              <option value="10">N3</option>
+              <option value="11">N4</option>
             </select>
           </div>
 
@@ -195,17 +202,17 @@ function Register(props) {
               onChange={(event) => {
                 setRegister({
                   ...register,
-                  instructorQualification: event.target.value,
+                  instructor_qualification: event.target.value,
                 });
                 canSubmit();
               }}
             >
               <option value=""></option>
-              <option value="aucun">Aucun</option>
-              <option value="n1">N1</option>
-              <option value="n2">N2</option>
-              <option value="n3">N3</option>
-              <option value="n4">N4</option>
+              <option value="1">Aucun</option>
+              <option value="2">E1</option>
+              <option value="3">E2</option>
+              <option value="4">E3</option>
+              <option value="5">E4</option>
             </select>
           </div>
 
@@ -220,16 +227,16 @@ function Register(props) {
               onChange={(event) => {
                 setRegister({
                   ...register,
-                  noxQualification: event.target.value,
+                  nitrox_qualification: event.target.value,
                 });
                 canSubmit();
               }}
             >
               <option value=""></option>
-              <option value="aucun">Aucun</option>
-              <option value="nitrox">Nitrox</option>
-              <option value="nitrox-confirme">Nitrox Confirmé</option>
-              <option value="moniteur-nitrox">Moniteur Nitrox</option>
+              <option value="1">Aucun</option>
+              <option value="2">Nitrox</option>
+              <option value="3">Nitrox Confirmé</option>
+              <option value="4">Moniteur Nitrox</option>
             </select>
           </div>
 
@@ -241,7 +248,7 @@ function Register(props) {
               type="text"
               className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
               onChange={(event) => {
-                setRegister({ ...register, licenseNumber: event.target.value });
+                setRegister({ ...register, license_number: event.target.value });
                 canSubmit();
               }}
             />
@@ -258,7 +265,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegister({
                   ...register,
-                  licenseExpirationDate: event.target.value,
+                  license_expiration_date: event.target.value,
                 });
                 canSubmit();
               }}
@@ -276,7 +283,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegister({
                   ...register,
-                  medicalCertificateExpirationDate: event.target.value,
+                  medical_expiration_date: event.target.value,
                 });
                 canSubmit();
               }}

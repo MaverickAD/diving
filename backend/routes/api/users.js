@@ -14,10 +14,13 @@ module.exports = (db, jwt, secretKey) => {
 
     // Route pour l'inscription d'un nouvel utilisateur
     router.post("/signup", (req, res) => {
-        const {firstname, lastname, email, password} = req.body;
-
+        let {id, last_name, first_name, birth_date, email, password, diver_qualification, instructor_qualification, nitrox_qualification, additional_qualification, license_number, license_expiration_date, medical_expiration_date, theme } = req.body;
+        if(additional_qualification === undefined){
+            additional_qualification = "";
+        }
+        let rank = 0;
         // Vérifier si les paramètres nécessaires sont fournis
-        if (!firstname || !lastname || !email || !password) {
+        if (!first_name || !last_name || !email || !password || !birth_date || !diver_qualification || !nitrox_qualification || !license_number || !license_expiration_date || !medical_expiration_date) {
             return res
                 .status(400)
                 .json({message: "Nom, prénom, Email et mot de passe requis"});
@@ -31,27 +34,12 @@ module.exports = (db, jwt, secretKey) => {
                     .status(500)
                     .json({message: "Erreur lors de l'inscription"});
             }
-
-            function generate_guid() {
-                let dt = new Date().getTime();
-                return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(
-                    /[xy]/g,
-                    function (c) {
-                        var rnd = Math.random() * 16; //random number in range 0 to 16
-                        rnd = (dt + rnd) % 16 | 0;
-                        dt = Math.floor(dt / 16);
-                        return (c === "x" ? rnd : (rnd & 0x3) | 0x8).toString(16);
-                    }
-                );
-            }
-
-            let GUID = generate_guid();
             // Insérer l'utilisateur dans la base de données
             const query =
-                "INSERT INTO Application_User (Id_Application_User, Lastname, Firstname, Email, User_Password, Theme) VALUES (?, ?, ?, ?, ?, ?)";
+                "INSERT INTO diver (id, last_name, first_name, birth_date, email, password, diver_qualification, instructor_qualification, nitrox_qualification, additional_qualification, license_number, license_expiration_date, medical_expiration_date, theme, `rank`) VALUES  (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? )";
             db.query(
                 query,
-                [GUID, lastname, firstname, email, hash, "WHITE"],
+                [id, last_name, first_name, birth_date, email, hash, diver_qualification, instructor_qualification, nitrox_qualification, additional_qualification, license_number, license_expiration_date, medical_expiration_date, "light", "0"],
                 (err, result) => {
                     if (err) {
                         console.error("Erreur lors de l'insertion de l'utilisateur :", err);
@@ -59,7 +47,10 @@ module.exports = (db, jwt, secretKey) => {
                             .status(500)
                             .json({message: "Erreur lors de l'inscription"});
                     }
-                    res.json({message: "Inscription réussie"});
+                    // Générer un token d'authentification et envoyer la réponse
+                    let token = jwt.sign({prenom: first_name, email: email, rank: rank}, secretKey, {expiresIn: '30s'});
+
+                    res.json({message: "Inscription réussie", token: token, success: true});
                 }
             );
         });
@@ -91,7 +82,7 @@ module.exports = (db, jwt, secretKey) => {
                 // Comparer le mot de passe fourni avec le mot de passe haché dans la base de données
                 const user = results[0];
 
-                bcrypt.compare(password, user.User_Password, (err, result) => {
+                bcrypt.compare(password, user.password, (err, result) => {
                     if (err) {
                         console.error(
                             "Erreur lors de la comparaison des mots de passe :",
@@ -119,18 +110,18 @@ module.exports = (db, jwt, secretKey) => {
                         }
 
                         let token;
-                        switch (results[0].Rank) {
+                        switch (results[0].rank) {
                             case 2:
                                 console.log("Superadmin")
-                                token = jwt.sign({prenom: results[0].Lastname, email: results[0].Email, rank: 2}, secretKey, {expiresIn: '30s'});
+                                token = jwt.sign({prenom: results[0].last_name, email: results[0].email, rank: 2}, secretKey, {expiresIn: '30s'});
                                 break;
                             case 1:
                                 console.log("Administrateur");
-                                token = jwt.sign({prenom: results[0].Lastname, email: results[0].Email, rank: 1}, secretKey, {expiresIn: '30s'});
+                                token = jwt.sign({prenom: results[0].last_name, email: results[0].email, rank: 1}, secretKey, {expiresIn: '30s'});
                                 break;
                             case 0:
                                 console.log("Utilisateur normal");
-                                token = jwt.sign({prenom: results[0].Lastname, email: results[0].Email, rank: 0}, secretKey, {expiresIn: '30s'});
+                                token = jwt.sign({prenom: results[0].last_name, email: results[0].email, rank: 0}, secretKey, {expiresIn: '30s'});
                                 break;
                             default:
                                 console.log("Erreur lors de la récupération du rank");
@@ -145,6 +136,7 @@ module.exports = (db, jwt, secretKey) => {
 
     router.post("/verify", (req, res) => {
         const {token} = req.body;
+        console.log("Token :", req.body);
         jwt.verify(token, secretKey, (err, decoded) => {
             if (err) {
                 console.error("Erreur lors de la vérification du token :", err);
