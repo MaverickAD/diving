@@ -11,6 +11,8 @@ export default function Login() {
       navigate("/", { replace: true });
     }
   }, [navigate]);
+
+  console.log(JSON.stringify({ email, password }));
   const handleSubmit = async (event) => {
     event.preventDefault();
     try {

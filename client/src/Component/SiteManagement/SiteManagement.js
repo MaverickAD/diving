@@ -26,48 +26,144 @@ async function getSitesDatas(setSites) {
 
 function SiteManagement(props) {
   const [sites, setSites] = useState([]);
-  useEffect(() => {
-    getSitesDatas(setSites).then((r) => console.log(r));
-  }, []);
-
   const [search, setSearch] = useState("");
+  const [currentPage, setCurrentPage] = useState(1);
+  const dataPerPage = 10;
+  const [pagesNumber, setPagesNumber] = useState(1);
+
+  useEffect(() => {
+    getSitesDatas(setSites).then((data) => {
+      setPagesNumber(Math.ceil(data.length / dataPerPage));
+    });
+  }, []);
 
   return (
     <div>
       <h2 className={"text-xl font-bold mb-6"}>Site Management</h2>
-      <div className="h-full space-x-2">
-        <label htmlFor="" className="text-gray-700 text-sm font-bold mb-2">
-          First Name :{" "}
-        </label>
-        <input
-          type="text"
-          className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-          onChange={(event) => {
-            setSearch(event.target.value);
-          }}
-        />
+      <div className="flex justify-between items-center mb-4">
+        <div className="h-full space-x-2">
+          <label htmlFor="" className="text-gray-700 text-sm font-bold mb-2">
+            First Name :{" "}
+          </label>
+          <input
+            type="text"
+            className="px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+            onChange={(event) => {
+              setSearch(event.target.value);
+              setPagesNumber(
+                Math.ceil(
+                  sites.filter((site) =>
+                    site.Site_Name.toLowerCase().includes(
+                      event.target.value.toLowerCase()
+                    )
+                  ).length / dataPerPage
+                )
+              );
+            }}
+          />
+        </div>
+
+        <div className={"px-3 py-2"}>
+          <ul className={"flex justify-center"}>
+            <button
+              onClick={() => {
+                if (currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                }
+              }}
+              className={
+                "border rounded mx-1 px-3 py-1.5 text-gray-700 text-sm font-bold transition-all duration-300 hover:bg-neutral-100"
+              }
+            >
+              Previous
+            </button>
+            <button
+              className="w-10 border rounded mx-1 px-3 py-1.5 text-sm transition-all duration-300 hover:bg-neutral-100"
+              onClick={() => {
+                if (currentPage > 2) {
+                  setCurrentPage(currentPage - 2);
+                }
+              }}
+            >
+              {currentPage - 2 > 0 ? currentPage - 2 : null}
+            </button>
+            <button
+              className="w-10 border rounded mx-1 px-3 py-1.5 text-sm transition-all duration-300 hover:bg-neutral-100"
+              onClick={() => {
+                if (currentPage > 1) {
+                  setCurrentPage(currentPage - 1);
+                }
+              }}
+            >
+              {currentPage - 1 > 0 ? currentPage - 1 : null}
+            </button>
+            <button className="w-10 border rounded mx-1 px-3 py-1.5 text-sm transition-all duration-300 hover:bg-neutral-100">
+              {currentPage}
+            </button>
+            <button
+              className="w-10 border rounded mx-1 px-3 py-1.5 text-sm transition-all duration-300 hover:bg-neutral-100"
+              onClick={() => {
+                if (currentPage < pagesNumber) {
+                  setCurrentPage(currentPage + 1);
+                }
+              }}
+            >
+              {currentPage + 1 < pagesNumber + 1 ? currentPage + 1 : null}
+            </button>
+            <button
+              className="w-10 border rounded mx-1 px-3 py-1.5 text-sm transition-all duration-300 hover:bg-neutral-100"
+              onClick={() => {
+                if (currentPage < pagesNumber - 1) {
+                  setCurrentPage(currentPage + 2);
+                }
+              }}
+            >
+              {currentPage + 2 < pagesNumber + 1 ? currentPage + 2 : null}
+            </button>
+            <button
+              disabled={currentPage === pagesNumber}
+              onClick={() => {
+                if (currentPage < pagesNumber) {
+                  setCurrentPage(currentPage + 1);
+                }
+              }}
+              className={
+                "border rounded mx-1 px-3 py-1.5 text-gray-700 text-sm font-bold transition-all duration-300 hover:bg-neutral-100"
+              }
+            >
+              Next
+            </button>
+          </ul>
+        </div>
       </div>
-      <table className={"min-w-full text-left text-sm font-light"}>
-        <thead className={"border-b bg-white font-medium"}>
-          <tr>
-            <th className={"px-6 py-4"}>ID</th>
-            <th className={"px-6 py-4"}>Site Name</th>
-            <th className={"px-6 py-4"}>Lattitude</th>
-            <th className={"px-6 py-4"}>Longitude</th>
-            <th className={"px-6 py-4"}>Zip Code</th>
-            <th className={"px-6 py-4"}>City</th>
-            <th className={"px-6 py-4"}>Country</th>
-            <th className={"px-6 py-4"}>More Info</th>
-          </tr>
-        </thead>
-        <tbody>
-          {sites.length === 0 ? (
-            <p>Loading</p>
-          ) : (
-            sites
+
+      {sites.length === 0 ? (
+        <p>Loading</p>
+      ) : (
+        <table className={"min-w-full text-left text-sm font-light"}>
+          <thead className={"border-b bg-white font-medium"}>
+            <tr>
+              <th className={"w-9 px-1 py-2 text-center"}>ID</th>
+              <th className={"w-96 px-1 py-2 text-center"}>Site Name</th>
+              <th className={"w-32 px-1 py-2 text-center"}>Latitude</th>
+              <th className={"w-32 px-1 py-2 text-center"}>Longitude</th>
+              <th className={"w-28 px-1 py-2 text-center"}>Zip Code</th>
+              <th className={"w-40 px-1 py-2 text-center"}>City</th>
+              <th className={"w-32 px-1 py-2 text-center"}>Country</th>
+              <th className={"w-32 px-1 py-2 text-center"}>Modify</th>
+            </tr>
+          </thead>
+          <tbody>
+            {sites
               .filter((site) =>
                 site.Site_Name.toLowerCase().includes(search.toLowerCase())
               )
+              .filter((site, index) => {
+                return (
+                  index < currentPage * dataPerPage &&
+                  index >= (currentPage - 1) * dataPerPage
+                );
+              })
               .map((site) => (
                 <tr
                   className={
@@ -75,35 +171,39 @@ function SiteManagement(props) {
                   }
                   key={site.Id_Dive_Site}
                 >
-                  <td className="whitespace-nowrap py-4 px-6">
+                  <td className="whitespace-nowrap w-9 px-1 py-2 text-center">
                     {site.Id_Dive_Site}
                   </td>
-                  <td className="whitespace-nowrap py-4 px-6">
+                  <td className="whitespace-nowrap w-96 px-1 py-2 text-center">
                     {site.Site_Name}
                   </td>
-                  <td className="whitespace-nowrap py-4 px-6">
+                  <td className="whitespace-nowrap w-32 px-1 py-2 text-center">
                     {site.Gps_Latitude}
                   </td>
-                  <td className="whitespace-nowrap py-4 px-6">
+                  <td className="whitespace-nowrap w-32 px-1 py-2 text-center">
                     {site.Gps_Longitude}
                   </td>
-                  <td className="whitespace-nowrap py-4 px-6">
+                  <td className="whitespace-nowrap w-28 px-1 py-2 text-center">
                     {site.Zip_Code}
                   </td>
-                  <td className="whitespace-nowrap py-4 px-6">
+                  <td className="whitespace-nowrap w-40 px-1 py-2 text-center">
                     {site.City_Name}
                   </td>
-                  <td className="whitespace-nowrap py-4 px-6">
+                  <td className="whitespace-nowrap w-32 px-1 py-2 text-center">
                     {site.Country_Name}
                   </td>
-                  <td className={"whitespace-nowrap py-4 px-6"}>
+                  <td
+                    className={
+                      "whitespace-nowrap px-1 py-2 flex flex-col items-center"
+                    }
+                  >
                     <ModalModifyInfo info={site} />
                   </td>
                 </tr>
-              ))
-          )}
-        </tbody>
-      </table>
+              ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }

@@ -2,18 +2,32 @@ import React, { useState } from "react";
 
 function ModifyModal(props) {
   const [showModal, setShowModal] = useState(false);
-  const [valueModified, setValueModified] = useState(props.info);
+  const [modifyInfo, setModifyInfo] = useState(false);
+  const [valuesModified, setValuesModified] = useState(props.info);
+
+  const invertModifyInfo = () => {
+    setModifyInfo(!modifyInfo);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (modifyInfo) {
+      console.log(valuesModified);
+    } else {
+      invertModifyInfo();
+    }
+  };
 
   return (
     <>
       <button
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-bold uppercase rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2"
+        className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-bold uppercase rounded-full text-sm px-5 py-2.5 text-center"
         type="button"
         onClick={() => {
           setShowModal(true);
         }}
       >
-        Open
+        Modify
       </button>
       {showModal ? (
         <>
@@ -33,9 +47,10 @@ function ModifyModal(props) {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                         defaultValue={props.info.Firstname}
+                        disabled={!modifyInfo}
                         onChange={(event) => {
-                          setValueModified({
-                            ...valueModified,
+                          setValuesModified({
+                            ...valuesModified,
                             firstname: event.target.value,
                           });
                         }}
@@ -49,9 +64,10 @@ function ModifyModal(props) {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                         defaultValue={props.info.Lastname}
+                        disabled={!modifyInfo}
                         onChange={(event) => {
-                          setValueModified({
-                            ...valueModified,
+                          setValuesModified({
+                            ...valuesModified,
                             lastname: event.target.value,
                           });
                         }}
@@ -64,9 +80,10 @@ function ModifyModal(props) {
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                         defaultValue={props.info.Diver_Qualifications}
+                        disabled={!modifyInfo}
                         onChange={(event) => {
-                          setValueModified({
-                            ...valueModified,
+                          setValuesModified({
+                            ...valuesModified,
                             diverQualification: event.target.value,
                           });
                         }}
@@ -97,9 +114,10 @@ function ModifyModal(props) {
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                         defaultValue={props.info.Instructor_Qualification}
+                        disabled={!modifyInfo}
                         onChange={(event) => {
-                          setValueModified({
-                            ...valueModified,
+                          setValuesModified({
+                            ...valuesModified,
                             instructorQualification: event.target.value,
                           });
                         }}
@@ -118,9 +136,10 @@ function ModifyModal(props) {
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                         defaultValue={props.info.Nox_Level}
+                        disabled={!modifyInfo}
                         onChange={(event) => {
-                          setValueModified({
-                            ...valueModified,
+                          setValuesModified({
+                            ...valuesModified,
                             noxQualification: event.target.value,
                           });
                         }}
@@ -139,9 +158,10 @@ function ModifyModal(props) {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
                         defaultValue={props.info.License_Number}
+                        disabled={!modifyInfo}
                         onChange={(event) => {
-                          setValueModified({
-                            ...valueModified,
+                          setValuesModified({
+                            ...valuesModified,
                             licenseNumber: event.target.value,
                           });
                         }}
@@ -159,9 +179,10 @@ function ModifyModal(props) {
                         )
                           .toISOString()
                           .slice(0, 10)}
+                        disabled={!modifyInfo}
                         onChange={(event) => {
-                          setValueModified({
-                            ...valueModified,
+                          setValuesModified({
+                            ...valuesModified,
                             licenseExpirationDate: event.target.value,
                           });
                         }}
@@ -179,9 +200,10 @@ function ModifyModal(props) {
                         )
                           .toISOString()
                           .slice(0, 10)}
+                        disabled={!modifyInfo}
                         onChange={(event) => {
-                          setValueModified({
-                            ...valueModified,
+                          setValuesModified({
+                            ...valuesModified,
                             medicalCertificateExpirationDate:
                               event.target.value,
                           });
@@ -192,18 +214,25 @@ function ModifyModal(props) {
                 </div>
                 <div className={"p-5 w-full flex justify-end"}>
                   <button
-                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none ease-linear transition-all duration-150"
                     type="button"
-                    onClick={() => setShowModal(false)}
+                    onClick={() => {
+                      setShowModal(false);
+                      setModifyInfo(false);
+                    }}
                   >
                     Close
                   </button>
                   <button
-                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    className={
+                      modifyInfo
+                        ? "bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                        : "bg-blue-500 text-white active:bg-blue-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none ease-linear transition-all duration-150"
+                    }
                     type="button"
-                    onClick={() => console.log(valueModified)}
+                    onClick={handleSubmit}
                   >
-                    Save Changes
+                    {modifyInfo ? "Save Changes" : "Modify"}
                   </button>
                 </div>
               </div>
