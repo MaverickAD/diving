@@ -13,6 +13,7 @@ const secretKey = 'datadiving';
 let app = express();
 
 let indexRouter = require('./routes/index');
+let apiSitesRouter = require('./routes/api/sites');
 let apiUsersRouter = require('./routes/api/users');
 let apiDiversRouter = require('./routes/api/divers');
 
@@ -44,6 +45,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 app.use('/', indexRouter);
+app.use('/api/sites', apiSitesRouter(db));
 app.use('/api/users', apiUsersRouter(db, jwt, secretKey));
 app.use('/api/divers', apiDiversRouter(db));
 

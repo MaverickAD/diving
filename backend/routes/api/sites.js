@@ -1,6 +1,5 @@
 let express = require("express");
 let router = express.Router();
-let bcrypt = require("bcrypt");
 
 module.exports = (db) => {
     // GET /users

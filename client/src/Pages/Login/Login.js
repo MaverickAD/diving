@@ -6,11 +6,28 @@ export default function Login() {
     const [password, setPassword] = useState();
     const [token, setToken] = useState();
     const navigate = useNavigate();
+
     useEffect(() => {
-        if(localStorage.getItem("token") !== null){
-            navigate("/", {replace: true});
+        if (localStorage.getItem('token') !== null) {
+            fetch("http://localhost:5000/api/users/verify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-access-token": localStorage.getItem('token')
+                },
+                body: JSON.stringify({token: localStorage.getItem('token')})
+            }).then((response) => {
+                if (response.ok) {
+                    console.log("good")
+                    navigate("/", {replace: true});
+                    return response.json();
+                }else{
+                    console.log("bad")
+                }
+            })
         }
     }, []);
+
     const handleSubmit = async (event) => {
         event.preventDefault();
         try {

@@ -143,5 +143,16 @@ module.exports = (db, jwt, secretKey) => {
         });
     });
 
+    router.post("/verify", (req, res) => {
+        const {token} = req.body;
+        jwt.verify(token, secretKey, (err, decoded) => {
+            if (err) {
+                console.error("Erreur lors de la vérification du token :", err);
+                return res.status(500).json({message: "Erreur lors de la vérification du token"});
+            }
+            res.json({success: true, decoded});
+        });
+    });
+
     return router;
 };
