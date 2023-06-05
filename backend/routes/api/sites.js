@@ -8,7 +8,7 @@ module.exports = (db) => {
     });
 
     router.get("/all", (req, res) => {
-        db.query("SELECT * FROM Dive_Site", (err, rows) => {
+        db.query("SELECT * FROM dive_site", (err, rows) => {
             if (err) throw err;
             res.json(rows);
         });

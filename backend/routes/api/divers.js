@@ -6,20 +6,20 @@ module.exports = (db) => {
     // GET /users
     router.get("/", (req, res) => {
         let rank = 0;
-        db.query("SELECT Diver_Qualifications FROM Diver WHERE Id_Diver = 103", (err, rows) => {
+        db.query("SELECT diver_qualification FROM diver WHERE id = e4ac9e31-7651-4911-b848-8230348cdbfd", (err, rows) => {
             if (err) throw err;
-            let DiverRank = rows[0].Diver_Qualifications;
+            let DiverRank = rows[0].diver_qualification;
 
-            db.query("SELECT npg_name FROM Diver_Qualification WHERE npg_ordre = " + DiverRank, (err, rows) => {
+            db.query("SELECT name FROM diver_qualification WHERE id = " + DiverRank, (err, rows) => {
                 if (err) throw err;
-                rank = rows[0].npg_name;
-                res.json(rows[0].npg_name);
+                rank = rows[0].name;
+                res.json(rows[0].name);
             });
         });
     });
 
     router.get("/all", (req, res) => {
-        db.query("SELECT * FROM Diver", (err, rows) => {
+        db.query("SELECT * FROM diver", (err, rows) => {
             if (err) throw err;
             res.json(rows);
         });
