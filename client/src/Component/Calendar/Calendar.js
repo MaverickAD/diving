@@ -1,6 +1,8 @@
 import React from "react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import "./calendar.css";
+import alertify from 'alertifyjs';
+import 'alertifyjs/build/css/alertify.css';
 import {
     Eventcalendar,
     getJson,
@@ -152,7 +154,7 @@ function Calendar() {
                     schedule: {
                         type: 'week',
                         startDay: 1,
-                        endDay: 5,
+                        endDay: 0,
                         startTime: '06:00',
                         endTime: '24:00',
                         timeCellStep: 120,
@@ -273,7 +275,7 @@ function Calendar() {
         setLocalisation(event.localisation);
         setDescription(event.description);
         setDate([event.start, event.end]);
-        setStatus(event.status || "busy");
+        setStatus(event.status || "free");
         setSelectedColor(event.color || "#32ACDF");
 
     }, []);
@@ -299,6 +301,10 @@ function Calendar() {
 
     const statusChange = React.useCallback((ev) => {
         setStatus(ev.target.value);
+        if (ev.target.value === "busy") {
+        console.log("busy")
+            setSelectedColor("#9B9D9E");
+        }
     }, []);
 
     const onDeleteClick = React.useCallback(() => {
@@ -313,10 +319,24 @@ function Calendar() {
 
     const onEventClick = React.useCallback(
         (args) => {
-            //console.log("couleur" + args.event.color);
-            //console.log("ceci est un popup")
+            const formattedDatestart = args.event.start.toLocaleDateString(); // Récupère la date au format "jj/mm/aaaa"
+            const formattedDateend = args.event.end.toLocaleDateString(); // Récupère la date au format "jj/mm/aaaa"
+            const formattedTimestart = args.event.start.toLocaleTimeString(); // Récupère l'heure au format "hh:mm:ss"
+            const formattedTimeend = args.event.end.toLocaleTimeString(); // Récupère l'heure au format "hh:mm:ss"
+            alertify.alert()
+                .setting({
+                    transition: 'zoom',
+                    'modal': false,
+                    'closable': false,
+                    'padding': 10,
+                    'invokeOnCloseOff': true,
+                    'pinnable': false,
+                    'label': 'Ok',
+                    'message': `Localisation : ${args.event.localisation} <br> Description : ${args.event.description}  <br> date début: ${formattedDatestart} ${formattedTimestart} <br> date fin : ${formattedDateend} ${formattedTimeend} <br> Status : ${args.event.status} `,
+                }).setHeader(` ${args.event.title} ` ).show()
+
             //penser à mettre un if admin
-            if (args.event.start && args.event.start < today && args.event.end < today ) {
+           /* if (args.event.start && args.event.start < today && args.event.end < today ) {
                 setEdit(false);
                 toast({
                     message: 'Can\'t change past event'
@@ -329,7 +349,7 @@ function Calendar() {
                 loadPopupForm(args.event);
                 setAnchor(args.domEvent.target);
                 setOpen(true);
-            }
+            }*/
         },
         [loadPopupForm]
     );
@@ -470,25 +490,11 @@ function Calendar() {
             });
         }
     }, []);
-/*
-    const renderScheduleEvent = React.useCallback((args) => {
-            return <div className="md-custom-event-cont" style={{borderLeft: '5px solid ' + args.event.color, background: args.event.color}}>
-                <div className="md-custom-event-wrapper">
-                    <div style={{background: args.event.color }} className="md-custom-event-category">{args.event.name}</div>
-                    <div className="md-custom-event-details">
-                        <div className="md-custom-event-title">{args.event.title}</div>
-                        <div className="md-custom-event-time">{args.event.date.start} - {args.event.date.end}</div>
-                    </div>
-                </div>
-            </div>
 
-    });
-*/
     return (
         <div>
             <Eventcalendar
                 renderHeader={customWithNavButtons}
-                //renderScheduleEvent={renderScheduleEvent}
                 height={750}
                 view={calView}
                 data={myEvents}
