@@ -37,24 +37,6 @@ function Register(props) {
     console.log(isSubmit);
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    fetch("http://localhost:5000/api/users/signup", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(register),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Success:", data);
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
-  };
-
   //Display the current date minus 16 years in MM/DD/YYYY format
   const todayMinus16Year = new Date();
   todayMinus16Year.setFullYear(todayMinus16Year.getFullYear() - 16);

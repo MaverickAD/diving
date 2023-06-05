@@ -1,44 +1,59 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 
 export default function Login() {
-  const [email, setEmail] = useState();
-  const [password, setPassword] = useState();
-  const [token, setToken] = useState();
-  const navigate = useNavigate();
-  useEffect(() => {
-    if (localStorage.getItem("token") !== null) {
-      navigate("/", { replace: true });
-    }
-  }, [navigate]);
+    const [email, setEmail] = useState();
+    const [password, setPassword] = useState();
+    const [token, setToken] = useState();
+    const navigate = useNavigate();
 
-  console.log(JSON.stringify({ email, password }));
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await fetch("http://localhost:5000/api/users/signin", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email, password }),
-      });
-      if (response.ok) {
-        const data = await response.json();
-        // Handle the data
-        setToken(data.token);
-        localStorage.setItem("token", data.token);
-        console.log("token : " + data.token + " success: " + data.success);
-        navigate("/", { replace: true });
-      } else {
-        // Handle the error
-        alert("L'email ou le mot de passe est incorrect");
-        throw new Error("Request failed with status: " + response.status);
-      }
-    } catch (error) {
-      // Handle any other errors
-      console.error(error);
-    }
+    useEffect(() => {
+        if (localStorage.getItem('token') !== null) {
+            fetch("http://localhost:5000/api/users/verify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-access-token": localStorage.getItem('token')
+                },
+                body: JSON.stringify({token: localStorage.getItem('token')})
+            }).then((response) => {
+                if (response.ok) {
+                    console.log("good")
+                    navigate("/", {replace: true});
+                    return response.json();
+                }else{
+                    console.log("bad")
+                }
+            })
+        }
+    }, []);
+
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        try {
+            const response = await fetch("http://localhost:5000/api/users/signin", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ email, password }),
+            });
+            if (response.ok) {
+                const data = await response.json();
+                // Handle the data
+                setToken(data.token);
+                localStorage.setItem("token", data.token);
+                console.log("token : " + data.token + " success: " + data.success );
+                navigate("/", {replace: true});
+            } else {
+                // Handle the error
+                alert("L'email ou le mot de passe est incorrect");
+                throw new Error('Request failed with status: ' + response.status);
+            }
+        } catch (error) {
+            // Handle any other errors
+            console.error(error);
+        }
 
     /*if(){
                 setToken(data.token);
@@ -50,29 +65,24 @@ export default function Login() {
             }*/
   };
 
-  console.log(token);
-
-  return (
-    <div className={"w-full"}>
-      <h1 className={"text-2xl font-bold mb-6 text-center"}>Login</h1>
-      <form
-        className={"w-full max-w-lg mx-auto bg-white p-8 rounded-md shadow-md"}
-        onSubmit={handleSubmit}
-      >
-        <div className={"mb-4"}>
-          <label className={"block text-gray-700 text-sm font-bold mb-2"}>
-            Email :
-          </label>
-          <input
-            type={"email"}
-            className={
-              "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-            }
-            onChange={(event) => {
-              setEmail(event.target.value);
-            }}
-          />
-        </div>
+    return (
+        <div className={"w-full"}>
+            <h1 className={"text-2xl font-bold mb-6 text-center"}>Login</h1>
+            <form className={"w-full max-w-lg mx-auto bg-white p-8 rounded-md shadow-md"} onSubmit={handleSubmit}>
+                <div className={"mb-4"}>
+                    <label className={"block text-gray-700 text-sm font-bold mb-2"}>
+                        Email :
+                    </label>
+                    <input
+                        type={"email"}
+                        className={
+                            "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
+                        }
+                        onChange={(event) => {
+                            setEmail(event.target.value);
+                        }}
+                    />
+                </div>
 
         <div className={"mb-4"}>
           <label className={"block text-gray-700 text-sm font-bold mb-2"}>

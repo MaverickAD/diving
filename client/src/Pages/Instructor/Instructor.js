@@ -1,10 +1,45 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "../../Component/Calendar/Calendar";
 import DiverManagement from "../../Component/DiverManagement/DiverManagement";
 import SiteManagement from "../../Component/SiteManagement/SiteManagement";
+import {useNavigate} from "react-router-dom";
+import alertify from 'alertifyjs';
+import 'alertifyjs/build/css/alertify.css';
 
 function Instructor(props) {
   const [pageSelected, setPageSelected] = useState(1);
+    const navigate = useNavigate();
+    useEffect(() => {
+        if (localStorage.getItem('token') !== null) {
+            fetch("http://localhost:5000/api/users/verify", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "x-access-token": localStorage.getItem('token')
+                },
+                body: JSON.stringify({token: localStorage.getItem('token')})
+            })
+                .then((response) => {
+                    if (response.ok) {
+                        return response.json(); // Convert the response to JSON
+                    } else {
+                        console.log("test");
+                        navigate("/login", {replace: true});
+                    }
+                })
+                .then(async (data) => {
+                    if(data.decoded.rank !== 2){
+                        await navigate("/", {replace: true});
+                        alertify.alert('Message', 'Ceci est une alerte.', function(){
+                            alertify.success('Ok');
+                        });
+                    }
+                })
+                .catch((error) => {
+                    console.log(error); // Handle any errors
+                });
+        }
+    }, []);
 
   return (
     <>

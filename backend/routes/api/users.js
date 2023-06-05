@@ -6,7 +6,7 @@ module.exports = (db, jwt, secretKey) => {
 
     // GET /users
     router.get("/", (req, res) => {
-        db.query("SELECT * FROM Application_User", (err, rows) => {
+        db.query("SELECT * FROM diver", (err, rows) => {
             if (err) throw err;
             res.json(rows);
         });
@@ -77,7 +77,7 @@ module.exports = (db, jwt, secretKey) => {
         }
 
         // Récupérer l'utilisateur depuis la base de données
-        const query = "SELECT * FROM Application_User WHERE Email = ?";
+        const query = "SELECT * FROM diver WHERE email = ?";
         db.query(query, [email], (err, results) => {
             if (err) {
                 console.error("Erreur lors de la récupération de l'utilisateur :", err);
@@ -106,7 +106,7 @@ module.exports = (db, jwt, secretKey) => {
                         return res.status(401).json({success: false, message: "Mot de passe incorrect"});
                     }
                     const query =
-                        "SELECT * FROM Application_User WHERE Email = ?;";
+                        "SELECT * FROM diver WHERE email = ?;";
                     db.query(query, [email], (err, results) => {
                         if (err) {
                             console.error(
@@ -140,6 +140,17 @@ module.exports = (db, jwt, secretKey) => {
                     });
                 });
             }
+        });
+    });
+
+    router.post("/verify", (req, res) => {
+        const {token} = req.body;
+        jwt.verify(token, secretKey, (err, decoded) => {
+            if (err) {
+                console.error("Erreur lors de la vérification du token :", err);
+                return res.status(500).json({message: "Erreur lors de la vérification du token"});
+            }
+            res.json({success: true, decoded});
         });
     });
 
