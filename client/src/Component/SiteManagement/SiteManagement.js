@@ -34,6 +34,7 @@ function SiteManagement(props) {
   useEffect(() => {
     getSitesDatas(setSites).then((data) => {
       setPagesNumber(Math.ceil(data.length / dataPerPage));
+      console.log(data);
     });
   }, []);
 
@@ -53,9 +54,9 @@ function SiteManagement(props) {
               setPagesNumber(
                 Math.ceil(
                   sites.filter((site) =>
-                    site.Site_Name.toLowerCase().includes(
-                      event.target.value.toLowerCase()
-                    )
+                    site.name
+                      .toLowerCase()
+                      .includes(event.target.value.toLowerCase())
                   ).length / dataPerPage
                 )
               );
@@ -156,7 +157,7 @@ function SiteManagement(props) {
           <tbody>
             {sites
               .filter((site) =>
-                site.Site_Name.toLowerCase().includes(search.toLowerCase())
+                site.name.toLowerCase().includes(search.toLowerCase())
               )
               .filter((site, index) => {
                 return (
@@ -164,33 +165,31 @@ function SiteManagement(props) {
                   index >= (currentPage - 1) * dataPerPage
                 );
               })
-              .map((site) => (
+              .map((site, index) => (
                 <tr
-                  className={
-                    "even:border-b even:bg-white odd:border-b odd:bg-neutral-100"
-                  }
-                  key={site.Id_Dive_Site}
+                  className={"border-b even:bg-white odd:bg-neutral-100"}
+                  key={index}
                 >
                   <td className="whitespace-nowrap w-9 px-1 py-2 text-center">
-                    {site.Id_Dive_Site}
+                    {index + 1}
                   </td>
                   <td className="whitespace-nowrap w-96 px-1 py-2 text-center">
-                    {site.Site_Name}
+                    {site.name}
                   </td>
                   <td className="whitespace-nowrap w-32 px-1 py-2 text-center">
-                    {site.Gps_Latitude}
+                    {site.latitude}
                   </td>
                   <td className="whitespace-nowrap w-32 px-1 py-2 text-center">
-                    {site.Gps_Longitude}
+                    {site.longitude}
                   </td>
                   <td className="whitespace-nowrap w-28 px-1 py-2 text-center">
-                    {site.Zip_Code}
+                    {site.zip_code}
                   </td>
                   <td className="whitespace-nowrap w-40 px-1 py-2 text-center">
-                    {site.City_Name}
+                    {site.city}
                   </td>
                   <td className="whitespace-nowrap w-32 px-1 py-2 text-center">
-                    {site.Country_Name}
+                    {site.country}
                   </td>
                   <td
                     className={

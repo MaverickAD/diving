@@ -7,17 +7,23 @@ function NavBar(props) {
       <nav>
         <ul className="flex space-x-4">
           <li>
-            <Link to={"/register"} className={"hover:text-gray-300"}>
+            <Link
+              to={"/register"}
+              className={"hover:text-light-text-secondary"}
+            >
               Register
             </Link>
           </li>
           <li>
-            <Link to={"/diver"} className={"hover:text-gray-300"}>
+            <Link to={"/diver"} className={"hover:text-light-text-secondary"}>
               Diver
             </Link>
           </li>
           <li>
-            <Link to={"/instructor"} className={"hover:text-gray-300"}>
+            <Link
+              to={"/instructor"}
+              className={"hover:text-light-text-secondary"}
+            >
               Instructor
             </Link>
           </li>

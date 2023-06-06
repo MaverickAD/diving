@@ -18,12 +18,15 @@ module.exports = (db) => {
         });
     });
 
-    router.get("/all", (req, res) => {
-        db.query("SELECT * FROM diver", (err, rows) => {
-            if (err) throw err;
-            res.json(rows);
-        });
-    });
+  router.get("/all", (req, res) => {
+    db.query(
+      "SELECT last_name, first_name, diver_qualification.name AS diver_qualification, instructor_qualification.name AS instructor_qualification, nitrox_qualification.name AS nitrox_qualification, license_number, license_expiration_date, medical_expiration_date FROM diver INNER JOIN diver_qualification ON diver.diver_qualification = diver_qualification.id INNER JOIN instructor_qualification ON diver.instructor_qualification = instructor_qualification.id INNER JOIN nitrox_qualification ON diver.nitrox_qualification = nitrox_qualification.id ORDER BY diver.diver_qualification, diver.instructor_qualification, diver.nitrox_qualification",
+      (err, rows) => {
+        if (err) throw err;
+        res.json(rows);
+      }
+    );
+  });
 
-    return router;
+  return router;
 };

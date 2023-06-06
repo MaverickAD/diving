@@ -21,10 +21,11 @@ function ModifyModal(props) {
   return (
     <>
       <button
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-bold uppercase rounded-full text-sm px-5 py-2.5 text-center"
+        className="text-white bg-lochmara-600 hover:bg-lochmara-700 focus:outline-none font-bold uppercase rounded-full text-sm px-5 py-2.5 text-center"
         type="button"
         onClick={() => {
           setShowModal(true);
+          console.log(props.info);
         }}
       >
         Modify
@@ -46,7 +47,7 @@ function ModifyModal(props) {
                       <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={props.info.Firstname}
+                        defaultValue={props.info.first_name}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -63,7 +64,7 @@ function ModifyModal(props) {
                       <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={props.info.Lastname}
+                        defaultValue={props.info.last_name}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -79,7 +80,7 @@ function ModifyModal(props) {
                       </label>
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={props.info.Diver_Qualifications}
+                        defaultValue={props.info.diver_qualification}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -113,7 +114,7 @@ function ModifyModal(props) {
                       </label>
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={props.info.Instructor_Qualification}
+                        defaultValue={props.info.instructor_qualification}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -135,7 +136,7 @@ function ModifyModal(props) {
                       </label>
                       <select
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={props.info.Nox_Level}
+                        defaultValue={props.info.nitrox_qualification}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -157,7 +158,7 @@ function ModifyModal(props) {
                       <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={props.info.License_Number}
+                        defaultValue={props.info.license_number}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -174,11 +175,10 @@ function ModifyModal(props) {
                       <input
                         type="date"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={new Date(
-                          props.info.License_Expiration_Date
-                        )
-                          .toISOString()
-                          .slice(0, 10)}
+                        defaultValue={props.info.license_expiration_date.slice(
+                          0,
+                          10
+                        )}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -195,11 +195,10 @@ function ModifyModal(props) {
                       <input
                         type="date"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-indigo-500"
-                        defaultValue={new Date(
-                          props.info.Medical_Certificate_Expiration_Date
-                        )
-                          .toISOString()
-                          .slice(0, 10)}
+                        defaultValue={props.info.medical_expiration_date.slice(
+                          0,
+                          10
+                        )}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({

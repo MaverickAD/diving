@@ -21,7 +21,7 @@ function ModalModifyInfo(props) {
   return (
     <>
       <button
-        className="text-white bg-blue-700 hover:bg-blue-800 focus:outline-none font-bold uppercase rounded-full text-sm px-5 py-2.5 text-center"
+        className="text-white bg-lochmara-600 hover:bg-lochmara-700 focus:outline-none font-bold uppercase rounded-full text-sm px-5 py-2.5 text-center"
         type="button"
         onClick={() => {
           setShowModal(true);
@@ -47,7 +47,7 @@ function ModalModifyInfo(props) {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required={true}
-                        defaultValue={props.info.Site_Name}
+                        defaultValue={props.info.name}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -65,7 +65,7 @@ function ModalModifyInfo(props) {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required={true}
-                        defaultValue={props.info.Gps_Latitude}
+                        defaultValue={props.info.latitude}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -83,7 +83,7 @@ function ModalModifyInfo(props) {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required={true}
-                        defaultValue={props.info.Gps_Longitude}
+                        defaultValue={props.info.longitude}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -95,54 +95,18 @@ function ModalModifyInfo(props) {
                     </div>
                     <div className="mb-4">
                       <label className="block mb-2 text-sm font-bold text-gray-700">
-                        Track Type
+                        Address
                       </label>
                       <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required={true}
-                        defaultValue={props.info.Track_Type}
+                        defaultValue={props.info.address}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
                             ...valuesModified,
                             Track_Type: event.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label className="block mb-2 text-sm font-bold text-gray-700">
-                        Track Number
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        required={true}
-                        defaultValue={props.info.Track_Number}
-                        disabled={!modifyInfo}
-                        onChange={(event) => {
-                          setValuesModified({
-                            ...valuesModified,
-                            Track_Number: event.target.value,
-                          });
-                        }}
-                      />
-                    </div>
-                    <div className="mb-4">
-                      <label className="block mb-2 text-sm font-bold text-gray-700">
-                        Track Name
-                      </label>
-                      <input
-                        type="text"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md"
-                        required={true}
-                        defaultValue={props.info.Track_Name}
-                        disabled={!modifyInfo}
-                        onChange={(event) => {
-                          setValuesModified({
-                            ...valuesModified,
-                            Track_Name: event.target.value,
                           });
                         }}
                       />
@@ -155,7 +119,7 @@ function ModalModifyInfo(props) {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required={true}
-                        defaultValue={props.info.Zip_Code}
+                        defaultValue={props.info.zip_code}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -173,7 +137,7 @@ function ModalModifyInfo(props) {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required={true}
-                        defaultValue={props.info.City_Name}
+                        defaultValue={props.info.city}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -191,7 +155,7 @@ function ModalModifyInfo(props) {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required={true}
-                        defaultValue={props.info.Country_Name}
+                        defaultValue={props.info.country}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -203,13 +167,13 @@ function ModalModifyInfo(props) {
                     </div>
                     <div className="mb-4">
                       <label className="block mb-2 text-sm font-bold text-gray-700">
-                        AdditionalAddress
+                        Additional Address
                       </label>
                       <input
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required={true}
-                        defaultValue={props.info.Additional_Address}
+                        defaultValue={props.info.additional_address}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -227,7 +191,7 @@ function ModalModifyInfo(props) {
                         type="text"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required={true}
-                        defaultValue={props.info.Tel_Number}
+                        defaultValue={props.info.tel}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
@@ -245,7 +209,7 @@ function ModalModifyInfo(props) {
                         type="url"
                         className="w-full px-3 py-2 border border-gray-300 rounded-md"
                         required={true}
-                        defaultValue={props.info.Information_URL}
+                        defaultValue={props.info.url}
                         disabled={!modifyInfo}
                         onChange={(event) => {
                           setValuesModified({
