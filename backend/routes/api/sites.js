@@ -14,5 +14,12 @@ module.exports = (db) => {
         });
     });
 
+    router.post("/all/:name", (req, res) => {
+        db.query("SELECT id FROM dive_site WHERE name = ?", [req.params.name], (err, rows) => {
+            if (err) throw err;
+            res.json(rows);
+        });
+    });
+
     return router;
 };
