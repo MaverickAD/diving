@@ -1,9 +1,10 @@
-import React, {useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import Calendar from "../../Component/Calendar/Calendar";
 import DiverManagement from "../../Component/DiverManagement/DiverManagement";
 import {useNavigate} from "react-router-dom";
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
+import AdminManagement from "../../Component/AdminManagement/AdminManagement";
 
 function Instructor(props) {
     const navigate = useNavigate();
@@ -96,24 +97,29 @@ function Instructor(props) {
                     </div>
                 </div>
 
-                <div className={"w-full bg-white mx-2 p-4 rounded-md shadow-md"}>
+                <div
+                    className={
+                        "w-full bg-white mx-2 p-4 rounded-md shadow-md dark:bg-neutral-700"
+                    }
+                >
                     {pageSelected === 1 ? (
-                        <DiverManagement/>
+                        <DiverManagement />
                     ) : pageSelected === 2 ? (
-                        <Calendar/>
+                        <Calendar />
                     ) : pageSelected === 3 ? (
                         <p>Page 3</p>
                     ) : pageSelected === 4 ? (
                         <p>Page 4</p>
                     ) : pageSelected === 5 ? (
-                        <p>Page 5</p>
+                        <SiteManagement />
                     ) : (
-                        <p>Page 6</p>
+                        <AdminManagement />
                     )}
                 </div>
             </div>
         </>
     );
+
 }
 
 export default Instructor;
