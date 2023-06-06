@@ -18,11 +18,8 @@ export default function Login() {
                 body: JSON.stringify({token: localStorage.getItem('token')})
             }).then((response) => {
                 if (response.ok) {
-                    console.log("good")
                     navigate("/", {replace: true});
                     return response.json();
-                }else{
-                    console.log("bad")
                 }
             })
         }
@@ -43,7 +40,6 @@ export default function Login() {
                 // Handle the data
                 setToken(data.token);
                 localStorage.setItem("token", data.token);
-                console.log("token : " + data.token + " success: " + data.success );
                 navigate("/", {replace: true});
             } else {
                 // Handle the error

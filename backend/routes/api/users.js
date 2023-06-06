@@ -112,15 +112,12 @@ module.exports = (db, jwt, secretKey) => {
                         let token;
                         switch (results[0].rank) {
                             case 2:
-                                console.log("Superadmin")
                                 token = jwt.sign({prenom: results[0].last_name, email: results[0].email, rank: 2}, secretKey, {expiresIn: '30s'});
                                 break;
                             case 1:
-                                console.log("Administrateur");
                                 token = jwt.sign({prenom: results[0].last_name, email: results[0].email, rank: 1}, secretKey, {expiresIn: '30s'});
                                 break;
                             case 0:
-                                console.log("Utilisateur normal");
                                 token = jwt.sign({prenom: results[0].last_name, email: results[0].email, rank: 0}, secretKey, {expiresIn: '30s'});
                                 break;
                             default:
@@ -136,7 +133,6 @@ module.exports = (db, jwt, secretKey) => {
 
     router.post("/verify", (req, res) => {
         const {token} = req.body;
-        console.log("Token :", req.body);
         jwt.verify(token, secretKey, (err, decoded) => {
             if (err) {
                 console.error("Erreur lors de la vérification du token :", err);

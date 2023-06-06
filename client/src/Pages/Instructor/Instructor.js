@@ -21,7 +21,6 @@ function Instructor(props) {
                     if (response.ok) {
                         return response.json(); // Convert the response to JSON
                     } else {
-                        console.log("test");
                         navigate("/login", {replace: true});
                     }
                 })
@@ -34,6 +33,8 @@ function Instructor(props) {
                 .catch((error) => {
                     console.log(error); // Handle any errors
                 });
+        }else{
+            navigate("/login")
         }
     }, []);
     const [pageSelected, setPageSelected] = React.useState(6);

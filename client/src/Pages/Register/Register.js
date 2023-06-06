@@ -39,7 +39,6 @@ function Register(props) {
     ) {
       setIsSubmit(true);
     }
-    console.log(isSubmit);
   };
 
   //Display the current date minus 16 years in MM/DD/YYYY format
@@ -61,7 +60,6 @@ function Register(props) {
             body: JSON.stringify(register),
             }).then((response) => response.json())
               .then((data) => {
-                console.log("Success:", data);
                 navigate("/", {replace: true});
               })
               .catch((error) => {
