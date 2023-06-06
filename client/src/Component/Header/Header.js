@@ -3,6 +3,9 @@ import { Link } from "react-router-dom";
 
 
 function Header(props) {
+    const [estConnecte, setEstConnecte] = useState(false);
+
+
     return (
         <header className="bg-gray-800 text-white p-4 mb-4">
             <div className="flex justify-between items-center">

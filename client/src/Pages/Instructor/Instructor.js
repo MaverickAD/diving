@@ -23,21 +23,20 @@ function Instructor(props) {
                     if (response.ok) {
                         return response.json(); // Convert the response to JSON
                     } else {
-                        console.log("test");
                         navigate("/login", {replace: true});
                     }
                 })
                 .then(async (data) => {
                     if(data.decoded.rank !== 2){
                         await navigate("/", {replace: true});
-                        alertify.alert('Message', 'Ceci est une alerte.', function(){
-                            alertify.success('Ok');
-                        });
+                        alertify.error('Accès Impossible !');
                     }
                 })
                 .catch((error) => {
                     console.log(error); // Handle any errors
                 });
+        }else{
+            navigate("/login")
         }
     }, []);
 
