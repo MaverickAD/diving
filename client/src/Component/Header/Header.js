@@ -1,11 +1,14 @@
 import React, {useEffect, useState} from "react";
 import {Link} from "react-router-dom";
+import alertify from "alertifyjs";
 
 
 function Header(props) {
-  const [estConnecte, setEstConnecte] = useState(false);
+    const [connected, setConnected] = useState(props.connected);
 
-
+    useEffect(() => {
+        setConnected(props.connected);
+    }, [props.connected]);
   return (
       <header className="bg-gray-800 text-white p-4 mb-4">
         <div className="flex justify-between items-center">
@@ -14,16 +17,33 @@ function Header(props) {
           </Link>
           <nav>
             <ul className="flex space-x-4 items-center">
-              <li>
-                <Link to={"/diver"} className={"hover:text-gray-300"}>
-                  Diver
-                </Link>
-              </li>
-              <li>
-                <Link to={"/instructor"} className={"hover:text-gray-300"}>
-                  Dive Director
-                </Link>
-              </li>
+              {connected ? (
+                  <React.Fragment>
+                    <li>
+                      <Link to={"/diver"} className={"hover:text-gray-300"}>
+                        Diver
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/instructor"} className={"hover:text-gray-300"}>
+                        Panel Admin
+                      </Link>
+                    </li>
+                  </React.Fragment>
+              ) : (
+                  <React.Fragment>
+                    <li>
+                      <Link to={"/login"} className={"hover:text-gray-300"}>
+                        Login
+                      </Link>
+                    </li>
+                    <li>
+                      <Link to={"/register"} className={"hover:text-gray-300"}>
+                        Register
+                      </Link>
+                    </li>
+                  </React.Fragment>
+              )}
             </ul>
           </nav>
         </div>

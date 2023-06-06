@@ -48,7 +48,7 @@ module.exports = (db, jwt, secretKey) => {
                             .json({message: "Erreur lors de l'inscription"});
                     }
                     // Générer un token d'authentification et envoyer la réponse
-                    let token = jwt.sign({prenom: first_name, email: email, rank: rank}, secretKey, {expiresIn: '30s'});
+                    let token = jwt.sign({timestamp: Date.now() + 30000, prenom: first_name, email: email, rank: rank}, secretKey, {expiresIn: '30s'});
 
                     res.json({message: "Inscription réussie", token: token, success: true});
                 }
@@ -112,13 +112,13 @@ module.exports = (db, jwt, secretKey) => {
                         let token;
                         switch (results[0].rank) {
                             case 2:
-                                token = jwt.sign({prenom: results[0].last_name, email: results[0].email, rank: 2}, secretKey, {expiresIn: '30s'});
+                                token = jwt.sign({timestamp: Date.now() + 30000, prenom: results[0].last_name, email: results[0].email, rank: 2}, secretKey, {expiresIn: '30s'});
                                 break;
                             case 1:
-                                token = jwt.sign({prenom: results[0].last_name, email: results[0].email, rank: 1}, secretKey, {expiresIn: '30s'});
+                                token = jwt.sign({timestamp: Date.now() + 30000, prenom: results[0].last_name, email: results[0].email, rank: 1}, secretKey, {expiresIn: '30s'});
                                 break;
                             case 0:
-                                token = jwt.sign({prenom: results[0].last_name, email: results[0].email, rank: 0}, secretKey, {expiresIn: '30s'});
+                                token = jwt.sign({timestamp: Date.now() + 30000, prenom: results[0].last_name, email: results[0].email, rank: 0}, secretKey, {expiresIn: '30s'});
                                 break;
                             default:
                                 console.log("Erreur lors de la récupération du rank");

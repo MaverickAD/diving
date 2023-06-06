@@ -16,6 +16,7 @@ let indexRouter = require('./routes/index');
 let apiSitesRouter = require('./routes/api/sites');
 let apiUsersRouter = require('./routes/api/users');
 let apiDiversRouter = require('./routes/api/divers');
+let apiDivesRouter = require('./routes/api/dives');
 
 const db = mysql.createConnection({
   host: "93.104.215.68",
@@ -48,6 +49,7 @@ app.use('/', indexRouter);
 app.use('/api/sites', apiSitesRouter(db));
 app.use('/api/users', apiUsersRouter(db, jwt, secretKey));
 app.use('/api/divers', apiDiversRouter(db));
+app.use('/api/dives', apiDivesRouter(db));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
