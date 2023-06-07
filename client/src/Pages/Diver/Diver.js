@@ -1,6 +1,7 @@
 import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import DiverInfo from "../../Component/DiverInfo/DiverInfo";
+import DiverDivingAvailable from "../../Component/DiverDivingAvailable/DiverDivingAvailable";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 
@@ -75,7 +76,7 @@ function Diver(props) {
                         }`}
                         onClick={() => setPageSelected(4)}
                     >
-                        <p>Plongées disponnibles</p>
+                        <p>Plongées disponibles</p>
                     </div>
                 </div>
 
@@ -87,7 +88,7 @@ function Diver(props) {
                     ) : pageSelected === 3 ? (
                         <p>Page 3</p>
                     ) : (
-                        <p>Page 4</p>
+                        <DiverDivingAvailable/>
                     )}
                 </div>
             </div>

@@ -2,29 +2,34 @@ import React from "react";
 import "@mobiscroll/react/dist/css/mobiscroll.min.css";
 import "./calendar.css";
 import {
-  Eventcalendar,
-  getJson,
-  setOptions,
+  Button,
   CalendarNav,
-  SegmentedGroup,
-  SegmentedItem,
+  CalendarNext,
   CalendarPrev,
   CalendarToday,
-  CalendarNext,
+  Datepicker,
+  Eventcalendar,
+  getJson,
+  Input,
   localeFr,
   Popup,
-  Button,
-  Input,
-  Textarea,
-  Datepicker,
-  toast,
+  SegmentedGroup,
+  SegmentedItem,
+  setOptions,
   snackbar,
+  Textarea,
+  toast,
 } from '@mobiscroll/react';
+
+const toggleTheme = () => {
+  // SQL request to change the theme
+  return 'light';
+};
 
 setOptions({
   locale: localeFr,
   theme: 'ios',
-  themeVariant: 'light'
+  themeVariant: toggleTheme,
 });
 
 const now = new Date();
@@ -39,6 +44,22 @@ const responsivePopup = {
     touchUi: false,
   },
 };
+
+async function getLocations() {
+  try {
+    const response = await fetch("http://localhost:5000/api/sites/all");
+    if (response.ok) {
+      const data = await response.json();
+      return data;
+    } else {
+      console.log("Erreur :", response.status);
+      throw new Error("Erreur lors de la requête");
+    }
+  } catch (error) {
+    console.log(error);
+    throw error;
+  }
+}
 
 function Calendar() {
   const [view, setView] = React.useState('month');
@@ -60,6 +81,7 @@ function Calendar() {
   const [popupEventListInscription, setListInscription] = React.useState([]);
   const [popupEventStatus, setStatus] = React.useState("free");
   const [isOpen, setOpen] = React.useState(false);
+  const [locations, setLocations] = React.useState([]);
 
   const myInvalid = [{
     recurring: {
@@ -73,6 +95,13 @@ function Calendar() {
 
 
   React.useEffect(() => {
+    getLocations().then((data) => {
+      let locationsTab = [];
+      data.forEach((location) => {
+        locationsTab.push(location.name);
+      });
+      setLocations(locationsTab);
+    });
     getJson('', (events) => {
       setListInscription(events.inscription);
       for (const event of events) {
@@ -170,7 +199,35 @@ function Calendar() {
     </React.Fragment>;
   }
 
-  const saveEvent = React.useCallback(() => {
+  const getSiteId = async (localisation) => {
+    try {
+      const response = await fetch(`http://localhost:5000/api/sites/all/${localisation}`,
+          {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            }
+          });
+      if (response.ok) {
+        const data = await response.json();
+        return data[0].id;
+      } else {
+        console.log('Error getting site ID:', response.status);
+        return null;
+      }
+    } catch (error) {
+      console.log('Error getting site ID:', error);
+      return null;
+    }
+  };
+
+  const saveEvent = React.useCallback(async () => {
+    const siteId = await getSiteId(popupEventLocalisation);
+    if (!siteId) {
+      console.log('Invalid site ID');
+      return;
+    }
+
     const newEvent = {
       id: tempEvent.id,
       title: popupEventTitle,
@@ -181,7 +238,16 @@ function Calendar() {
       inscription: popupEventListInscription,
       status: popupEventStatus,
     };
+
+   // console.log("Variables: \n " + popupEventTitle + "\n" + popupEventLocalisation + "\n" + popupEventDescription + "\n" + popupEventDate[0] + "\n" + popupEventDate[1] + "\n" + popupEventListInscription + "\n" + popupEventStatus);
+    let date1 = new Date(Date.parse(popupEventDate[0]));
+    let formatedDate1 = `${date1.getFullYear()}-${String(date1.getMonth() + 1).padStart(2, '0')}-${String(date1.getDate()).padStart(2, '0')} ${date1.getHours()}:${date1.getMinutes()}:${date1.getSeconds()}`
+    let date2 = new Date(Date.parse(popupEventDate[1]));
+    let formatedDate2 = `${date2.getFullYear()}-${String(date2.getMonth() + 1).padStart(2, '0')}-${String(date2.getDate()).padStart(2, '0')} ${date2.getHours()}:${date2.getMinutes()}:${date2.getSeconds()}`
+
+
     if (isEdit) {
+      console.log("2");
       // update the event in the list
       const index = myEvents.findIndex((x) => x.id === tempEvent.id);
       const newEventList = [...myEvents];
@@ -191,10 +257,41 @@ function Calendar() {
       // here you can update the event in your storage as well
       // ...
     } else {
-      // add the new event to the list
+      // On ajoute à la base de données les infos de l'évènement
+      try {
+        const response = await fetch('http://localhost:5000/api/dives/add', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: popupEventTitle,
+            dive_site: siteId,
+            comment: popupEventDescription,
+            date_begin: formatedDate1,
+            date_end: formatedDate2,
+            status: 1,
+            surface_security: '',
+            diver_price: 0,
+            instructor_price: 0,
+            place_number: 10,
+            registered_place: 0,
+            max_ppo2: 2,
+
+          }),
+        });
+
+        if (response.ok) {
+          // Event saved successfully
+          console.log('Event saved:', newEvent);
+        } else {
+          // Error while saving event
+          console.log('Error saving event:', response.status);
+        }
+      } catch (error) {
+        console.log('Error saving event:', error);
+      }
       setMyEvents([...myEvents, newEvent]);
-      // here you can add the event to your storage as well
-      // ...
     }
     setSelectedDate(popupEventDate[0]);
     // close the popup
@@ -338,7 +435,7 @@ function Calendar() {
         setTempEvent(args.event);
         // fill popup form with event data
         loadPopupForm(args.event);
-        setAnchor(args.target);
+        setAnchor(args.domEvent.target);
         // open the popup
         setOpen(true);
       },
@@ -476,16 +573,22 @@ function Calendar() {
         >
           <div className="mbsc-form-group">
             <Input label="Title" value={popupEventTitle} onChange={titleChange}/>
-
-            <Input label="Location" value={popupEventLocalisation} onChange={localisationChange}  />
-
+            <div className="bg-white-500 text-center ">
+              <select className="border-2 m-1 text-center" value={popupEventLocalisation} onChange={localisationChange}>
+               <option value="">Sélectionnez une localisation</option>
+                {locations.map((location, index) => (
+                    <option key={index} value={location}>
+                      {location}
+                    </option>
+                ))}
+              </select>
+            </div>
             <Textarea
                 label="Description"
                 value={popupEventDescription}
                 onChange={descriptionChange}
             />
           </div>
-
           <div className="mbsc-form-group">
             <Input ref={startRef} label="Starts"/>
             <Input ref={endRef} label="Ends"/>
