@@ -5,6 +5,7 @@ import {useNavigate} from "react-router-dom";
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import AdminManagement from "../../Component/AdminManagement/AdminManagement";
+import SiteManagement from "../../Component/SiteManagement/SiteManagement";
 
 function Instructor(props) {
     const navigate = useNavigate();
