@@ -1,11 +1,15 @@
-import React, {useState} from "react";
-import { Link } from "react-router-dom";
+import React, {useEffect, useState} from "react";
+import {Link} from "react-router-dom";
+import alertify from "alertifyjs";
 import ToggleTheme from "../ToggleTheme/ToggleTheme";
+
 
 function Header(props) {
     const [estConnecte, setEstConnecte] = useState(false);
 
-
+    useEffect(() => {
+        setConnected(props.connected);
+    }, [props.connected]);
   return (
     <header className="bg-primary text-header-footer-text p-4 mb-4">
       <div className="flex justify-between items-center">

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import ModifyModal from "./ModalModify/ModifyModal";
+import AdminModal from "./AdminModal/AdminModal";
 
-async function getDiversDatas(setDivers) {
+async function getAdminsDatas(setAdmins) {
   try {
-    const response = await fetch("http://localhost:5000/api/divers/all", {
+    const response = await fetch("http://localhost:5000/api/divers/admin", {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -12,7 +12,7 @@ async function getDiversDatas(setDivers) {
     if (response.ok) {
       const data = await response.json();
       // Handle the data
-      setDivers(data);
+      setAdmins(data);
       return data;
     } else {
       // Handle the error
@@ -23,8 +23,8 @@ async function getDiversDatas(setDivers) {
     console.error(error);
   }
 }
-function DiverManagement(props) {
-  const [divers, setDivers] = useState([]);
+function AdminManagement(props) {
+  const [admins, setAdmins] = useState([]);
   const [search, setSearch] = useState({
     firstname: "",
     lastname: "",
@@ -33,16 +33,15 @@ function DiverManagement(props) {
   const dataPerPage = 10;
   const [pagesNumber, setPagesNumber] = useState(1);
   useEffect(() => {
-    getDiversDatas(setDivers).then((data) => {
+    getAdminsDatas(setAdmins).then((data) => {
       setPagesNumber(Math.ceil(data.length / dataPerPage));
       console.log(data);
     });
   }, []);
-
   return (
-    <div className={""}>
-      <h2 className={"text-light-text text-xl dark:text-white font-bold mb-6"}>
-        Diver Management
+    <div>
+      <h2 className="text-light-text text-xl dark:text-dark-text font-bold mb-6">
+        Admin Management
       </h2>
       <div className="flex justify-between items-center mb-4">
         <div className={"h-full space-x-2"}>
@@ -60,8 +59,8 @@ function DiverManagement(props) {
               setSearch({ ...search, firstname: event.target.value });
               setPagesNumber(
                 Math.ceil(
-                  divers.filter((diver) =>
-                    diver.first_name
+                  admins.filter((admin) =>
+                    admin.first_name
                       .toLowerCase()
                       .includes(event.target.value.toLowerCase())
                   ).length / dataPerPage
@@ -83,8 +82,8 @@ function DiverManagement(props) {
               setSearch({ ...search, lastname: event.target.value });
               setPagesNumber(
                 Math.ceil(
-                  divers.filter((diver) =>
-                    diver.last_name
+                  admins.filter((admin) =>
+                    admin.last_name
                       .toLowerCase()
                       .includes(event.target.value.toLowerCase())
                   ).length / dataPerPage
@@ -168,7 +167,7 @@ function DiverManagement(props) {
         </div>
       </div>
 
-      {divers.length === 0 ? (
+      {admins.length === 0 ? (
         <p>Loading</p>
       ) : (
         <table
@@ -197,17 +196,17 @@ function DiverManagement(props) {
             </tr>
           </thead>
           <tbody>
-            {divers
+            {admins
               .filter(
-                (diver) =>
-                  diver.first_name
+                (admin) =>
+                  admin.first_name
                     .toLowerCase()
                     .includes(search.firstname.toLowerCase()) &&
-                  diver.last_name
+                  admin.last_name
                     .toLowerCase()
                     .includes(search.lastname.toLowerCase())
               )
-              .filter((diver, index) => {
+              .filter((admin, index) => {
                 if (currentPage === 1) {
                   return index < dataPerPage;
                 } else if (currentPage === 2) {
@@ -219,7 +218,7 @@ function DiverManagement(props) {
                   );
                 }
               })
-              .map((diver, index) => (
+              .map((admin, index) => (
                 <tr
                   className={
                     "border-b even:bg-white even:dark:border-neutral-500 even:dark:bg-neutral-600 odd:bg-neutral-100 dark:odd:border-neutral-500 odd:dark:bg-neutral-700"
@@ -230,45 +229,45 @@ function DiverManagement(props) {
                     {index + 1}
                   </td>
                   <td className={"whitespace-nowrap w-28 px-1 py-2"}>
-                    {diver.first_name}
+                    {admin.first_name}
                   </td>
                   <td className={"whitespace-nowrap w-28 px-1 py-2"}>
-                    {diver.last_name}
+                    {admin.last_name}
                   </td>
                   <td className={"whitespace-nowrap w-28 px-1 py-2"}>
-                    {diver.diver_qualification}
+                    {admin.diver_qualification}
                   </td>
                   <td className={"whitespace-nowrap w-28 px-1 py-2"}>
-                    {diver.instructor_qualification}
+                    {admin.instructor_qualification}
                   </td>
                   <td className={"whitespace-nowrap w-28 px-1 py-2"}>
-                    {diver.nitrox_qualification}
+                    {admin.nitrox_qualification}
                   </td>
                   <td className={"whitespace-nowrap w-28 px-1 py-2"}>
-                    {diver.license_number}
+                    {admin.license_number}
                   </td>
                   <td className={"whitespace-nowrap w-28 px-1 py-2"}>
-                    {new Date(diver.license_expiration_date).getUTCDate() +
+                    {new Date(admin.license_expiration_date).getUTCDate() +
                       "/" +
-                      (new Date(diver.license_expiration_date).getUTCMonth() +
+                      (new Date(admin.license_expiration_date).getUTCMonth() +
                         1) +
                       "/" +
-                      new Date(diver.license_expiration_date).getUTCFullYear()}
+                      new Date(admin.license_expiration_date).getUTCFullYear()}
                   </td>
                   <td className={"whitespace-nowrap w-32 px-1 py-2"}>
-                    {new Date(diver.medical_expiration_date).getUTCDate() +
+                    {new Date(admin.medical_expiration_date).getUTCDate() +
                       "/" +
-                      (new Date(diver.medical_expiration_date).getUTCMonth() +
+                      (new Date(admin.medical_expiration_date).getUTCMonth() +
                         1) +
                       "/" +
-                      new Date(diver.medical_expiration_date).getUTCFullYear()}
+                      new Date(admin.medical_expiration_date).getUTCFullYear()}
                   </td>
                   <td
                     className={
                       "whitespace-nowrap px-1 py-2 flex flex-col items-center"
                     }
                   >
-                    <ModifyModal info={diver} />
+                    <AdminModal info={admin} />
                   </td>
                 </tr>
               ))}
@@ -279,4 +278,4 @@ function DiverManagement(props) {
   );
 }
 
-export default DiverManagement;
+export default AdminManagement;
