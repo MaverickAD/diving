@@ -35,7 +35,6 @@ function AdminManagement(props) {
   useEffect(() => {
     getAdminsDatas(setAdmins).then((data) => {
       setPagesNumber(Math.ceil(data.length / dataPerPage));
-      console.log(data);
     });
   }, []);
   return (
