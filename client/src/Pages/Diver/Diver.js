@@ -2,6 +2,7 @@ import React, {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
 import DiverInfo from "../../Component/DiverInfo/DiverInfo";
 import DiverDivingAvailable from "../../Component/DiverDivingAvailable/DiverDivingAvailable";
+import DiverDivingPlanned from "../../Component/DiverDivingPlanned/DiverDivingPlanned";
 import alertify from "alertifyjs";
 import "alertifyjs/build/css/alertify.css";
 
@@ -86,7 +87,7 @@ function Diver(props) {
                     ) : pageSelected === 2 ? (
                         <p>Page 2</p>
                     ) : pageSelected === 3 ? (
-                        <p>Page 3</p>
+                        <DiverDivingPlanned/>
                     ) : (
                         <DiverDivingAvailable/>
                     )}
