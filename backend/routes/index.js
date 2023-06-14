@@ -1,8 +1,9 @@
-let express = require('express');
+let express = require("express");
 let router = express.Router();
 
 /* GET home page. */
-router.get('/', function(req, res, next) {
+router.get("/", function (req, res, next) {
+  res.send("API");
 });
 
 module.exports = router;
