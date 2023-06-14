@@ -21,6 +21,7 @@ import { appointments, resourcesData } from './data-test/resources';
 export default class Calendar extends React.PureComponent {
     constructor(props) {
         super(props);
+
         this.state = {
             data: appointments,
             resources: [

@@ -48,7 +48,7 @@ function App(props) {
           <Route path={"/login"} element={<Login />} />
           <Route path={"/register"} element={<Register />} />
 
-          <Route exact path={"/diver"} element={<Diver userId={userId} />} />
+          <Route exact path={"/diver"} element={<Diver userId={userId} setUserId={setUserId} />} />
           <Route path={"/diver/:page"} element={<Diver userId={userId} />} />
           <Route
             exact

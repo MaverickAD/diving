@@ -199,7 +199,6 @@ module.exports = (db, jwt, secretKey) => {
           let token = jwt.sign(
             {
               id: results[0].id,
-              id: results[0].id,
               timestamp: Date.now() + 30000,
               prenom: first_name,
               email: email,
