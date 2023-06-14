@@ -18,22 +18,22 @@ import {
 import { owners } from './data-test/tasks';
 import { appointments, resourcesData } from './data-test/resources';
 
-export default class Demo extends React.PureComponent {
-    constructor(props) {
-        super(props);
-        this.state = {
-            data: appointments,
-            resources: [
+function Calendar(){
+    return (
+        <Scheduler
+            view="month"
+            events={[
                 {
-                    fieldName: 'roomId',
-                    title: 'Room',
-                    instances: resourcesData,
+                    event_id: 1,
+                    title: "Event 1",
+                    start: new Date("2021/5/2 09:30"),
+                    end: new Date("2021/5/2 10:30"),
                 },
                 {
-                    fieldName: 'members',
-                    title: 'Members',
-                    instances: owners,
-                    allowMultiple: true,
+                    event_id: 2,
+                    title: "Event 2",
+                    start: new Date("2021/5/4 10:00"),
+                    end: new Date("2021/5/4 11:00"),
                 },
             ],
             selectedEventMembers: [],
@@ -242,3 +242,5 @@ export default class Demo extends React.PureComponent {
         );
     }
 }
+
+export default Calendar;
