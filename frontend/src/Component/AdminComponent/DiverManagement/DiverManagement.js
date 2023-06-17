@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ModalDiverManagement from "./ModalDiverManagement";
 import Pagination from "../../Pagination/Pagination";
+import useVerifyToken from "../../../Hooks/useVerifyToken";
 
 function DiverManagement(props) {
   const [divers, setDivers] = useState([]);
@@ -9,6 +10,8 @@ function DiverManagement(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const dataPerPage = 10;
   const [pagesNumber, setPagesNumber] = useState(1);
+
+  useVerifyToken("admin");
 
   useEffect(() => {
     axios

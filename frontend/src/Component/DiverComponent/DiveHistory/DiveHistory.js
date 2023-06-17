@@ -6,9 +6,9 @@ function DiveHistory(props) {
   const [diveHistory, setDiveHistory] = useState([]);
 
   useEffect(() => {
-    if (props.userId) {
+    if (props.token.id) {
       axios
-        .get("/api/dives/history/" + props.userId)
+        .get("/api/dives/history/" + props.token.id)
         .then((response) => {
           setDiveHistory(response.data);
           console.log(response.data);
@@ -17,7 +17,7 @@ function DiveHistory(props) {
           console.log(error);
         });
     }
-  }, [props.userId]);
+  }, [props.token.id]);
 
   return (
     <>
@@ -51,6 +51,11 @@ function DiveHistory(props) {
                 {`${new Date(dive.date_begin).getHours()}:${new Date(
                   dive.date_begin
                 ).getMinutes()}`}
+              </p>
+              <p className={"mb-4 underline"}>
+                <a href={dive.url} target={"_blank"}>
+                  Google Maps Link
+                </a>
               </p>
             </div>
           ))}

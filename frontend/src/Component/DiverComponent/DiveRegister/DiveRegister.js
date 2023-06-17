@@ -6,9 +6,9 @@ function DiveRegister(props) {
   const [diveRegister, setDiveRegister] = useState([]);
 
   useEffect(() => {
-    if (props.userId) {
+    if (props.token.id) {
       axios
-        .get("/api/dives/register/" + props.userId)
+        .get("/api/dives/register/" + props.token.id)
         .then((res) => {
           setDiveRegister(res.data);
           console.log(res.data);
@@ -17,12 +17,12 @@ function DiveRegister(props) {
           console.log(err);
         });
     }
-  }, [props.userId]);
+  }, [props.token.id]);
 
   const Unregister = (event, diveId) => {
     event.preventDefault();
     axios
-      .delete("/api/dives/unregister/" + props.userId + "/" + diveId)
+      .delete("/api/dives/unregister/" + props.token.id + "/" + diveId)
       .then((res) => {
         console.log(res.data);
         window.location.reload();
@@ -66,6 +66,11 @@ function DiveRegister(props) {
                 {`${new Date(dive.date_begin).getHours()}:${new Date(
                   dive.date_begin
                 ).getMinutes()}`}
+              </p>
+              <p className={"mb-4 underline"}>
+                <a href={dive.url} target={"_blank"}>
+                  Google Maps Link
+                </a>
               </p>
               <button
                 className={

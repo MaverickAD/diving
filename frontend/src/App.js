@@ -10,7 +10,7 @@ import Diver from "./Pages/Diver";
 import axios from "axios";
 
 function App(props) {
-  const [userId, setUserId] = useState(null);
+  const [tokenDecoded, setTokenDecoded] = useState({});
 
   useEffect(() => {
     if (localStorage.getItem("token") !== null) {
@@ -29,7 +29,7 @@ function App(props) {
         )
         .then((response) => {
           if (response.status === 200) {
-            setUserId(response.data.decoded.id);
+            setTokenDecoded(response.data.decoded);
           }
         })
         .catch((error) => {
@@ -40,7 +40,7 @@ function App(props) {
 
   return (
     <div className={"bg-neutral-200 flex flex-col min-h-screen "}>
-      <Header userId={userId} />
+      <Header tokenId={tokenDecoded.id} />
       <main className={"flex flex-grow"}>
         <Routes>
           <Route path={"/"} element={<Home />} />
@@ -48,17 +48,24 @@ function App(props) {
           <Route path={"/login"} element={<Login />} />
           <Route path={"/register"} element={<Register />} />
 
-          <Route exact path={"/diver"} element={<Diver userId={userId} setUserId={setUserId} />} />
-          <Route path={"/diver/:page"} element={<Diver userId={userId} />} />
           <Route
             exact
-            path={"/instructor"}
-            element={<Instructor userId={userId} />}
+            path={"/diver"}
+            element={<Diver token={tokenDecoded} />}
           />
           <Route
-            path={"/instructor/:page"}
-            element={<Instructor userId={userId} />}
+            path={"/diver/:page"}
+            element={<Diver token={tokenDecoded} />}
           />
+          {/*<Route*/}
+          {/*  exact*/}
+          {/*  path={"/instructor"}*/}
+          {/*  element={<Instructor token={tokenDecoded} />}*/}
+          {/*/>*/}
+          {/*<Route*/}
+          {/*  path={"/instructor/:page"}*/}
+          {/*  element={<Instructor token={tokenDecoded} />}*/}
+          {/*/>*/}
 
           <Route path={"*"} element={<h1>404</h1>} />
         </Routes>

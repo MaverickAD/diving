@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import Loader from "../../Loader/Loader";
+import Card from "./Card";
 
 function DiveAvailable(props) {
   const [diveAvailable, setDiveAvailable] = useState([]);
 
   useEffect(() => {
-    if (props.userId) {
+    if (props.token.id) {
       axios
-        .get("/api/dives/available/" + props.userId)
+        .get("/api/dives/available/" + props.token.id)
         .then((res) => {
           setDiveAvailable(res.data);
           console.log(res.data);
@@ -17,20 +18,7 @@ function DiveAvailable(props) {
           console.log(err);
         });
     }
-  }, [props.userId]);
-
-  const HandleRegister = (event, diveId) => {
-    event.preventDefault();
-    axios
-      .post("/api/dives/register/" + props.userId + "/" + diveId)
-      .then((res) => {
-        console.log(res.data);
-        window.location.reload();
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
+  }, [props.token.id]);
 
   return (
     <>
@@ -42,44 +30,7 @@ function DiveAvailable(props) {
       ) : (
         <div className={"w-full grid grid-cols-3 gap-4"}>
           {diveAvailable.map((dive, index) => (
-            <div
-              key={index}
-              className={
-                "text-light-text border hover:border-accent rounded-md hover:shadow-md p-4"
-              }
-            >
-              <h3 className={"text-lg font-bold text-center mb-4"}>
-                {dive.name}
-              </h3>
-              <p className={"mb-4"}>Location : {dive.location}</p>
-              <p className={"mb-4"}>Comment : {dive.comment}</p>
-              <p className={"mb-4"}>
-                Date :{" "}
-                {new Intl.DateTimeFormat("en-US", {
-                  year: "numeric",
-                  month: "numeric",
-                  day: "numeric",
-                }).format(new Date(dive.date_begin))}
-              </p>
-              <p className={"mb-4"}>
-                Time :{" "}
-                {`${new Date(dive.date_begin).getHours()}:${new Date(
-                  dive.date_begin
-                ).getMinutes()}`}
-              </p>
-              <p className={"mb-4"}>Price : {dive.diver_price}€</p>
-              <p className={"mb-4"}>
-                Places Available : {dive.place_number - dive.registered_place}
-              </p>
-              <button
-                className={
-                  "bg-primary hover:bg-accent text-white text-center text-sm font-bold uppercase rounded-full px-5 py-2.5"
-                }
-                onClick={(event) => HandleRegister(event, dive.id)}
-              >
-                Register Now
-              </button>
-            </div>
+            <Card key={index} diver={props.token} dive={dive} />
           ))}
         </div>
       )}

@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import DiveAvailable from "../Component/DiverComponent/DiveAvailable/DiveAvailable";
 import DiveHistory from "../Component/DiverComponent/DiveHistory/DiveHistory";
@@ -14,28 +14,28 @@ function Diver(props) {
   useEffect(() => {
     if (localStorage.getItem("token") !== null) {
       axios
-          .post(
-              "http://localhost:5000/api/users/verify",
-              {
-                token: localStorage.getItem("token"),
-              },
-              {
-                headers: {
-                  "Content-Type": "application/json",
-                  "x-access-token": localStorage.getItem("token"),
-                },
-              }
-          )
-          .then((response) => {
-            if (response.status === 200) {
-            }else{
-              navigate("/login");
-            }
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-    }else{
+        .post(
+          "http://localhost:5000/api/users/verify",
+          {
+            token: localStorage.getItem("token"),
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              "x-access-token": localStorage.getItem("token"),
+            },
+          }
+        )
+        .then((response) => {
+          if (response.status === 200) {
+          } else {
+            navigate("/login");
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
       navigate("/login");
     }
   }, []);
@@ -94,15 +94,15 @@ function Diver(props) {
 
       <div className={"w-full bg-white mx-2 p-4 rounded-md shadow-md"}>
         {pageSelected === 1 || page === "me" ? (
-          <Information userId={props.userId} />
+          <Information token={props.token} />
         ) : pageSelected === 2 || page === "history" ? (
-          <DiveHistory userId={props.userId} />
+          <DiveHistory token={props.token} />
         ) : pageSelected === 3 || page === "registered" ? (
-          <DiveRegister userId={props.userId} />
+          <DiveRegister token={props.token} />
         ) : pageSelected === 4 || page === "available" ? (
-          <DiveAvailable userId={props.userId} />
+          <DiveAvailable token={props.token} />
         ) : (
-          <Information userId={props.userId} />
+          <Information token={props.token} />
         )}
       </div>
     </div>
