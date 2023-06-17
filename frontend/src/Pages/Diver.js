@@ -38,7 +38,7 @@ function Diver(props) {
     } else {
       navigate("/login");
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <div className={"flex w-full"}>

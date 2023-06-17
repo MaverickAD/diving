@@ -39,7 +39,7 @@ function App(props) {
   }, []);
 
   return (
-    <div className={"bg-neutral-200 flex flex-col min-h-screen "}>
+    <div className={"bg-neutral-200 flex-col min-h-screen "}>
       <Header tokenId={tokenDecoded.id} />
       <main className={"flex flex-grow"}>
         <Routes>
@@ -57,15 +57,15 @@ function App(props) {
             path={"/diver/:page"}
             element={<Diver token={tokenDecoded} />}
           />
-          {/*<Route*/}
-          {/*  exact*/}
-          {/*  path={"/instructor"}*/}
-          {/*  element={<Instructor token={tokenDecoded} />}*/}
-          {/*/>*/}
-          {/*<Route*/}
-          {/*  path={"/instructor/:page"}*/}
-          {/*  element={<Instructor token={tokenDecoded} />}*/}
-          {/*/>*/}
+          <Route
+            exact
+            path={"/instructor"}
+            element={<Instructor token={tokenDecoded} />}
+          />
+          <Route
+            path={"/instructor/:page"}
+            element={<Instructor token={tokenDecoded} />}
+          />
 
           <Route path={"*"} element={<h1>404</h1>} />
         </Routes>

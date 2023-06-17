@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import AdminManagement from "../Component/SuperAdminComponent/AdminManagement/AdminManagement";
 import Calendar from "../Component/AdminComponent/Calendar/Calendar";
@@ -6,7 +6,6 @@ import DiveManagement from "../Component/AdminComponent/DiveManagement/DiveManag
 import DiverManagement from "../Component/AdminComponent/DiverManagement/DiverManagement";
 import DiveSiteManagement from "../Component/SuperAdminComponent/DiveSiteManagement/DiveSiteManagement";
 import History from "../Component/AdminComponent/History/History";
-import axios from "axios";
 import useVerifyToken from "../Hooks/useVerifyToken";
 
 function Instructor(props) {

@@ -30,7 +30,7 @@ function Header(props) {
               </Link>
             </li>
             <li>
-              {props.tokenId === null ? (
+              {props.tokenId === null || props.tokenId === undefined ? (
                 <div className={"w-48 flex justify-between"}>
                   <LoginButton />
                   <RegisterButton />

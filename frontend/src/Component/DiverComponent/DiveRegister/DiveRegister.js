@@ -76,7 +76,7 @@ function DiveRegister(props) {
                 className={
                   "bg-red-600 hover:bg-red-700 text-white text-center text-sm font-bold uppercase rounded-full px-5 py-2.5"
                 }
-                onClick={(event) => Unregister(event, dive.dive_team_id)}
+                onClick={(event) => Unregister(event, dive.id)}
               >
                 Unregister
               </button>
