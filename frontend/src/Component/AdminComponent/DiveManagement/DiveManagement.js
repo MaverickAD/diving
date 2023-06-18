@@ -3,6 +3,7 @@ import Pagination from "../../Pagination/Pagination";
 import axios from "axios";
 import ModalDiveManagement from "./ModalDiveManagement";
 import useVerifyToken from "../../../Hooks/useVerifyToken";
+import DownloadButton from "../DownloadButton/DownloadButton";
 
 function DiveManagement(props) {
   const [openDives, setOpenDives] = useState([]);
@@ -55,17 +56,18 @@ function DiveManagement(props) {
         <table className={"min-w-full text-light-text text-center text-sm"}>
           <thead className={"bg-white border-b font-medium"}>
             <tr>
-              <th className={"px-1 py-2"}>ID</th>
-              <th className={"px-1 py-2"}>Status</th>
-              <th className={"px-1 py-2"}>Name</th>
-              <th className={"px-1 py-2"}>Begin Date</th>
-              <th className={"px-1 py-2"}>End Date</th>
-              <th className={"px-1 py-2"}>Comment</th>
-              <th className={"px-1 py-2"}>Surface Security</th>
-              <th className={"px-1 py-2"}>Number of place</th>
-              <th className={"px-1 py-2"}>Registered place</th>
-              <th className={"px-1 py-2"}>Dive Site</th>
-              <th className={"px-1 py-2"}>Modify</th>
+              <th className={"w-6 px-1 py-2"}>ID</th>
+              <th className={"w-16 px-1 py-2"}>Status</th>
+              <th className={"w-32 px-1 py-2"}>Name</th>
+              <th className={"w-24 px-1 py-2"}>Begin Date</th>
+              <th className={"w-24 px-1 py-2"}>End Date</th>
+              <th className={"w-32 px-1 py-2"}>Comment</th>
+              <th className={"w-24 px-1 py-2"}>Surface Security</th>
+              <th className={"w-24 px-1 py-2"}>Number of place</th>
+              <th className={"w-24 px-1 py-2"}>Registered place</th>
+              <th className={"w-32 px-1 py-2"}>Dive Site</th>
+              <th className={"w-32 px-1 py-2"}>Modify</th>
+              <th className={"w-32 px-1 py-2"}>Security</th>
             </tr>
           </thead>
           <tbody>
@@ -90,44 +92,41 @@ function DiveManagement(props) {
                   className={"border-b even:bg-white odd:bg-neutral-100"}
                   key={index}
                 >
-                  <td className={"whitespace-nowrap px-1 py-2"}>{index + 1}</td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
+                  <td className={"whitespace-nowrap w-6 px-1 py-2"}>
+                    {index + 1}
+                  </td>
+                  <td className={"whitespace-nowrap w-16 px-1 py-2"}>
                     {dive.status}
                   </td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>{dive.name}</td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
-                    {new Date(dive.date_begin)
-                      .toISOString()
-                      .slice(0, 19)
-                      .replace("T", " ")}
+                  <td className={"whitespace-nowrap w-32 px-1 py-2"}>
+                    {dive.name}
                   </td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
-                    {new Date(dive.date_end)
-                      .toISOString()
-                      .slice(0, 19)
-                      .replace("T", " ")}
+                  <td className={"whitespace-nowrap w-24 px-1 py-2"}>
+                    {new Date(dive.date_begin).toISOString().slice(0, 10)}
                   </td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
+                  <td className={"whitespace-nowrap w-24 px-1 py-2"}>
+                    {new Date(dive.date_end).toISOString().slice(0, 10)}
+                  </td>
+                  <td className={"whitespace-nowrap w-32 px-1 py-2"}>
                     {dive.comment}
                   </td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
+                  <td className={"whitespace-nowrap w-24 px-1 py-2"}>
                     {dive.surface_security}
                   </td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
+                  <td className={"whitespace-nowrap w-24 px-1 py-2"}>
                     {dive.place_number}
                   </td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
+                  <td className={"whitespace-nowrap w-24 px-1 py-2"}>
                     {dive.registered_place}
                   </td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
+                  <td className={"whitespace-nowrap w-32 px-1 py-2"}>
                     {dive.dive_site}
                   </td>
-                  <td
-                    className={
-                      "whitespace-nowrap px-1 py-2 flex flex-col items-center"
-                    }
-                  >
+                  <td className={"whitespace-nowrap px-1 py-2"}>
                     <ModalDiveManagement diveInfo={dive} />
+                  </td>
+                  <td className={"whitespace-nowrap px-1 py-2"}>
+                    <DownloadButton dive={dive.id} />
                   </td>
                 </tr>
               ))}

@@ -39,7 +39,7 @@ function App(props) {
   }, []);
 
   return (
-    <div className={"bg-neutral-200 flex-col min-h-screen "}>
+    <div className={"bg-neutral-200 flex flex-col min-h-screen "}>
       <Header tokenId={tokenDecoded.id} />
       <main className={"flex flex-grow"}>
         <Routes>

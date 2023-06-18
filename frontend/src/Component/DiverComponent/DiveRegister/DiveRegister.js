@@ -67,6 +67,8 @@ function DiveRegister(props) {
                   dive.date_begin
                 ).getMinutes()}`}
               </p>
+              <p className={"mb-4"}>Max Depth : {dive.max_depth}m</p>
+              <p className={"mb-4"}>Type : {dive.dive_type}</p>
               <p className={"mb-4 underline"}>
                 <a href={dive.url} target={"_blank"}>
                   Google Maps Link

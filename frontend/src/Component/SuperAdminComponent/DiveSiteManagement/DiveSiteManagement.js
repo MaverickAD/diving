@@ -71,15 +71,15 @@ function DiveSiteManagement(props) {
         <table className={"min-w-full text-light-text text-center text-sm"}>
           <thead className={"border-b bg-white font-medium"}>
             <tr>
-              <th className={"w-9 px-1 py-2 text-center"}>ID</th>
-              <th className={"w-96 px-1 py-2 text-center"}>Site Name</th>
-              <th className={"w-32 px-1 py-2 text-center"}>Latitude</th>
-              <th className={"w-32 px-1 py-2 text-center"}>Longitude</th>
-              <th className={"w-28 px-1 py-2 text-center"}>Zip Code</th>
-              <th className={"w-40 px-1 py-2 text-center"}>City</th>
-              <th className={"w-32 px-1 py-2 text-center"}>Country</th>
-              <th className={"w-32 px-1 py-2 text-center"}>Modify</th>
-              <th className={"w-32 px-1 py-2 text-center"}>Delete</th>
+              <th className={"w-9 px-1 py-2 "}>ID</th>
+              <th className={"w-96 px-1 py-2 "}>Site Name</th>
+              <th className={"w-32 px-1 py-2 "}>Latitude</th>
+              <th className={"w-32 px-1 py-2 "}>Longitude</th>
+              <th className={"w-28 px-1 py-2 "}>Zip Code</th>
+              <th className={"w-40 px-1 py-2 "}>City</th>
+              <th className={"w-32 px-1 py-2 "}>Country</th>
+              <th className={"w-32 px-1 py-2 "}>Modify</th>
+              <th className={"w-32 px-1 py-2 "}>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -98,25 +98,25 @@ function DiveSiteManagement(props) {
                   className={"border-b even:bg-white odd:bg-neutral-100"}
                   key={index}
                 >
-                  <td className="whitespace-nowrap w-9 px-1 py-2 text-center">
+                  <td className="whitespace-nowrap w-9 px-1 py-2">
                     {index + 1}
                   </td>
-                  <td className="whitespace-nowrap w-96 px-1 py-2 text-center">
+                  <td className="whitespace-nowrap w-96 px-1 py-2">
                     {site.name}
                   </td>
-                  <td className="whitespace-nowrap w-32 px-1 py-2 text-center">
+                  <td className="whitespace-nowrap w-32 px-1 py-2">
                     {site.latitude}
                   </td>
-                  <td className="whitespace-nowrap w-32 px-1 py-2 text-center">
+                  <td className="whitespace-nowrap w-32 px-1 py-2">
                     {site.longitude}
                   </td>
-                  <td className="whitespace-nowrap w-28 px-1 py-2 text-center">
+                  <td className="whitespace-nowrap w-28 px-1 py-2">
                     {site.zip_code}
                   </td>
-                  <td className="whitespace-nowrap w-40 px-1 py-2 text-center">
+                  <td className="whitespace-nowrap w-40 px-1 py-2">
                     {site.city}
                   </td>
-                  <td className="whitespace-nowrap w-32 px-1 py-2 text-center">
+                  <td className="whitespace-nowrap w-32 px-1 py-2">
                     {site.country}
                   </td>
                   <td className={"whitespace-nowrap px-1 py-2 "}>

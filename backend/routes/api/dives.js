@@ -39,21 +39,23 @@ module.exports = (db) => {
     let diver = req.params.diver;
     db.query(
       "SELECT dive.id,\n" +
-        "     dive.name,\n" +
-        "     date_begin,\n" +
-        "     status,\n" +
-        "     dive.comment,\n" +
-        "     dive_site.name AS location,\n" +
-        "     dive_site.url\n" +
+        "       dive.name,\n" +
+        "       date_begin,\n" +
+        "       status,\n" +
+        "       dive.comment,\n" +
+        "       dive_site.name AS location,\n" +
+        "       dive_site.url,\n" +
+        "       dive_team.max_depth,\n" +
+        "       dive_team.dive_type\n" +
         "FROM dive\n" +
-        "INNER JOIN dive_site\n" +
-        "ON dive.dive_site = dive_site.id\n" +
-        "INNER JOIN dive_team\n" +
-        "ON dive.id = dive_team.dive\n" +
-        "INNER JOIN dive_team_member\n" +
-        "ON dive_team.id = dive_team_member.team\n" +
+        "    INNER JOIN dive_site\n" +
+        "        ON dive.dive_site = dive_site.id\n" +
+        "    INNER JOIN dive_team\n" +
+        "        ON dive.id = dive_team.dive\n" +
+        "    INNER JOIN dive_team_member\n" +
+        "        ON dive_team.id = dive_team_member.team\n" +
         "WHERE dive.status IN (1,3)\n" +
-        "AND dive_team_member.diver = ?",
+        "  AND dive_team_member.diver = ?",
       [diver],
       (err, rows) => {
         if (err) throw err;
