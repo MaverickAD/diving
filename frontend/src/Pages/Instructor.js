@@ -14,7 +14,7 @@ function Instructor(props) {
   const { page } = useParams();
   const navigate = useNavigate();
 
-  useVerifyToken();
+  useVerifyToken("admin");
 
   return (
     <div className={"flex w-full"}>
