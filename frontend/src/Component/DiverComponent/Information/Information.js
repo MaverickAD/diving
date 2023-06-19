@@ -8,9 +8,9 @@ function Information(props) {
   const [valuesModified, setValuesModified] = useState({});
 
   useEffect(() => {
-    if (props.userId) {
+    if (props.token.id) {
       axios
-        .get("/api/users/personal/" + props.userId)
+        .get("/api/users/personal/" + props.token.id)
         .then((response) => {
           setPersonalInformation(response.data[0]);
         })
@@ -18,11 +18,11 @@ function Information(props) {
           console.log(error);
         });
     }
-  }, [props.userId]);
+  }, [props.token.id]);
 
   const handleSubmit = () => {
     axios
-      .put("/api/users/personal/" + props.userId, valuesModified)
+      .put("/api/users/personal/" + props.token.id, valuesModified)
       .then((response) => {
         console.log(response);
       })

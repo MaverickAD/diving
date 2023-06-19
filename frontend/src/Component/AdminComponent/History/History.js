@@ -10,7 +10,7 @@ function History(props) {
   const dataPerPage = 10;
   const [pagesNumber, setPagesNumber] = useState(1);
 
-  useVerifyToken();
+  useVerifyToken("admin");
 
   useEffect(() => {
     axios

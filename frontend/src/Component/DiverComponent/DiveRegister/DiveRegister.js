@@ -6,9 +6,9 @@ function DiveRegister(props) {
   const [diveRegister, setDiveRegister] = useState([]);
 
   useEffect(() => {
-    if (props.userId) {
+    if (props.token.id) {
       axios
-        .get("/api/dives/register/" + props.userId)
+        .get("/api/dives/register/" + props.token.id)
         .then((res) => {
           setDiveRegister(res.data);
           console.log(res.data);
@@ -17,12 +17,12 @@ function DiveRegister(props) {
           console.log(err);
         });
     }
-  }, [props.userId]);
+  }, [props.token.id]);
 
   const Unregister = (event, diveId) => {
     event.preventDefault();
     axios
-      .delete("/api/dives/unregister/" + props.userId + "/" + diveId)
+      .delete("/api/dives/unregister/" + props.token.id + "/" + diveId)
       .then((res) => {
         console.log(res.data);
         window.location.reload();
@@ -67,11 +67,18 @@ function DiveRegister(props) {
                   dive.date_begin
                 ).getMinutes()}`}
               </p>
+              <p className={"mb-4"}>Max Depth : {dive.max_depth}m</p>
+              <p className={"mb-4"}>Type : {dive.dive_type}</p>
+              <p className={"mb-4 underline"}>
+                <a href={dive.url} target={"_blank"}>
+                  Google Maps Link
+                </a>
+              </p>
               <button
                 className={
                   "bg-red-600 hover:bg-red-700 text-white text-center text-sm font-bold uppercase rounded-full px-5 py-2.5"
                 }
-                onClick={(event) => Unregister(event, dive.dive_team_id)}
+                onClick={(event) => Unregister(event, dive.id)}
               >
                 Unregister
               </button>

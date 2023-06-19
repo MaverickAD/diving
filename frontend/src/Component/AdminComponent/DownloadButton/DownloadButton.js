@@ -2,29 +2,42 @@ import React from "react";
 import axios from "axios";
 
 function DownloadButton(props) {
-  const downloadFile = (filename) => {
+  const downloadFile = () => {
     axios({
-      url: "/api/pdf/download",
+      url: "/api/pdf/download/" + props.dive,
       method: "GET",
       responseType: "blob", // Important: responseType must be set to 'blob' for file downloads
     })
       .then((response) => {
-        const url = window.URL.createObjectURL(new Blob([response.data]));
-
-        // Create a link element and click it to trigger the download
+        console.log(response);
+        const filename = response.headers["content-disposition"]
+          .split("filename=")[1]
+          .replace('"', "")
+          .replace('"', "");
+        const downloadUrl = window.URL.createObjectURL(
+          new Blob([response.data])
+        );
         const link = document.createElement("a");
-        link.href = url;
-        link.download = props.filename;
+        link.href = downloadUrl;
+        link.setAttribute("download", filename);
+        document.body.appendChild(link);
         link.click();
-
-        // Clean up the temporary URL
-        window.URL.revokeObjectURL(url);
+        link.remove();
       })
       .catch((error) => {
         console.error("Error downloading file:", error);
       });
   };
-  return <button onClick={downloadFile}>Download</button>;
+  return (
+    <button
+      className={
+        "bg-primary hover:bg-accent text-white text-center text-sm font-bold uppercase rounded-full px-5 py-2.5"
+      }
+      onClick={downloadFile}
+    >
+      Download
+    </button>
+  );
 }
 
 export default DownloadButton;

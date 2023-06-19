@@ -5,6 +5,10 @@ function Pagination(props) {
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
+    setCurrentPage(1);
+  }, [props.pagesNumber]);
+
+  useEffect(() => {
     props.currentPageSetter(currentPage);
   }, [currentPage, props]);
 

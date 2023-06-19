@@ -1,6 +1,5 @@
 let express = require("express");
 let router = express.Router();
-let bcrypt = require("bcrypt");
 
 module.exports = (db) => {
   // |||||||||||||||||||||||||||
@@ -16,7 +15,8 @@ module.exports = (db) => {
         "       status,\n" +
         "       dive.comment,\n" +
         "       dive_site.name AS location,\n" +
-        "       dive_team.id AS dive_team_id\n" +
+        "       dive_team.id AS dive_team_id,\n" +
+        "       dive_site.url\n" +
         "FROM dive\n" +
         "INNER JOIN dive_site\n" +
         "ON dive.dive_site = dive_site.id\n" +
@@ -38,21 +38,24 @@ module.exports = (db) => {
   router.get("/register/:diver", (req, res) => {
     let diver = req.params.diver;
     db.query(
-      "SELECT dive.name,\n" +
+      "SELECT dive.id,\n" +
+        "       dive.name,\n" +
         "       date_begin,\n" +
         "       status,\n" +
         "       dive.comment,\n" +
         "       dive_site.name AS location,\n" +
-        "       dive_team.id AS dive_team_id\n" +
+        "       dive_site.url,\n" +
+        "       dive_team.max_depth,\n" +
+        "       dive_team.dive_type\n" +
         "FROM dive\n" +
-        "INNER JOIN dive_site\n" +
-        "ON dive.dive_site = dive_site.id\n" +
-        "INNER JOIN dive_team\n" +
-        "ON dive.id = dive_team.dive\n" +
-        "INNER JOIN dive_team_member\n" +
-        "ON dive_team.id = dive_team_member.team\n" +
+        "    INNER JOIN dive_site\n" +
+        "        ON dive.dive_site = dive_site.id\n" +
+        "    INNER JOIN dive_team\n" +
+        "        ON dive.id = dive_team.dive\n" +
+        "    INNER JOIN dive_team_member\n" +
+        "        ON dive_team.id = dive_team_member.team\n" +
         "WHERE dive.status IN (1,3)\n" +
-        "AND dive_team_member.diver = ?",
+        "  AND dive_team_member.diver = ?",
       [diver],
       (err, rows) => {
         if (err) throw err;
@@ -62,16 +65,60 @@ module.exports = (db) => {
   });
 
   // Good
-  router.delete("/unregister/:diver/:diveteam", (req, res) => {
+  router.delete("/unregister/:diver/:dive", (req, res) => {
     let diver = req.params.diver;
-    let diveteam = req.params.diveteam;
+    let dive = req.params.dive;
 
     db.query(
-      "DELETE FROM dive_team_member WHERE team = ? AND diver = ?",
-      [diveteam, diver],
+      "SELECT team,\n" +
+        "       COUNT(diver) AS total\n" +
+        "FROM dive_team_member\n" +
+        "    INNER JOIN dive_team\n" +
+        "        ON dive_team_member.team = dive_team.id\n" +
+        "WHERE dive_team.dive = ?\n" +
+        "  AND dive_team_member.team IN (\n" +
+        "  SELECT team FROM dive_team_member\n" +
+        "              WHERE diver = ?\n" +
+        "              )\n" +
+        "GROUP BY team",
+      [dive, diver],
       (err, rows) => {
         if (err) throw err;
-        res.json(rows);
+
+        const team = rows[0].team;
+        const total = rows[0].total;
+
+        total === 1
+          ? db.query(
+              "DELETE FROM dive_team_member\n" +
+                "       WHERE team = ?\n" +
+                "         AND diver = ?",
+              [team, diver],
+              (err, rows) => {
+                if (err) throw err;
+
+                db.query(
+                  "DELETE FROM dive_team\n" +
+                    "       WHERE id = ?\n" +
+                    "         AND dive = ?",
+                  [team, dive],
+                  (err, rows) => {
+                    if (err) throw err;
+                    res.json(rows);
+                  }
+                );
+              }
+            )
+          : db.query(
+              "DELETE FROM dive_team_member\n" +
+                "       WHERE team = ?\n" +
+                "         AND diver = ?",
+              [team, diver],
+              (err, rows) => {
+                if (err) throw err;
+                res.json(rows);
+              }
+            );
       }
     );
   });
@@ -90,14 +137,11 @@ module.exports = (db) => {
         "                dive_site.name AS location,\n" +
         "                dive_site.address,\n" +
         "                dive_site.zip_code,\n" +
-        "                dive_site.country\n" +
+        "                dive_site.country,\n" +
+        "                dive_site.url\n" +
         "FROM dive\n" +
         "INNER JOIN dive_site\n" +
         "ON dive.dive_site = dive_site.id\n" +
-        "INNER JOIN dive_team\n" +
-        "ON dive.id = dive_team.dive\n" +
-        "INNER JOIN dive_team_member\n" +
-        "ON dive_team.id = dive_team_member.team\n" +
         "WHERE dive.id NOT IN (\n" +
         "  SELECT dive.id FROM dive\n" +
         "    INNER JOIN dive_team\n" +
@@ -115,21 +159,24 @@ module.exports = (db) => {
   });
 
   // Good
-  router.post("/register/:diver/:diveteam", (req, res) => {
+  router.post("/register/:diver/:diveteam/:divetype/:maxdepth", (req, res) => {
     let diver = req.params.diver;
     let diveteam = req.params.diveteam;
+    let divetype = req.params.divetype;
+    let maxdepth = req.params.maxdepth;
 
     db.query(
-      "SELECT dive_team.dive,\n" +
-        "       dive_team_member.team,\n" +
+      "SELECT dive_team_member.team,\n" +
         "       COUNT(diver) AS total\n" +
         "FROM dive_team\n" +
-        "INNER JOIN dive_team_member\n" +
-        "ON dive_team.id = dive_team_member.team\n" +
+        "    INNER JOIN dive_team_member\n" +
+        "        ON dive_team.id = dive_team_member.team\n" +
         "WHERE dive = ?\n" +
+        "AND dive_type = ?\n" +
+        "AND max_depth <= ?\n" +
         "GROUP BY team\n" +
-        "HAVING COUNT(diver) != 4;",
-      [diveteam],
+        "HAVING COUNT(diver) != 4",
+      [diveteam, divetype, maxdepth],
       (err, rows) => {
         if (err) throw err;
 
@@ -142,14 +189,14 @@ module.exports = (db) => {
                 "     current_diver_qualification,\n" +
                 "     current_instructor_qualification,\n" +
                 "     current_nox_qualification)\n" +
-                "    VALUE (\n" +
-                "        ?,\n" +
-                "        ?,\n" +
-                "        'Apprenti',\n" +
-                "        (SELECT diver_qualification FROM diver WHERE id = ?),\n" +
-                "        (SELECT instructor_qualification FROM diver WHERE id = ?),\n" +
-                "        (SELECT nitrox_qualification FROM diver WHERE id = ?)\n" +
-                "    )",
+                "VALUE (\n" +
+                "       ?,\n" +
+                "       ?,\n" +
+                "       'Apprenti',\n" +
+                "       (SELECT diver_qualification FROM diver WHERE id = ?),\n" +
+                "       (SELECT instructor_qualification FROM diver WHERE id = ?),\n" +
+                "       (SELECT nitrox_qualification FROM diver WHERE id = ?)\n" +
+                ")",
               [rows[0].team, diver, diver, diver, diver],
               (err, rows) => {
                 if (err) throw err;
@@ -157,8 +204,8 @@ module.exports = (db) => {
               }
             )
           : db.query(
-              "INSERT INTO dive_team (dive) VALUES (?)",
-              [diveteam],
+              "INSERT INTO dive_team(dive, max_depth, dive_type) VALUE(?,?,?)",
+              [diveteam, maxdepth, divetype],
               (err, rows) => {
                 if (err) throw err;
                 db.query(
@@ -169,14 +216,14 @@ module.exports = (db) => {
                     "     current_diver_qualification,\n" +
                     "     current_instructor_qualification,\n" +
                     "     current_nox_qualification)\n" +
-                    "    VALUE (\n" +
-                    "        ?,\n" +
-                    "        ?,\n" +
-                    "        'Apprenti',\n" +
-                    "        (SELECT diver_qualification FROM diver WHERE id = ?),\n" +
-                    "        (SELECT instructor_qualification FROM diver WHERE id = ?),\n" +
-                    "        (SELECT nitrox_qualification FROM diver WHERE id = ?)\n" +
-                    "    )",
+                    "VALUE (\n" +
+                    "       ?,\n" +
+                    "       ?,\n" +
+                    "       'Apprenti',\n" +
+                    "       (SELECT diver_qualification FROM diver WHERE id = ?),\n" +
+                    "       (SELECT instructor_qualification FROM diver WHERE id = ?),\n" +
+                    "       (SELECT nitrox_qualification FROM diver WHERE id = ?)\n" +
+                    ")",
                   [rows.insertId, diver, diver, diver, diver],
                   (err, rows) => {
                     if (err) throw err;
