@@ -1,36 +1,44 @@
 import React, { useState } from "react";
-
-function handleClick(event) {
-  event.preventDefault(); // Empêche le rechargement de la page par défaut lors de la soumission du formulaire
-
-  // Effectuez une requête POST vers votre API avec les données d'inscription
-  axios.post("votre-url-de-l-api", registerData)
-      .then(response => {
-        console.log("Inscription réussie !");
-        // Gérez la réponse de l'API ou redirigez l'utilisateur vers une autre page
-      })
-      .catch(error => {
-        console.error("Erreur lors de l'inscription :", error);
-        // Gérez l'erreur de l'API ou affichez un message d'erreur à l'utilisateur
-      });
-}
+import axios from "axios";
+import alertify from "alertifyjs";
+import {useNavigate} from "react-router-dom";
 
 function Register(props) {
+  const navigate = useNavigate();
   const [registerData, setRegisterData] = useState({
     id: "",
-    firstName: "",
-    lastName: "",
+    first_name: "",
+    last_name: "",
     email: "",
-    birthDate: "",
+    birth_date: "",
     password: "",
     passwordConfirmation: "",
-    diverQualification: "",
-    instructorQualification: "",
-    nitroxQualification: "",
-    licenseNumber: "",
-    licenseExpirationDate: "",
-    medicalCertificateExpirationDate: "",
+    diver_qualification: "",
+    instructor_qualification: "",
+    nitrox_qualification: "",
+    license_number: "",
+    license_expiration_date: "",
+    medical_expiration_date: "",
   });
+
+  function handleClick(event) {
+    event.preventDefault(); // Empêche le rechargement de la page par défaut lors de la soumission du formulaire
+
+    // Effectuez une requête POST vers votre API avec les données d'inscription
+    axios.post("http://localhost:5000/api/users/signup", registerData)
+        .then(response => {
+          console.log("Inscription réussie !");
+          localStorage.setItem("token", response.data.token);
+          navigate("/");
+          window.location.reload();
+          // Gérez la réponse de l'API ou redirigez l'utilisateur vers une autre page
+        })
+        .catch(error => {
+          console.error("Erreur lors de l'inscription :", error);
+          alertify.error("Erreur lors de l'inscription");
+          // Gérez l'erreur de l'API ou affichez un message d'erreur à l'utilisateur
+        });
+  }
 
   return (
     <div className={"w-full"}>
@@ -53,7 +61,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegisterData({
                   ...registerData,
-                  firstName: event.target.value,
+                  first_name: event.target.value,
                 });
               }}
             />
@@ -70,7 +78,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegisterData({
                   ...registerData,
-                  lastName: event.target.value,
+                  last_name: event.target.value,
                 });
               }}
             />
@@ -104,7 +112,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegisterData({
                   ...registerData,
-                  birthDate: event.target.value,
+                  birth_date: event.target.value,
                 });
               }}
             />
@@ -160,7 +168,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegisterData({
                   ...registerData,
-                  diverQualification: event.target.value,
+                  diver_qualification: event.target.value,
                 });
               }}
             >
@@ -191,7 +199,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegisterData({
                   ...registerData,
-                  instructorQualification: event.target.value,
+                  instructor_qualification: event.target.value,
                 });
               }}
             >
@@ -216,7 +224,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegisterData({
                   ...registerData,
-                  nitroxQualification: event.target.value,
+                  nitrox_qualification: event.target.value,
                 });
               }}
             >
@@ -240,7 +248,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegisterData({
                   ...registerData,
-                  licenseNumber: event.target.value,
+                  license_number: event.target.value,
                 });
               }}
             />
@@ -257,7 +265,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegisterData({
                   ...registerData,
-                  licenseExpirationDate: event.target.value,
+                  license_expiration_date: event.target.value,
                 });
               }}
             />
@@ -274,7 +282,7 @@ function Register(props) {
               onChange={(event) => {
                 setRegisterData({
                   ...registerData,
-                  medicalCertificateExpirationDate: event.target.value,
+                  medical_expiration_date: event.target.value,
                 });
               }}
             />
