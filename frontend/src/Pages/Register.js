@@ -1,5 +1,20 @@
 import React, { useState } from "react";
 
+function handleClick(event) {
+  event.preventDefault(); // Empêche le rechargement de la page par défaut lors de la soumission du formulaire
+
+  // Effectuez une requête POST vers votre API avec les données d'inscription
+  axios.post("votre-url-de-l-api", registerData)
+      .then(response => {
+        console.log("Inscription réussie !");
+        // Gérez la réponse de l'API ou redirigez l'utilisateur vers une autre page
+      })
+      .catch(error => {
+        console.error("Erreur lors de l'inscription :", error);
+        // Gérez l'erreur de l'API ou affichez un message d'erreur à l'utilisateur
+      });
+}
+
 function Register(props) {
   const [registerData, setRegisterData] = useState({
     id: "",
@@ -22,6 +37,7 @@ function Register(props) {
       <h1 className={"text-2xl font-bold mb-6 text-center"}>Register Form</h1>
       <form
         className={"w-full max-w-3xl mx-auto bg-white p-8 rounded-md shadow-md"}
+        onSubmit={handleClick}
       >
         {/*Personal Information section */}
         <h2 className={"text-xl font-bold mb-6"}>Personal Information</h2>
