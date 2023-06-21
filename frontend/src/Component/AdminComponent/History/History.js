@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Pagination from "../../Pagination/Pagination";
 import axios from "axios";
 import useVerifyToken from "../../../Hooks/useVerifyToken";
+import DownloadButton from "../DownloadButton/DownloadButton";
 
 function History(props) {
   const [history, setHistory] = useState([]);
@@ -9,6 +10,8 @@ function History(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const dataPerPage = 10;
   const [pagesNumber, setPagesNumber] = useState(1);
+
+  console.log(history);
 
   useVerifyToken("admin");
 
@@ -63,6 +66,7 @@ function History(props) {
               <th className={"px-1 py-2"}>Number of place</th>
               <th className={"px-1 py-2"}>Registered place</th>
               <th className={"px-1 py-2"}>Dive Site</th>
+              <th className={"px-1 py-2"}>Download</th>
             </tr>
           </thead>
           <tbody>
@@ -118,6 +122,9 @@ function History(props) {
                   </td>
                   <td className={"whitespace-nowrap px-1 py-2"}>
                     {dive.dive_site}
+                  </td>
+                  <td className={"whitespace-nowrap px-1 py-2"}>
+                    <DownloadButton dive={dive.id} />
                   </td>
                 </tr>
               ))}

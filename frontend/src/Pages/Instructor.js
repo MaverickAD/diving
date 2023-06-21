@@ -1,11 +1,5 @@
 import React, { useState } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
-import AdminManagement from "../Component/SuperAdminComponent/AdminManagement/AdminManagement";
-import Calendar from "../Component/AdminComponent/Calendar/Calendar";
-import DiveManagement from "../Component/AdminComponent/DiveManagement/DiveManagement";
-import DiverManagement from "../Component/AdminComponent/DiverManagement/DiverManagement";
-import DiveSiteManagement from "../Component/SuperAdminComponent/DiveSiteManagement/DiveSiteManagement";
-import History from "../Component/AdminComponent/History/History";
+import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
 import useVerifyToken from "../Hooks/useVerifyToken";
 
 function Instructor(props) {
@@ -21,9 +15,7 @@ function Instructor(props) {
         <h2 className={"text-xl font-bold mb-6"}>Dashboard</h2>
         <div
           className={`mb-2 px-2 py-2 rounded border ${
-            pageSelected === 1 ||
-            page === "diver_management" ||
-            page === undefined
+            pageSelected === 1 || page === "diver_management"
               ? "bg-accent border-accent shadow-md"
               : "border-white hover:border-accent hover:shadow-md"
           }`}
@@ -32,20 +24,7 @@ function Instructor(props) {
             navigate("/instructor/diver_management");
           }}
         >
-          <Link to={"/instructor/diver_management"}>Diver Mangament</Link>
-        </div>
-        <div
-          className={`mb-2 px-2 py-2 rounded border ${
-            pageSelected === 2 || page === "calendar"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
-          }`}
-          onClick={() => {
-            setPageSelected(2);
-            navigate("/instructor/calendar");
-          }}
-        >
-          <Link to={"/instructor/calendar"}>Calendar</Link>
+          <Link to={"/instructor/diver_management"}>Diver Management</Link>
         </div>
         <div
           className={`mb-2 px-2 py-2 rounded border ${
@@ -102,22 +81,9 @@ function Instructor(props) {
           <Link to={"/instructor/admin_management"}>Admin Management</Link>
         </div>
       </div>
-      <div className={"w-full bg-white mx-2 p-4 rounded shadow-md"}>
-        {pageSelected === 1 || page === "diver_management" ? (
-          <DiverManagement />
-        ) : pageSelected === 2 || page === "calendar" ? (
-          <Calendar />
-        ) : pageSelected === 3 || page === "dive_management" ? (
-          <DiveManagement />
-        ) : pageSelected === 4 || page === "history" ? (
-          <History />
-        ) : pageSelected === 5 || page === "dive_site_management" ? (
-          <DiveSiteManagement />
-        ) : pageSelected === 6 || page === "admin_management" ? (
-          <AdminManagement />
-        ) : (
-          <DiverManagement />
-        )}
+
+      <div className={"w-full bg-white mx-2 p-4 rounded-md shadow-md"}>
+        <Outlet />
       </div>
     </div>
   );

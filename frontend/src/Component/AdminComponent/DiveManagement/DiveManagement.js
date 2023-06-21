@@ -4,6 +4,7 @@ import axios from "axios";
 import ModalDiveManagement from "./ModalDiveManagement";
 import useVerifyToken from "../../../Hooks/useVerifyToken";
 import DownloadButton from "../DownloadButton/DownloadButton";
+import { useNavigate } from "react-router-dom";
 
 function DiveManagement(props) {
   const [openDives, setOpenDives] = useState([]);
@@ -11,6 +12,7 @@ function DiveManagement(props) {
   const [currentPage, setCurrentPage] = useState(1);
   const dataPerPage = 10;
   const [pagesNumber, setPagesNumber] = useState(1);
+  const navigate = useNavigate();
 
   useVerifyToken("admin");
 
@@ -89,8 +91,13 @@ function DiveManagement(props) {
               })
               .map((dive, index) => (
                 <tr
-                  className={"border-b even:bg-white odd:bg-neutral-100"}
+                  className={
+                    "border-b even:bg-white odd:bg-neutral-100 hover:bg-neutral-200 cursor-pointer"
+                  }
                   key={index}
+                  onClick={() => {
+                    navigate("/instructor/dive_management/" + dive.id);
+                  }}
                 >
                   <td className={"whitespace-nowrap w-6 px-1 py-2"}>
                     {index + 1}

@@ -1,5 +1,6 @@
 import React from "react";
 import axios from "axios";
+import PropTypes from "prop-types";
 
 function DownloadButton(props) {
   const downloadFile = () => {
@@ -39,5 +40,9 @@ function DownloadButton(props) {
     </button>
   );
 }
+
+DownloadButton.propTypes = {
+  dive: PropTypes.number.isRequired,
+};
 
 export default DownloadButton;

@@ -257,7 +257,7 @@ async function modifyPDF(filename, data) {
 
   // Generate a new filename for the modified PDF
   const fileBasename = path.basename(
-    filename.replace(".pdf", "") + "_2023_06_16_16_46_41"
+    filename.replace(".pdf", "") + "_" + data.date
   );
   const modifiedFilename = path.join(
     path.join(__dirname, "../../public/pdf/modified"),

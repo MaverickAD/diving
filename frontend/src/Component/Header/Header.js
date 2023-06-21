@@ -6,7 +6,11 @@ import RegisterButton from "../AccessButton/RegisterButton";
 
 function Header(props) {
   return (
-    <header className={"bg-primary text-header-footer-text p-4 mb-4"}>
+    <header
+      className={
+        "bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% text-header-footer-text p-4 mb-4 shadow-xl"
+      }
+    >
       <div className={"flex justify-between items-center"}>
         <Link to={"/"} className={"text-2xl font-bold"}>
           Sub Aquatic Group Wattignies

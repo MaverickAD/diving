@@ -73,20 +73,14 @@ function Card(props) {
               <button
                 type={"button"}
                 className={`w-full text-white text-center text-lg font-bold rounded-full ${
-                  !(
-                    8 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![8, 9, 10, 11, 12].includes(props.diver.diver_qualification)
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PA-12"
                     ? "bg-accent"
                     : "bg-primary hover:bg-accent"
                 }`}
                 disabled={
-                  !(
-                    8 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![8, 9, 10, 11, 12].includes(props.diver.diver_qualification)
                 }
                 onClick={() => setClickedButton("PA-12")}
               >
@@ -97,20 +91,14 @@ function Card(props) {
               <button
                 type={"button"}
                 className={`w-full text-white text-center text-lg font-bold rounded-full ${
-                  !(
-                    9 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![9, 10, 11, 12].includes(props.diver.diver_qualification)
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PA-20"
                     ? "bg-accent"
                     : "bg-primary hover:bg-accent"
                 }`}
                 disabled={
-                  !(
-                    9 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![9, 10, 11, 12].includes(props.diver.diver_qualification)
                 }
                 onClick={() => setClickedButton("PA-20")}
               >
@@ -121,20 +109,14 @@ function Card(props) {
               <button
                 type={"button"}
                 className={`w-full text-white text-center text-lg font-bold rounded-full ${
-                  !(
-                    10 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![10, 11, 12].includes(props.diver.diver_qualification)
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PA-60"
                     ? "bg-accent"
                     : "bg-primary hover:bg-accent"
                 }`}
                 disabled={
-                  !(
-                    10 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![10, 11, 12].includes(props.diver.diver_qualification)
                 }
                 onClick={() => setClickedButton("PA-60")}
               >
@@ -150,9 +132,8 @@ function Card(props) {
               <button
                 type={"button"}
                 className={`w-full text-white text-center text-lg font-bold rounded-full ${
-                  !(
-                    7 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
+                  ![1, 7, 8, 9, 10, 11, 12].includes(
+                    props.diver.diver_qualification
                   )
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PE-6"
@@ -160,9 +141,8 @@ function Card(props) {
                     : "bg-primary hover:bg-accent"
                 }`}
                 disabled={
-                  !(
-                    7 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
+                  ![1, 7, 8, 9, 10, 11, 12].includes(
+                    props.diver.diver_qualification
                   )
                 }
                 onClick={() => setClickedButton("PE-6")}
@@ -174,20 +154,14 @@ function Card(props) {
               <button
                 type={"button"}
                 className={`w-full text-white text-center text-lg font-bold rounded-full ${
-                  !(
-                    8 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![8, 9, 10, 11, 12].includes(props.diver.diver_qualification)
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PE-20"
                     ? "bg-accent"
                     : "bg-primary hover:bg-accent"
                 }`}
                 disabled={
-                  !(
-                    8 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![8, 9, 10, 11, 12].includes(props.diver.diver_qualification)
                 }
                 onClick={() => setClickedButton("PE-20")}
               >
@@ -198,20 +172,14 @@ function Card(props) {
               <button
                 type={"button"}
                 className={`w-full text-white text-center text-lg font-bold rounded-full ${
-                  !(
-                    9 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![9, 10, 11, 12].includes(props.diver.diver_qualification)
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PE-40"
                     ? "bg-accent"
                     : "bg-primary hover:bg-accent"
                 }`}
                 disabled={
-                  !(
-                    9 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![9, 10, 11, 12].includes(props.diver.diver_qualification)
                 }
                 onClick={() => setClickedButton("PE-40")}
               >
@@ -222,20 +190,14 @@ function Card(props) {
               <button
                 type={"button"}
                 className={`w-full text-white text-center text-lg font-bold rounded-full ${
-                  !(
-                    10 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![10, 11, 12].includes(props.diver.diver_qualification)
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PE-60"
                     ? "bg-accent"
                     : "bg-primary hover:bg-accent"
                 }`}
                 disabled={
-                  !(
-                    10 <= props.diver.diver_qualification &&
-                    props.diver.diver_qualification <= 12
-                  )
+                  ![10, 11, 12].includes(props.diver.diver_qualification)
                 }
                 onClick={() => setClickedButton("PE-60")}
               >

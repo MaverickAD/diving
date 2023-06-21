@@ -102,7 +102,9 @@ function Information(props) {
               />
             </div>
             <div className={"mb-4"}>
-              <label htmlFor="birthDate">Birth Date:</label>
+              <label className={"text-light-text text-sm font-bold"}>
+                Birth Date:
+              </label>
               <input
                 type={"date"}
                 className={
