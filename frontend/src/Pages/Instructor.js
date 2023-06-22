@@ -1,92 +1,131 @@
 import React, { useState } from "react";
 import { Link, Outlet, useNavigate, useParams } from "react-router-dom";
+import { useMediaQuery } from "react-responsive";
 import useVerifyToken from "../Hooks/useVerifyToken";
 
 function Instructor(props) {
-  const [pageSelected, setPageSelected] = useState(Number);
-  const { page } = useParams();
-  const navigate = useNavigate();
+    const [pageSelected, setPageSelected] = useState(Number);
+    const { page } = useParams();
+    const navigate = useNavigate();
 
-  useVerifyToken("admin");
+    useVerifyToken("admin");
 
-  return (
-    <div className={"flex w-full"}>
-      <div className={"w-full max-w-xs bg-white mx-2 p-4 rounded-md shadow-md"}>
-        <h2 className={"text-xl font-bold mb-6"}>Dashboard</h2>
-        <div
-          className={`mb-2 px-2 py-2 rounded border ${
-            pageSelected === 1 || page === "diver_management"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
-          }`}
-          onClick={() => {
-            setPageSelected(1);
-            navigate("/instructor/diver_management");
-          }}
-        >
-          <Link to={"/instructor/diver_management"}>Diver Management</Link>
-        </div>
-        <div
-          className={`mb-2 px-2 py-2 rounded border ${
-            pageSelected === 3 || page === "dive_management"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
-          }`}
-          onClick={() => {
-            setPageSelected(3);
-            navigate("/instructor/dive_management");
-          }}
-        >
-          <Link to={"/instructor/dive_management"}>Dive Management</Link>
-        </div>
-        <div
-          className={`mb-2 px-2 py-2 rounded border ${
-            pageSelected === 4 || page === "history"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
-          }`}
-          onClick={() => {
-            setPageSelected(4);
-            navigate("/instructor/history");
-          }}
-        >
-          <Link to={"/instructor/history"}>History</Link>
-        </div>
-        <div
-          className={`mb-2 px-2 py-2 rounded border  ${
-            pageSelected === 5 || page === "dive_site_management"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
-          }`}
-          onClick={() => {
-            setPageSelected(5);
-            navigate("/instructor/dive_site_management");
-          }}
-        >
-          <Link to={"/instructor/dive_site_management"}>
-            Dive Site Management
-          </Link>
-        </div>
-        <div
-          className={`mb-2 px-2 py-2 rounded border ${
-            pageSelected === 6 || page === "admin_management"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
-          }`}
-          onClick={() => {
-            setPageSelected(6);
-            navigate("/instructor/admin_management");
-          }}
-        >
-          <Link to={"/instructor/admin_management"}>Admin Management</Link>
-        </div>
-      </div>
+    const isMobile = useMediaQuery({ maxWidth: 767 }); // Vérifie si l'écran est un téléphone (largeur maximale de 767px)
 
-      <div className={"w-full bg-white mx-2 p-4 rounded-md shadow-md"}>
-        <Outlet />
-      </div>
-    </div>
-  );
+    return (
+        <div className="flex flex-col lg:flex-row w-full">
+            {isMobile ? (
+                // Afficher le menu déroulant pour les téléphones
+                <select
+                    id="menu"
+                    value={pageSelected}
+                    onChange={(event) => {
+                        const selectedPage = parseInt(event.target.value);
+                        setPageSelected(selectedPage);
+                        // Naviguer vers la page sélectionnée
+                        switch (selectedPage) {
+                            case 1:
+                                navigate("/instructor/diver_management");
+                                break;
+                            case 3:
+                                navigate("/instructor/dive_management");
+                                break;
+                            case 4:
+                                navigate("/instructor/history");
+                                break;
+                            case 5:
+                                navigate("/instructor/dive_site_management");
+                                break;
+                            case 6:
+                                navigate("/instructor/admin_management");
+                                break;
+                            default:
+                                break;
+                        }
+                    }}
+                    className="block lg:hidden p-2 bg-white border border-gray-300 rounded shadow-md"
+                >
+                    <option value={0}>Menu</option>
+                    <option value={1}>Diver Management</option>
+                    <option value={3}>Dive Management</option>
+                    <option value={4}>History</option>
+                    <option value={5}>Dive Site Management</option>
+                    <option value={6}>Admin Management</option>
+                </select>
+            ) : (
+                // Afficher le menu complet pour les autres appareils
+                <div className="w-full max-w-xs bg-white mx-2 my-2 lg:my-0 p-4 rounded-md shadow-md">
+                    <h2 className="text-xl font-bold mb-6">Dashboard</h2>
+                    <nav>
+                        <ul className="space-y-2">
+                            <MenuItem
+                                pageSelected={pageSelected}
+                                page={page}
+                                setPageSelected={setPageSelected}
+                                navigate={navigate}
+                                link="/instructor/diver_management"
+                                label="Diver Management"
+                            />
+                            <MenuItem
+                                pageSelected={pageSelected}
+                                page={page}
+                                setPageSelected={setPageSelected}
+                                navigate={navigate}
+                                link="/instructor/dive_management"
+                                label="Dive Management"
+                            />
+                            <MenuItem
+                                pageSelected={pageSelected}
+                                page={page}
+                                setPageSelected={setPageSelected}
+                                navigate={navigate}
+                                link="/instructor/history"
+                                label="History"
+                            />
+                            <MenuItem
+                                pageSelected={pageSelected}
+                                page={page}
+                                setPageSelected={setPageSelected}
+                                navigate={navigate}
+                                link="/instructor/dive_site_management"
+                                label="Dive Site Management"
+                            />
+                            <MenuItem
+                                pageSelected={pageSelected}
+                                page={page}
+                                setPageSelected={setPageSelected}
+                                navigate={navigate}
+                                link="/instructor/admin_management"
+                                label="Admin Management"
+                            />
+                        </ul>
+                    </nav>
+                </div>
+            )}
+
+            <div className="w-full bg-white mx-2 my-2 lg:my-0 p-4 rounded-md shadow-md max-w-screen-xl mx-auto">
+                <Outlet />
+            </div>
+        </div>
+    );
+}
+
+function MenuItem({ pageSelected, page, setPageSelected, navigate, link, label }) {
+    return (
+        <li
+            className={`px-2 py-2 rounded-md ${
+                (pageSelected && pageSelected === link) || page === link
+                    ? "bg-accent text-white"
+                    : "hover:bg-gray-100"
+            }`}
+            onClick={() => {
+                setPageSelected(link);
+                navigate(link);
+            }}
+        >
+            <Link to={link}>{label}</Link>
+        </li>
+    );
 }
 
 export default Instructor;
