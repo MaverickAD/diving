@@ -125,10 +125,9 @@ function Instructor(props) {
 function MenuItem({ pageSelected, page, setPageSelected, navigate, link, label }) {
     return (
         <li
-            className={`px-2 py-2 rounded-md ${
+            className={`w-full text-left mb-2 px-2 py-2 hover:shadow-[inset_20rem_0_0_0] hover:shadow-accent duration-[1000ms,1200ms] transition-[color,box-shadow] rounded-md ${
                 (pageSelected && pageSelected === link) || page === link
-                    ? "bg-accent text-white"
-                    : "hover:bg-gray-100"
+                    ? "bg-primary" : ""
             }`}
             onClick={() => {
                 setPageSelected(link);
