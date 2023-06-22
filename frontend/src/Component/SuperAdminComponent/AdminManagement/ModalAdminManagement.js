@@ -1,27 +1,41 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
+import alertify from "alertifyjs";
+import "alertifyjs/build/css/alertify.css";
 
 function ModalAdminManagement(props) {
   const [showModal, setShowModal] = useState(false);
   const [modifyInfo, setModifyInfo] = useState(false);
   const [valuesModified, setValuesModified] = useState({});
 
+  useEffect(() => {
+    // Vérifier si le cookie existe et contient la valeur pour afficher l'alerte
+    const showAlert = localStorage.getItem("showAlert");
+    if (showAlert === "true") {
+      alertify.success("Admin modified");
+      // Réinitialiser la valeur du cookie
+      localStorage.removeItem("showAlert")
+    }
+  }, []);
+
   const handleSubmit = () => {
     if (Object.keys(valuesModified).length !== 0) {
       axios
-        .put("/api/users/admin/update/" + props.adminInfo.id, valuesModified)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
+          .put("/api/users/admin/update/" + props.adminInfo.id, valuesModified)
+          .then((response) => {
+            console.log(response);
+          })
+          .catch((error) => {
+            console.log(error);
+          });
     }
 
     setModifyInfo(false);
     setShowModal(false);
-    console.log(valuesModified);
     setValuesModified({});
+
+    // Définir la valeur du cookie pour afficher l'alerte après le rechargement
+    localStorage.setItem("showAlert", "true");
     window.location.reload();
   };
 
