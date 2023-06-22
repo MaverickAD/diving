@@ -1,5 +1,6 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import axios from "axios";
+import alertify from "alertifyjs";
 
 function ModalAdminAdd(props) {
   const [showModal, setShowModal] = useState(false);
@@ -12,11 +13,14 @@ function ModalAdminAdd(props) {
       .put("/api/users/not_admin/" + id)
       .then((response) => {
         console.log(response);
+        alertify.success("Admin added successfully");
       })
       .catch((error) => {
         console.log(error);
       });
   };
+
+
 
   return (
     <>

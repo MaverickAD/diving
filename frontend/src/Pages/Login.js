@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import alertify from "alertifyjs";
+import 'alertifyjs/build/css/alertify.css'
 
 function Login(props) {
   const [email, setEmail] = useState("");
@@ -40,8 +42,7 @@ function Login(props) {
 
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const response = await axios.post(
+    await axios.post(
         "http://localhost:5000/api/users/signin",
         {
           email,
@@ -52,7 +53,7 @@ function Login(props) {
             "Content-Type": "application/json",
           },
         }
-      );
+      ).then((response) => {
 
       if (response.status === 200) {
         const data = response.data;
@@ -60,15 +61,15 @@ function Login(props) {
         // Handle the data
         localStorage.setItem("token", data.token);
         window.location.reload();
-      } else {
-        // Handle the error
-        alert("L'email ou le mot de passe est incorrect");
-        throw new Error("Request failed with status: " + response.status);
       }
-    } catch (error) {
-      // Handle any other errors
-      console.error(error);
-    }
+    }).catch((error) => {
+      if (error.response.status === 401) {
+        alertify.error("Email ou mot de passe incorrect")
+      }else {
+        alertify.error("Une erreur est survenue")
+      }
+
+    });
   };
 
   return (
