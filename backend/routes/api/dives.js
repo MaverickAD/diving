@@ -306,6 +306,72 @@ module.exports = (db) => {
       });
     }
   });
+
+  router.get("/modifier/dive/:dive", (req, res) => {
+    let dive = req.params.dive;
+
+    db.query(
+      "SELECT dive.name,\n" +
+        "       dive_site.name AS dive_site,\n" +
+        "       dive.date_begin,\n" +
+        "       dive.comment,\n" +
+        "       dive.place_number,\n" +
+        "       dive.registered_place,\n" +
+        "       dive.diver_price,\n" +
+        "       dive.instructor_price,\n" +
+        "       dive.surface_security,\n" +
+        "       dive.max_ppo2\n" +
+        "FROM dive\n" +
+        "INNER JOIN dive_site\n" +
+        "ON dive.dive_site = dive_site.id\n" +
+        "WHERE dive.id = ?",
+      [dive],
+      (err, rows) => {
+        if (err) throw err;
+        res.json(rows);
+      }
+    );
+  });
+  router.get("/modifier/diveteam/:dive", (req, res) => {
+    let dive = req.params.dive;
+
+    db.query(
+      "SELECT dive_type,\n" +
+        "       max_depth,\n" +
+        "       id\n" +
+        "FROM dive_team\n" +
+        "WHERE dive = ?",
+      [dive],
+      (err, rows) => {
+        if (err) throw err;
+        res.json(rows);
+      }
+    );
+  });
+  router.get("/modifier/divers/:dive", (req, res) => {
+    let dive = req.params.dive;
+
+    db.query(
+      "SELECT diver.last_name,\n" +
+        "       diver.first_name,\n" +
+        "       diver_qualification.autonomous AS pa,\n" +
+        "       diver_qualification.supervise AS pe,\n" +
+        "       team AS palanquee\n" +
+        "FROM dive_team_member\n" +
+        "INNER JOIN diver\n" +
+        "ON dive_team_member.diver = diver.id\n" +
+        "INNER JOIN diver_qualification\n" +
+        "ON diver.diver_qualification = diver_qualification.id\n" +
+        "INNER JOIN dive_team\n" +
+        "ON dive_team_member.team = dive_team.id\n" +
+        "WHERE dive_team.dive = ?",
+      [dive],
+      (err, rows) => {
+        if (err) throw err;
+        res.json(rows);
+      }
+    );
+  });
   // |||||||||||||||||||||||||||
   // |||||||||||||||||||||||||||
   // |||||||||||||||||||||||||||

@@ -117,7 +117,7 @@ async function modifyPDF(filename, data) {
 
       //Qualification du plongeur
       page.drawText(plongeur.qualification, {
-        x: 210,
+        x: 200,
         y: height - 209 - index * 82 - index2 * 11,
         size: 8,
         font: helveticaFont,
@@ -135,7 +135,7 @@ async function modifyPDF(filename, data) {
 
       //Niveau de nitrox du plongeur
       page.drawText(plongeur.nitrox, {
-        x: 263,
+        x: 258,
         y: height - 209 - index * 82 - index2 * 11,
         size: 8,
         font: helveticaFont,

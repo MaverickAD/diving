@@ -7,7 +7,7 @@ import Login from "./Pages/Login";
 import Register from "./Pages/Register";
 import Diver from "./Pages/Diver";
 import axios from "axios";
-import DiveCreator from "./Component/AdminComponent/DiveManagement/DiveCreator";
+import DiveCreator from "./Component/AdminComponent/DiveManagement/DiveCreator/DiveCreator";
 import DiverManagement from "./Component/AdminComponent/DiverManagement/DiverManagement";
 import DiveManagement from "./Component/AdminComponent/DiveManagement/DiveManagement";
 import History from "./Component/AdminComponent/History/History";

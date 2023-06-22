@@ -30,9 +30,21 @@ function DiveManagement(props) {
 
   return (
     <>
-      <h2 className={"text-light-text text-xl font-bold mb-6"}>
-        Dive Management
-      </h2>
+      <div className={"flex justify-between items-center mb-6"}>
+        <h2 className={"text-light-text text-xl font-bold mb-6"}>
+          Dive Management
+        </h2>
+        <button
+          className={
+            "bg-primary hover:bg-accent text-white text-center text-sm font-bold uppercase rounded-full px-5 py-2.5"
+          }
+          onClick={() => {
+            navigate("/instructor/dive_management/new");
+          }}
+        >
+          Add a dive
+        </button>
+      </div>
       <div className={"flex justify-between items-center mb-4"}>
         <div className={"h-full space-x-2 text-light-text text-sm"}>
           <label className={"font-bold mb-2"}>Name : </label>
