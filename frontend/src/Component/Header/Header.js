@@ -8,7 +8,7 @@ function Header(props) {
   return (
     <header
       className={
-        "bg-gradient-to-r from-indigo-500 from-10% via-sky-500 via-30% to-emerald-500 to-90% text-header-footer-text p-4 mb-4 shadow-xl"
+        "top-0 left-0 right-0 bg-gradient-to-r from-secondary via-primary to-accent text-header-footer-text p-4 shadow-[35px_0px_60px_-15px_rgba(0,0,0,1)]"
       }
     >
       <div className={"flex justify-between items-center"}>
@@ -20,7 +20,9 @@ function Header(props) {
             <li className={"mx-1"}>
               <Link
                 to={"/diver"}
-                className={"font-bold hover:text-header-footer-text-hover"}
+                className={
+                  "border-accent text-white text-center text-sm font-bold uppercase hover:bg-white hover:text-black hover:cursor-pointer rounded px-5 py-2.5 mx-1"
+              }
               >
                 Diver
               </Link>
@@ -28,9 +30,11 @@ function Header(props) {
             <li className={"mx-1"}>
               <Link
                 to={"/instructor"}
-                className={"font-bold hover:text-header-footer-text-hover"}
+                className={
+                  "border-accent text-white text-center text-sm font-bold uppercase hover:bg-white hover:text-black hover:cursor-pointer rounded px-5 py-2.5 mx-1"
+              }
               >
-                Instructor
+                Dive Director
               </Link>
             </li>
             <li>

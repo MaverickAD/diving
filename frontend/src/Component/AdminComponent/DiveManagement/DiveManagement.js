@@ -36,7 +36,7 @@ function DiveManagement(props) {
         </h2>
         <button
           className={
-            "bg-primary hover:bg-accent text-white text-center text-sm font-bold uppercase rounded-full px-5 py-2.5"
+            "bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full px-5 py-2.5"
           }
           onClick={() => {
             navigate("/instructor/dive_management/new");

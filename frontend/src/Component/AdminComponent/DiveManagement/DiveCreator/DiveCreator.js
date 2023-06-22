@@ -48,7 +48,7 @@ function DiveCreator(props) {
   return (
     <div>
       <button
-        className={"underline text-sm"}
+        className={" bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full px-5 py-2.5 mb-6"}
         onClick={() => navigate("/instructor/dive_management")}
       >
         Return
@@ -279,7 +279,7 @@ function DiveCreator(props) {
           <div className={"flex justify-center"}>
             <button
               type={"submit"}
-              className={`bg-primary text-white font-bold py-2 px-4 rounded-full ${
+              className={`bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full py-2 px-4 ${
                 canModify ? "opacity-50 cursor-not-allowed" : "hover:bg-accent"
               }`}
               disabled={canModify}

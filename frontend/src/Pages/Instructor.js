@@ -10,75 +10,72 @@ function Instructor(props) {
   useVerifyToken("admin");
 
   return (
-    <div className={"flex w-full"}>
+    <div className={"flex w-full m-5"}>
       <div className={"w-full max-w-xs bg-white mx-2 p-4 rounded-md shadow-md"}>
         <h2 className={"text-xl font-bold mb-6"}>Dashboard</h2>
-        <div
-          className={`mb-2 px-2 py-2 rounded border ${
+        <div>
+          <button
+              className={`w-full text-left mb-2 px-2 py-2 hover:shadow-[inset_20rem_0_0_0] hover:shadow-accent duration-[1000ms,1200ms] transition-[color,box-shadow] rounded-md ${
             pageSelected === 1 || page === "diver_management"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
+              ? "bg-primary" : ""
           }`}
           onClick={() => {
             setPageSelected(1);
             navigate("/instructor/diver_management");
           }}
-        >
-          <Link to={"/instructor/diver_management"}>Diver Management</Link>
+        >Diver Management
+          </button>
         </div>
-        <div
-          className={`mb-2 px-2 py-2 rounded border ${
+        <div>
+          <button
+              className={`w-full text-left mb-2 px-2 py-2 hover:shadow-[inset_20rem_0_0_0] hover:shadow-accent duration-[1000ms,1200ms] transition-[color,box-shadow] rounded-md ${
             pageSelected === 3 || page === "dive_management"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
+                ? "bg-primary" : ""
           }`}
           onClick={() => {
             setPageSelected(3);
             navigate("/instructor/dive_management");
           }}
-        >
-          <Link to={"/instructor/dive_management"}>Dive Management</Link>
+        >Dive Management
+          </button>
         </div>
-        <div
-          className={`mb-2 px-2 py-2 rounded border ${
+        <div>
+          <button
+              className={`w-full text-left mb-2 px-2 py-2 hover:shadow-[inset_20rem_0_0_0] hover:shadow-accent duration-[1000ms,1200ms] transition-[color,box-shadow] rounded-md ${
             pageSelected === 4 || page === "history"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
+                ? "bg-primary" : ""
           }`}
           onClick={() => {
             setPageSelected(4);
             navigate("/instructor/history");
           }}
-        >
-          <Link to={"/instructor/history"}>History</Link>
+        >History
+          </button>
         </div>
-        <div
-          className={`mb-2 px-2 py-2 rounded border  ${
+        <div>
+          <button
+              className={`w-full text-left mb-2 px-2 py-2 hover:shadow-[inset_20rem_0_0_0] hover:shadow-accent duration-[1000ms,1200ms] transition-[color,box-shadow] rounded-md ${
             pageSelected === 5 || page === "dive_site_management"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
+                ? "bg-primary" : ""
           }`}
           onClick={() => {
             setPageSelected(5);
             navigate("/instructor/dive_site_management");
           }}
-        >
-          <Link to={"/instructor/dive_site_management"}>
-            Dive Site Management
-          </Link>
+        >Dive Site Management
+          </button>
         </div>
-        <div
-          className={`mb-2 px-2 py-2 rounded border ${
+        <div>
+          <button
+              className={`w-full text-left mb-2 px-2 py-2 hover:shadow-[inset_20rem_0_0_0] hover:shadow-accent duration-[1000ms,1200ms] transition-[color,box-shadow] rounded-md ${
             pageSelected === 6 || page === "admin_management"
-              ? "bg-accent border-accent shadow-md"
-              : "border-white hover:border-accent hover:shadow-md"
+                ? "bg-primary" : ""
           }`}
           onClick={() => {
             setPageSelected(6);
             navigate("/instructor/admin_management");
           }}
-        >
-          <Link to={"/instructor/admin_management"}>Admin Management</Link>
+          >Admin Management</button>
         </div>
       </div>
 
