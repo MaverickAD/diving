@@ -22,8 +22,8 @@ function DiverDrag(props) {
     >
       <p className={"text-center"}>{props.diver.first_name}</p>
       <p className={"text-center"}>{props.diver.last_name}</p>
-      <p className={"text-center"}>{props.diver.pa}</p>
-      <p className={"text-center"}>{props.diver.pe}</p>
+      <p className={"text-center"}>PA-{props.diver.pa}</p>
+      <p className={"text-center"}>PE-{props.diver.pe}</p>
     </div>
   );
 }

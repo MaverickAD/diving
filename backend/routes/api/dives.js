@@ -1,5 +1,6 @@
 let express = require("express");
 let router = express.Router();
+const { v4: uuidv4 } = require("uuid");
 
 module.exports = (db) => {
   // |||||||||||||||||||||||||||
@@ -140,16 +141,17 @@ module.exports = (db) => {
         "                dive_site.country,\n" +
         "                dive_site.url\n" +
         "FROM dive\n" +
-        "INNER JOIN dive_site\n" +
-        "ON dive.dive_site = dive_site.id\n" +
+        "    INNER JOIN dive_site\n" +
+        "        ON dive.dive_site = dive_site.id\n" +
         "WHERE dive.id NOT IN (\n" +
-        "  SELECT dive.id FROM dive\n" +
+        "SELECT dive.id FROM dive\n" +
         "    INNER JOIN dive_team\n" +
-        "    ON dive.id = dive_team.dive\n" +
+        "        ON dive.id = dive_team.dive\n" +
         "    INNER JOIN dive_team_member\n" +
-        "    ON dive_team.id = dive_team_member.team\n" +
-        "    WHERE diver = ?\n" +
-        ") AND dive.status = '1'",
+        "        ON dive_team.id = dive_team_member.team\n" +
+        "               WHERE diver = ?\n" +
+        "               )\n" +
+        "  AND dive.status = '1'",
       [diver],
       (err, rows) => {
         if (err) throw err;
@@ -180,6 +182,7 @@ module.exports = (db) => {
       (err, rows) => {
         if (err) throw err;
 
+        let uuidGen = uuidv4();
         rows.length !== 0
           ? db.query(
               "INSERT INTO dive_team_member\n" +
@@ -189,14 +192,13 @@ module.exports = (db) => {
                 "     current_diver_qualification,\n" +
                 "     current_instructor_qualification,\n" +
                 "     current_nox_qualification)\n" +
-                "VALUE (\n" +
-                "       ?,\n" +
-                "       ?,\n" +
-                "       'Apprenti',\n" +
-                "       (SELECT diver_qualification FROM diver WHERE id = ?),\n" +
-                "       (SELECT instructor_qualification FROM diver WHERE id = ?),\n" +
-                "       (SELECT nitrox_qualification FROM diver WHERE id = ?)\n" +
-                ")",
+                "    VALUE\n" +
+                "    (?,\n" +
+                "     ?,\n" +
+                "     'Apprenti',\n" +
+                "     (SELECT diver_qualification FROM diver WHERE id = ?),\n" +
+                "     (SELECT instructor_qualification FROM diver WHERE id = ?),\n" +
+                "     (SELECT nitrox_qualification FROM diver WHERE id = ?))",
               [rows[0].team, diver, diver, diver, diver],
               (err, rows) => {
                 if (err) throw err;
@@ -204,8 +206,17 @@ module.exports = (db) => {
               }
             )
           : db.query(
-              "INSERT INTO dive_team(dive, max_depth, dive_type) VALUE(?,?,?)",
-              [diveteam, maxdepth, divetype],
+              "INSERT INTO dive_team\n" +
+                "    (id,\n" +
+                "     dive,\n" +
+                "     max_depth,\n" +
+                "     dive_type)\n" +
+                "    VALUE\n" +
+                "    (?,\n" +
+                "     ?,\n" +
+                "     ?,\n" +
+                "     ?)",
+              [uuidGen, diveteam, maxdepth, divetype],
               (err, rows) => {
                 if (err) throw err;
                 db.query(
@@ -216,15 +227,14 @@ module.exports = (db) => {
                     "     current_diver_qualification,\n" +
                     "     current_instructor_qualification,\n" +
                     "     current_nox_qualification)\n" +
-                    "VALUE (\n" +
-                    "       ?,\n" +
-                    "       ?,\n" +
-                    "       'Apprenti',\n" +
-                    "       (SELECT diver_qualification FROM diver WHERE id = ?),\n" +
-                    "       (SELECT instructor_qualification FROM diver WHERE id = ?),\n" +
-                    "       (SELECT nitrox_qualification FROM diver WHERE id = ?)\n" +
-                    ")",
-                  [rows.insertId, diver, diver, diver, diver],
+                    "    VALUE\n" +
+                    "    (?,\n" +
+                    "     ?,\n" +
+                    "     'Apprenti',\n" +
+                    "     (SELECT diver_qualification FROM diver WHERE id = ?),\n" +
+                    "     (SELECT instructor_qualification FROM diver WHERE id = ?),\n" +
+                    "     (SELECT nitrox_qualification FROM diver WHERE id = ?))",
+                  [uuidGen, diver, diver, diver, diver],
                   (err, rows) => {
                     if (err) throw err;
                     res.status(200).json(rows);
@@ -307,6 +317,7 @@ module.exports = (db) => {
     }
   });
 
+  // Good
   router.get("/modifier/dive/:dive", (req, res) => {
     let dive = req.params.dive;
 
@@ -314,16 +325,21 @@ module.exports = (db) => {
       "SELECT dive.name,\n" +
         "       dive_site.name AS dive_site,\n" +
         "       dive.date_begin,\n" +
+        "       dive.date_end,\n" +
         "       dive.comment,\n" +
         "       dive.place_number,\n" +
         "       dive.registered_place,\n" +
         "       dive.diver_price,\n" +
         "       dive.instructor_price,\n" +
         "       dive.surface_security,\n" +
-        "       dive.max_ppo2\n" +
+        "       dive.max_ppo2,\n" +
+        "       diver.first_name AS director_first_name,\n" +
+        "       diver.last_name AS director_last_name\n" +
         "FROM dive\n" +
-        "INNER JOIN dive_site\n" +
-        "ON dive.dive_site = dive_site.id\n" +
+        "    INNER JOIN dive_site\n" +
+        "        ON dive.dive_site = dive_site.id\n" +
+        "    INNER JOIN diver\n" +
+        "        ON dive.director = diver.id\n" +
         "WHERE dive.id = ?",
       [dive],
       (err, rows) => {
@@ -354,9 +370,11 @@ module.exports = (db) => {
     db.query(
       "SELECT diver.last_name,\n" +
         "       diver.first_name,\n" +
+        "       diver AS id,\n" +
         "       diver_qualification.autonomous AS pa,\n" +
         "       diver_qualification.supervise AS pe,\n" +
-        "       team AS palanquee\n" +
+        "       team AS palanquee,\n" +
+        "       team AS initial\n" +
         "FROM dive_team_member\n" +
         "INNER JOIN diver\n" +
         "ON dive_team_member.diver = diver.id\n" +
@@ -371,6 +389,62 @@ module.exports = (db) => {
         res.json(rows);
       }
     );
+  });
+
+  router.put("/modifier/dive/:dive", (req, res) => {
+    let dive = req.params.dive;
+    let data = req.body;
+    if (Object.keys(data).length !== 0) {
+      console.log(data);
+      db.query("UPDATE dive SET ? WHERE id = ?", [data, dive], (err, rows) => {
+        if (err) throw err;
+        res.json(rows);
+      });
+    } else {
+      res.json({ message: "No data to update" });
+    }
+  });
+  router.post("/modifier/diveteam/:dive", (req, res) => {
+    let dive = req.params.dive;
+    let data = req.body;
+    let alpha = false;
+
+    data.map((element) => {
+      if (Object.keys(element).includes("new")) {
+        alpha = true;
+        console.log(element);
+        db.query(
+          "INSERT INTO dive_team (id, dive, max_depth, dive_type) VALUES (?, ?, ?, ?)",
+          [element.id, dive, element.max_depth, element.dive_type],
+          (err, rows) => {
+            if (err) throw err;
+          }
+        );
+      }
+    });
+
+    alpha ? res.json({ message: "ok" }) : res.json({ message: "no change" });
+  });
+  router.put("/modifier/divers/:dive", (req, res) => {
+    let dive = req.params.dive;
+    let data = req.body;
+    let alpha = false;
+
+    data.map((element) => {
+      if (element.palanquee !== element.initial) {
+        alpha = true;
+        console.log(element);
+        db.query(
+          "UPDATE dive_team_member SET team = ? WHERE diver = ? AND team = ?",
+          [element.palanquee, element.id, element.initial],
+          (err, rows) => {
+            if (err) throw err;
+          }
+        );
+      }
+    });
+
+    alpha ? res.json({ message: "ok" }) : res.json({ message: "no change" });
   });
   // |||||||||||||||||||||||||||
   // |||||||||||||||||||||||||||

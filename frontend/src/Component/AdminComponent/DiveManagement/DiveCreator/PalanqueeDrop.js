@@ -28,10 +28,12 @@ function PalanqueeDrop(props) {
 
   useEffect(() => {
     props.setModify(
-      props.divers.filter((diver) => diver.palanquee === props.palanquee)
-        .length === 1 ||
+      !(
+        props.divers.filter((diver) => diver.palanquee === props.palanquee)
+          .length <= 1 ||
         props.divers.filter((diver) => diver.palanquee === props.palanquee)
           .length > 4
+      )
     );
   });
 
