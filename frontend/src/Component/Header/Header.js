@@ -78,7 +78,7 @@ function Header(props) {
                         className="block py-2 px-4 font-bold text-center hover:text-header-footer-text-hover"
                         onClick={toggleMobileMenu}
                     >
-                      Instructor
+                      Dive Director
                     </Link>
                   </li>
                   <li>

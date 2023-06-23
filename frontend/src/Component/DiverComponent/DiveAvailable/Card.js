@@ -77,7 +77,7 @@ function Card(props) {
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PA-12"
                     ? "bg-accent"
-                    : "bg-primary hover:bg-accent"
+                          : "bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"
                 }`}
                 disabled={
                   ![8, 9, 10, 11, 12].includes(props.diver.diver_qualification)
@@ -95,7 +95,7 @@ function Card(props) {
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PA-20"
                     ? "bg-accent"
-                    : "bg-primary hover:bg-accent"
+                          : "bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"
                 }`}
                 disabled={
                   ![9, 10, 11, 12].includes(props.diver.diver_qualification)
@@ -112,8 +112,8 @@ function Card(props) {
                   ![10, 11, 12].includes(props.diver.diver_qualification)
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PA-60"
-                    ? "bg-accent"
-                    : "bg-primary hover:bg-accent"
+                    ? "bg-accent" 
+                          : "bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"
                 }`}
                 disabled={
                   ![10, 11, 12].includes(props.diver.diver_qualification)
@@ -138,7 +138,8 @@ function Card(props) {
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PE-6"
                     ? "bg-accent"
-                    : "bg-primary hover:bg-accent"
+                    : "bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"
+
                 }`}
                 disabled={
                   ![1, 7, 8, 9, 10, 11, 12].includes(
@@ -158,7 +159,7 @@ function Card(props) {
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PE-20"
                     ? "bg-accent"
-                    : "bg-primary hover:bg-accent"
+                          : "bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"
                 }`}
                 disabled={
                   ![8, 9, 10, 11, 12].includes(props.diver.diver_qualification)
@@ -176,7 +177,7 @@ function Card(props) {
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PE-40"
                     ? "bg-accent"
-                    : "bg-primary hover:bg-accent"
+                          : "bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"
                 }`}
                 disabled={
                   ![9, 10, 11, 12].includes(props.diver.diver_qualification)
@@ -194,7 +195,7 @@ function Card(props) {
                     ? "bg-gray-400 cursor-not-allowed"
                     : clickedButton === "PE-60"
                     ? "bg-accent"
-                    : "bg-primary hover:bg-accent"
+                          : "bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"
                 }`}
                 disabled={
                   ![10, 11, 12].includes(props.diver.diver_qualification)
@@ -209,7 +210,7 @@ function Card(props) {
       </div>
       <button
         className={
-          "bg-primary border hover:border-accent hover:text-accent hover:bg-white hover:cursor-pointer text-white text-center text-sm font-bold uppercase rounded-full px-5 py-2.5"
+          "bg-primary px-4 py-2 font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"
         }
         onClick={(event) => HandleRegister(event, props.dive.id)}
       >

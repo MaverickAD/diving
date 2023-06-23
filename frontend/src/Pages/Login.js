@@ -74,11 +74,11 @@ function Login(props) {
 
   return (
     <div className={"w-full"}>
-      <h1 className={"text-2xl font-bold mb-6 text-center text-light-text"}>
+      <h1 className={"text-2xl font-bold mb-6 mt-20 text-center text-light-text"}>
         Login
       </h1>
       <form
-        className={"w-full max-w-lg mx-auto bg-white p-8 rounded-md shadow-md"}
+        className={"w-full max-w-lg mx-auto bg-white p-8 rounded-lg shadow-xl"}
         onSubmit={handleSubmit}
       >
         <div className={"mb-4"}>
@@ -113,7 +113,7 @@ function Login(props) {
           <button
             type={"submit"}
             className={
-              "bg-primary hover:bg-accent text-white font-bold py-2 px-4 rounded"
+              "px-4 py-2 bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"
             }
           >
             Login

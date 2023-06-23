@@ -28,8 +28,8 @@ function History(props) {
   }, []);
 
   return (
-    <div>
-      <h2 className={"text-light-text text-xl font-bold mb-6"}>History</h2>
+    <>
+    <h2 className={"text-light-text text-xl font-bold mb-6"}>History</h2>
       <div className={"flex justify-between items-center mb-4"}>
         <div className={"h-full space-x-2 text-light-text text-sm"}>
           <label className={"font-bold mb-2"}>Name : </label>
@@ -131,7 +131,7 @@ function History(props) {
           </tbody>
         </table>
       )}
-    </div>
+  </>
   );
 }
 

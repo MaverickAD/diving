@@ -25,10 +25,8 @@ function ModalAdminAdd(props) {
   return (
     <>
       <button
-        className={
-          "bg-primary hover:bg-accent text-white text-center text-sm font-bold uppercase rounded-full px-5 py-2.5"
-        }
-        onClick={() => setShowModal(true)}
+          className={"uppercase px-4 py-2 bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"}
+          onClick={() => setShowModal(true)}
       >
         Add an admin
       </button>

@@ -89,7 +89,6 @@ function DiveSiteManagement(props) {
               <th className={"w-40 px-1 py-2 "}>City</th>
               <th className={"w-32 px-1 py-2 "}>Country</th>
               <th className={"w-32 px-1 py-2 "}>Modify</th>
-              <th className={"w-32 px-1 py-2 "}>Delete</th>
             </tr>
           </thead>
           <tbody>
@@ -131,19 +130,6 @@ function DiveSiteManagement(props) {
                   </td>
                   <td className={"whitespace-nowrap px-1 py-2 "}>
                     <ModalDiveSiteManagement siteDiveInfo={site} />
-                  </td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
-                    <button
-                      className={
-                        "bg-red-600 hover:bg-red-700 text-white text-center text-sm font-bold uppercase rounded-full px-5 py-2.5"
-                      }
-                      onClick={(event) => {
-                        event.preventDefault();
-                        handleDelete(site.id);
-                      }}
-                    >
-                      Delete
-                    </button>
                   </td>
                 </tr>
               ))}
