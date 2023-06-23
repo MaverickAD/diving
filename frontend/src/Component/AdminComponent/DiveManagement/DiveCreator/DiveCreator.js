@@ -4,22 +4,74 @@ import { DndProvider } from "react-dnd";
 import { HTML5Backend } from "react-dnd-html5-backend";
 import PalanqueeDrop from "./PalanqueeDrop";
 import axios from "axios";
+import { v4 as uuidv4 } from "uuid";
 import Loader from "../../../Loader/Loader";
 
 function DiveCreator(props) {
+  const [diveInstructor, setDiveInstructor] = useState([]);
+  const [diveSite, setDiveSite] = useState([]);
   const [diveInfo, setDiveInfo] = useState({});
   const [divers, setDivers] = useState([]);
   const [palanquees, setPalanquees] = useState([]);
   const [canModify, setCanModify] = useState(true);
+  const [canAddTeam, setCanAddTeam] = useState(false);
+  const [addTeam, setAddTeam] = useState({ type: "autonome", depth: "12" });
+  const [modifiedData, setModifiedData] = useState({});
   const { dive } = useParams();
   const navigate = useNavigate();
 
+  // console.log("diveInstructor", diveInstructor.length === 0);
+  // console.log("diveSite", diveSite.length === 0);
+  // console.log("diveInfo", Object.keys(diveInfo).length === 0);
+  // console.log("palanquees", palanquees.length === 0);
+  // console.log("divers", divers.length === 0);
+  // console.log(
+  //   "or",
+  //   diveInstructor.length === 0 ||
+  //     diveSite.length === 0 ||
+  //     Object.keys(diveInfo).length === 0 ||
+  //     palanquees.length === 0 ||
+  //     divers.length !== 0
+  // );
+  // console.log("dive", dive === "new");
+  //
+  // console.log(
+  //   (diveInstructor.length === 0 ||
+  //     diveSite.length === 0 ||
+  //     Object.keys(diveInfo).length === 0 ||
+  //     palanquees.length === 0 ||
+  //     divers.length === 0) &&
+  //     dive !== "new"
+  // );
+
   useEffect(() => {
+    axios
+      .get("/api/users/dive_director")
+      .then((response) => {
+        setDiveInstructor(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    axios
+      .get("/api/sites/all")
+      .then((response) => {
+        setDiveSite(response.data);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
     if (!isNaN(Number(dive))) {
+      console.log("dive", dive);
       axios
         .get("/api/dives/modifier/dive/" + dive)
         .then((response) => {
           setDiveInfo(response.data[0]);
+          console.log(response.data[0]);
         })
         .catch((error) => {
           console.log(error);
@@ -29,6 +81,7 @@ function DiveCreator(props) {
         .get("/api/dives/modifier/diveteam/" + dive)
         .then((response) => {
           setPalanquees(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -38,12 +91,68 @@ function DiveCreator(props) {
         .get("/api/dives/modifier/divers/" + dive)
         .then((response) => {
           setDivers(response.data);
+          console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
         });
     }
-  }, []);
+  }, [dive]);
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log({
+      modifiedData,
+      palanquees,
+      divers,
+    });
+    axios
+      .put("/api/dives/modifier/dive/" + dive, modifiedData)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+
+    let boolPalanquees = false;
+    palanquees.map((palanquee) => {
+      if (Object.keys(palanquee).includes("new")) {
+        boolPalanquees = true;
+      }
+    });
+
+    if (boolPalanquees) {
+      axios
+        .post("/api/dives/modifier/diveteam/" + dive, palanquees)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    let boolDivers = false;
+    divers.map((diver) => {
+      if (diver.palanquee !== diver.initial) {
+        boolDivers = true;
+      }
+    });
+
+    if (boolDivers) {
+      axios
+        .put("/api/dives/modifier/divers/" + dive, divers)
+        .then((response) => {
+          console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    window.location.reload();
+  };
 
   return (
     <div>
@@ -54,13 +163,15 @@ function DiveCreator(props) {
         Return
       </button>
       <h2 className={"text-light-text text-xl font-bold mb-6"}>Dive Creator</h2>
-      {Object.keys(diveInfo).length === 0 &&
-      Object.keys(palanquees).length === 0 &&
-      Object.keys(divers).length === 0 &&
+      {(diveInstructor.length === 0 ||
+        diveSite.length === 0 ||
+        Object.keys(diveInfo).length === 0) /*||
+        palanquees.length === 0 ||
+        divers.length === 0*/ &&
       dive !== "new" ? (
         <Loader />
       ) : (
-        <form>
+        <form onSubmit={handleSubmit}>
           <div className={"grid grid-cols-2 gap-4"}>
             <div className={"mb-4"}>
               <label className={"block mb-2 text-sm font-bold text-light-text"}>
@@ -70,6 +181,12 @@ function DiveCreator(props) {
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
                 defaultValue={dive === "new" ? "" : diveInfo.name}
+                onChange={(event) =>
+                  setModifiedData({
+                    ...modifiedData,
+                    name: event.target.value,
+                  })
+                }
               />
             </div>
             <div className={"mb-4"}>
@@ -79,44 +196,27 @@ function DiveCreator(props) {
               <select
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
                 defaultValue={dive === "new" ? "" : diveInfo.dive_site}
+                onChange={(event) => {
+                  setModifiedData({
+                    ...modifiedData,
+                    dive_site: event.target.value,
+                  });
+
+                  diveSite.map((site) => {
+                    if (site.name === event.target.value) {
+                      setModifiedData({
+                        ...modifiedData,
+                        dive_site: site.id,
+                      });
+                    }
+                  });
+                }}
               >
-                <option value=""></option>
-                <option value="BARGES">BARGES</option>
-                <option value="ADEPS">ADEPS</option>
-                <option value="BARRAGE DE L'EAU D'HEURE">
-                  BARRAGE DE L'EAU D'HEURE
-                </option>
-                <option value="NEMO 33">NEMO 33</option>
-                <option value="LE NAUTILUS">LE NAUTILUS</option>
-                <option value="DOUR">DOUR</option>
-                <option value="TODI">TODI</option>
-                <option value="DUIKTANK">DUIKTANK</option>
-                <option value="FORME 4">FORME 4</option>
-                <option value="LA GOMBE">LA GOMBE</option>
-                <option value="LILLÉ">LILLÉ</option>
-                <option value="BERGSEDIEPSLUIS">BERGSEDIEPSLUIS</option>
-                <option value="EKEREN">EKEREN</option>
-                <option value="BORMES LES MIMOSAS">BORMES LES MIMOSAS</option>
-                <option value="FOSSE VILLENEUVE LA GARENNE">
-                  FOSSE VILLENEUVE LA GARENNE
-                </option>
-                <option value="PISCINE DE SAINT-ANDRE-LEZ-LILLE">
-                  PISCINE DE SAINT-ANDRE-LEZ-LILLE
-                </option>
-                <option value="DEN OSSE  DIVE SPOT">DEN OSSE DIVE SPOT</option>
-                <option value="PORTO SAN PAOLO (SARDAIGNE)">
-                  PORTO SAN PAOLO (SARDAIGNE)
-                </option>
-                <option value="CARRIERE DU FLATO">CARRIERE DU FLATO</option>
-                <option value="LA CROISETTE">LA CROISETTE</option>
-                <option value="ROCHEFONTAINE">ROCHEFONTAINE</option>
-                <option value="FOSSE GEORGES GUYNEMER">
-                  FOSSE GEORGES GUYNEMER
-                </option>
-                <option value="VODELÉE">VODELÉE</option>
-                <option value="LAC BLEU">LAC BLEU</option>
-                <option value="CARRIÈRE DE TRÉLON">CARRIÈRE DE TRÉLON</option>
-                <option value="FOSSE EMERAUDE">FOSSE EMERAUDE</option>
+                {diveSite.map((site, index) => (
+                  <option key={index} value={site.name}>
+                    {site.name}
+                  </option>
+                ))}
               </select>
             </div>
             <div className={"mb-4"}>
@@ -131,7 +231,89 @@ function DiveCreator(props) {
                     ? new Date().toISOString().slice(0, 16)
                     : new Date(diveInfo.date_begin).toISOString().slice(0, 16)
                 }
+                onChange={(event) =>
+                  setModifiedData({
+                    ...modifiedData,
+                    date_begin: event.target.value,
+                  })
+                }
               ></input>
+            </div>
+            <div className={"mb-4"}>
+              <label className="block mb-2 text-sm font-bold text-light-text">
+                End Date
+              </label>
+              <input
+                type="datetime-local"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
+                defaultValue={
+                  dive === "new"
+                    ? new Date().toISOString().slice(0, 16)
+                    : new Date(diveInfo.date_end).toISOString().slice(0, 16)
+                }
+                onChange={(event) =>
+                  setModifiedData({
+                    ...modifiedData,
+                    date_end: event.target.value,
+                  })
+                }
+              ></input>
+            </div>
+            <div className={"mb-4"}>
+              <label className="block mb-2 text-sm font-bold text-light-text">
+                Dive Instructor
+              </label>
+              <select
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
+                defaultValue={
+                  dive === "new"
+                    ? ""
+                    : diveInfo.director_first_name +
+                      " " +
+                      diveInfo.director_last_name
+                }
+                onChange={(event) => {
+                  diveInstructor.map((instructor) => {
+                    if (
+                      instructor.first_name + " " + instructor.last_name ===
+                      event.target.value
+                    ) {
+                      setModifiedData({
+                        ...modifiedData,
+                        director: instructor.id,
+                      });
+                    }
+                  });
+                }}
+              >
+                {diveInstructor.map((instructor, index) => (
+                  <option
+                    key={index}
+                    value={instructor.first_name + " " + instructor.last_name}
+                    className={`${
+                      instructor.diver_qualification === 12
+                        ? "bg-orange-300 opacity-75"
+                        : instructor.instructor_qualification === 4
+                        ? "bg-green-300 opacity-75"
+                        : instructor.instructor_qualification === 5
+                        ? "bg-blue-300 opacity-75"
+                        : "bg-gray-300 opacity-75"
+                    }`}
+                  >
+                    {instructor.first_name +
+                      " " +
+                      instructor.last_name +
+                      " " +
+                      (instructor.diver_qualification === 12
+                        ? "N5"
+                        : instructor.instructor_qualification === 4
+                        ? "E4"
+                        : instructor.instructor_qualification === 5
+                        ? "E5"
+                        : "")}
+                  </option>
+                ))}
+              </select>
             </div>
             <div className={"mb-4"}>
               <label className="block mb-2 text-sm font-bold text-light-text">
@@ -141,6 +323,12 @@ function DiveCreator(props) {
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
                 defaultValue={dive === "new" ? "" : diveInfo.comment}
+                onChange={(event) =>
+                  setModifiedData({
+                    ...modifiedData,
+                    comment: event.target.value,
+                  })
+                }
               />
             </div>
             <div className={"mb-4"}>
@@ -151,6 +339,12 @@ function DiveCreator(props) {
                 type="number"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
                 defaultValue={dive === "new" ? "" : diveInfo.place_number}
+                onChange={(event) =>
+                  setModifiedData({
+                    ...modifiedData,
+                    place_number: event.target.value,
+                  })
+                }
               />
             </div>
             <div className={"mb-4"}>
@@ -161,6 +355,13 @@ function DiveCreator(props) {
                 type="number"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
                 defaultValue={dive === "new" ? "" : diveInfo.registered_place}
+                onChange={(event) =>
+                  setModifiedData({
+                    ...modifiedData,
+                    registered_place: event.target.value,
+                  })
+                }
+                disabled={true}
               />
             </div>
             <div className={"mb-4"}>
@@ -171,6 +372,12 @@ function DiveCreator(props) {
                 type="number"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
                 defaultValue={dive === "new" ? "" : diveInfo.diver_price}
+                onChange={(event) =>
+                  setModifiedData({
+                    ...modifiedData,
+                    diver_price: event.target.value,
+                  })
+                }
               />
             </div>
             <div className={"mb-4"}>
@@ -181,6 +388,12 @@ function DiveCreator(props) {
                 type="number"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
                 defaultValue={dive === "new" ? "" : diveInfo.instructor_price}
+                onChange={(event) =>
+                  setModifiedData({
+                    ...modifiedData,
+                    instructor_price: event.target.value,
+                  })
+                }
               />
             </div>
             <div className={"mb-4"}>
@@ -191,6 +404,12 @@ function DiveCreator(props) {
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
                 defaultValue={dive === "new" ? "" : diveInfo.surface_security}
+                onChange={(event) =>
+                  setModifiedData({
+                    ...modifiedData,
+                    surface_security: event.target.value,
+                  })
+                }
               />
             </div>
             <div className={"mb-4"}>
@@ -201,10 +420,27 @@ function DiveCreator(props) {
                 type="text"
                 className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:border-accent"
                 defaultValue={dive === "new" ? "" : diveInfo.max_ppo2}
+                onChange={(event) =>
+                  setModifiedData({
+                    ...modifiedData,
+                    max_ppo2: event.target.value,
+                  })
+                }
               />
             </div>
-            {dive === "new" ? (
-              ""
+            {divers.length === 0 || dive === "new" ? (
+              <div className={"mb-4 col-span-2"}>
+                <label className="block mb-2 text-sm font-bold text-light-text">
+                  List of Diver
+                </label>
+                <div
+                  className={
+                    "w-full h-56 overflow-x-hidden overflow-y-auto border border-gray-300 rounded-md p-2"
+                  }
+                >
+                  <p>No divers yet</p>
+                </div>
+              </div>
             ) : (
               <div className={"mb-4 col-span-2"}>
                 <label className="block mb-2 text-sm font-bold text-light-text">
@@ -229,13 +465,84 @@ function DiveCreator(props) {
                 </div>
               </div>
             )}
-            {dive === "new" ? (
-              ""
-            ) : (
+            {palanquees.length === 0 || dive === "new" ? (
               <div className={"mb-4 col-span-2"}>
-                <label className="block mb-2 text-sm font-bold text-light-text">
+                <label className="block text-sm font-bold text-light-text">
                   List of Team
                 </label>
+                <div className={"border border-gray-300 rounded-md p-2"}>
+                  <p>No teams yet</p>
+                </div>
+              </div>
+            ) : (
+              <div className={"mb-4 col-span-2"}>
+                <div className={"flex justify-between items-end mb-2"}>
+                  <label className="block text-sm font-bold text-light-text">
+                    List of Team
+                  </label>
+
+                  {!canAddTeam ? (
+                    <button
+                      type={"button"}
+                      className={
+                        "bg-primary hover:bg-accent text-white font-bold py-2 px-4 rounded-full"
+                      }
+                      onClick={() => {
+                        setCanAddTeam(true);
+                      }}
+                    >
+                      Add a Team
+                    </button>
+                  ) : (
+                    <div className={"grid grid-cols-3 gap-2"}>
+                      <label
+                        className={`w-max text-sm font-bold text-light-text flex justify-center items-end`}
+                      >
+                        Type of Team :
+                      </label>
+                      <select
+                        className={`w-full border border-gray-300 rounded-md focus:outline-none focus:border-accent`}
+                        onChange={(event) => {
+                          setAddTeam({
+                            type:
+                              event.target.value.slice(0, 2) === "PA"
+                                ? "autonome"
+                                : "encadré",
+                            depth: event.target.value.slice(3),
+                          });
+                        }}
+                      >
+                        <option value="PA-12">PA-12</option>
+                        <option value="PA-20">PA-20</option>
+                        <option value="PA-60">PA-60</option>
+                        <option value="PE-6">PE-6</option>
+                        <option value="PE-20">PE-20</option>
+                        <option value="PE-40">PE-40</option>
+                        <option value="PE-60">PE-60</option>
+                      </select>
+                      <button
+                        className={
+                          "bg-primary hover:bg-accent text-white font-bold py-1 rounded-full"
+                        }
+                        onClick={() => {
+                          setCanAddTeam(false);
+                          setPalanquees([
+                            ...palanquees,
+                            {
+                              dive_type: addTeam.type,
+                              max_depth: addTeam.depth,
+                              id: uuidv4(),
+                              new: true,
+                            },
+                          ]);
+                          setCanModify(true);
+                        }}
+                      >
+                        Ok
+                      </button>
+                    </div>
+                  )}
+                </div>
                 <div className={"grid grid-cols-2 gap-4"}>
                   <DndProvider backend={HTML5Backend}>
                     {palanquees.map((palanquee, index) => (
@@ -255,7 +562,7 @@ function DiveCreator(props) {
                         />
                         {(divers.filter(
                           (diver) => diver.palanquee === palanquee.id
-                        ).length === 1 ||
+                        ).length <= 1 ||
                           divers.filter(
                             (diver) => diver.palanquee === palanquee.id
                           ).length > 4) && (
@@ -263,7 +570,7 @@ function DiveCreator(props) {
                             <p className={"text-center text-white bg-red-700"}>
                               {divers.filter(
                                 (diver) => diver.palanquee === palanquee.id
-                              ).length === 1
+                              ).length <= 1
                                 ? "At least 2 divers"
                                 : "Maximum 4 divers"}
                             </p>
@@ -280,9 +587,9 @@ function DiveCreator(props) {
             <button
               type={"submit"}
               className={`bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full py-2 px-4 ${
-                canModify ? "opacity-50 cursor-not-allowed" : "hover:bg-accent"
+                canModify ? "hover:bg-accent" : "opacity-50 cursor-not-allowed"
               }`}
-              disabled={canModify}
+              disabled={!canModify}
             >
               Submit
             </button>

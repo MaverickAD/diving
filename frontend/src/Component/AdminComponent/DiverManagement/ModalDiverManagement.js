@@ -7,6 +7,7 @@ function ModalDiverManagement(props) {
   const [valuesModified, setValuesModified] = useState({});
 
   const handleSubmit = () => {
+    console.log(Object.keys(valuesModified).length !== 0);
     if (Object.keys(valuesModified).length !== 0) {
       axios
         .put("/api/divers/update/" + props.diverInfo.id, valuesModified)
@@ -107,17 +108,24 @@ function ModalDiverManagement(props) {
                             });
                           }}
                         >
-                          <option value="1">Aucun</option>
-                          <option value="2">Etoiles de Mer 1</option>
-                          <option value="3">Etoiles de Mer 2</option>
-                          <option value="4">Etoiles de Mer 3</option>
-                          <option value="5">Bronze</option>
-                          <option value="6">Argent</option>
-                          <option value="7">Or</option>
-                          <option value="8">N1</option>
-                          <option value="9">N2</option>
-                          <option value="10">N3</option>
-                          <option value="11">N4</option>
+                          <option value="Aucun">Aucun</option>
+                          <option value="Etoiles de Mer 1">
+                            Etoiles de Mer 1
+                          </option>
+                          <option value="Etoiles de Mer 2">
+                            Etoiles de Mer 2
+                          </option>
+                          <option value="Etoiles de Mer 3">
+                            Etoiles de Mer 3
+                          </option>
+                          <option value="Bronze">Bronze</option>
+                          <option value="Argent">Argent</option>
+                          <option value="Or">Or</option>
+                          <option value="N1">N1</option>
+                          <option value="N2">N2</option>
+                          <option value="N3">N3</option>
+                          <option value="N4">N4</option>
+                          <option value="N4">N5</option>
                         </select>
                       </div>
                       <div className="mb-4">
@@ -137,11 +145,11 @@ function ModalDiverManagement(props) {
                             });
                           }}
                         >
-                          <option value="1">Aucun</option>
-                          <option value="2">E1</option>
-                          <option value="3">E2</option>
-                          <option value="4">E3</option>
-                          <option value="5">E4</option>
+                          <option value="Aucun">Aucun</option>
+                          <option value="E1">E1</option>
+                          <option value="E2">E2</option>
+                          <option value="E3">E3</option>
+                          <option value="E4">E4</option>
                         </select>
                       </div>
                       <div className="mb-4">
@@ -159,10 +167,14 @@ function ModalDiverManagement(props) {
                             });
                           }}
                         >
-                          <option value="1">Aucun</option>
-                          <option value="2">Nitrox</option>
-                          <option value="3">Nitrox Confirmé</option>
-                          <option value="4">Moniteur Nitrox</option>
+                          <option value="Aucun">Aucun</option>
+                          <option value="NITROX">Nitrox</option>
+                          <option value="NITROX Confirmé">
+                            Nitrox Confirmé
+                          </option>
+                          <option value="Moniteur NITROX">
+                            Moniteur Nitrox
+                          </option>
                         </select>
                       </div>
                       <div className="mb-4">

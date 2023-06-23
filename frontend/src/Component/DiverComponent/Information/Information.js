@@ -156,7 +156,6 @@ function Information(props) {
                   });
                 }}
               >
-                <option value="">test</option>
                 <option value="light">Light</option>
                 <option value="dark">Dark</option>
               </select>
