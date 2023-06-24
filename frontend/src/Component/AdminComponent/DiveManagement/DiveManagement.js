@@ -107,17 +107,29 @@ function DiveManagement(props) {
                     "border-b even:bg-white odd:bg-neutral-100 hover:bg-neutral-200 cursor-pointer"
                   }
                   key={index}
-                  onClick={() => {
-                    navigate("/instructor/dive_management/" + dive.id);
-                  }}
                 >
-                  <td className={"whitespace-nowrap w-6 px-1 py-2"}>
+                  <td
+                    className={"whitespace-nowrap w-6 px-1 py-2"}
+                    onClick={() => {
+                      navigate("/instructor/dive_management/" + dive.id);
+                    }}
+                  >
                     {index + 1}
                   </td>
-                  <td className={"whitespace-nowrap w-16 px-1 py-2"}>
+                  <td
+                    className={"whitespace-nowrap w-16 px-1 py-2"}
+                    onClick={() => {
+                      navigate("/instructor/dive_management/" + dive.id);
+                    }}
+                  >
                     {dive.status}
                   </td>
-                  <td className={"whitespace-nowrap w-32 px-1 py-2"}>
+                  <td
+                    className={"whitespace-nowrap w-32 px-1 py-2"}
+                    onClick={() => {
+                      navigate("/instructor/dive_management/" + dive.id);
+                    }}
+                  >
                     {dive.name}
                   </td>
                   <td className={"whitespace-nowrap w-24 px-1 py-2"}>
@@ -126,25 +138,50 @@ function DiveManagement(props) {
                   <td className={"whitespace-nowrap w-24 px-1 py-2"}>
                     {new Date(dive.date_end).toISOString().slice(0, 10)}
                   </td>
-                  <td className={"whitespace-nowrap w-32 px-1 py-2"}>
+                  <td
+                    className={"whitespace-nowrap w-32 px-1 py-2"}
+                    onClick={() => {
+                      navigate("/instructor/dive_management/" + dive.id);
+                    }}
+                  >
                     {dive.comment}
                   </td>
-                  <td className={"whitespace-nowrap w-24 px-1 py-2"}>
+                  <td
+                    className={"whitespace-nowrap w-24 px-1 py-2"}
+                    onClick={() => {
+                      navigate("/instructor/dive_management/" + dive.id);
+                    }}
+                  >
                     {dive.surface_security}
                   </td>
-                  <td className={"whitespace-nowrap w-24 px-1 py-2"}>
+                  <td
+                    className={"whitespace-nowrap w-24 px-1 py-2"}
+                    onClick={() => {
+                      navigate("/instructor/dive_management/" + dive.id);
+                    }}
+                  >
                     {dive.place_number}
                   </td>
-                  <td className={"whitespace-nowrap w-24 px-1 py-2"}>
+                  <td
+                    className={"whitespace-nowrap w-24 px-1 py-2"}
+                    onClick={() => {
+                      navigate("/instructor/dive_management/" + dive.id);
+                    }}
+                  >
                     {dive.registered_place}
                   </td>
-                  <td className={"whitespace-nowrap w-32 px-1 py-2"}>
+                  <td
+                    className={"whitespace-nowrap w-32 px-1 py-2"}
+                    onClick={() => {
+                      navigate("/instructor/dive_management/" + dive.id);
+                    }}
+                  >
                     {dive.dive_site}
                   </td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
+                  <td className={"whitespace-nowrap px-1 py-2 z-20"}>
                     <ModalDiveManagement diveInfo={dive} />
                   </td>
-                  <td className={"whitespace-nowrap px-1 py-2"}>
+                  <td className={"whitespace-nowrap px-1 py-2 z-20"}>
                     <DownloadButton dive={dive.id} />
                   </td>
                 </tr>
