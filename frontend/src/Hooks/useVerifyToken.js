@@ -6,6 +6,7 @@ function useVerifyToken(typePage) {
     const navigate = useNavigate();
 
   useEffect(() => {
+      console.log("test")
     const token = localStorage.getItem("token");
 
         if (token) {
@@ -24,8 +25,10 @@ function useVerifyToken(typePage) {
                 )
                 .then((response) => {
                     if (response.status === 200) {
-                        if (!(response.data.decoded.rank === 2 && typePage === "admin" || response.data.decoded.rank === 1 && typePage === "admin")) {
-                            navigate("/")
+                        if(typePage === "admin") {
+                            if (!(response.data.decoded.rank === 2 || response.data.decoded.rank === 1)) {
+                                navigate("/")
+                            }
                         }
                     } else {
                         navigate('/login');

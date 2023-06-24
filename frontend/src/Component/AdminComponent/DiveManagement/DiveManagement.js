@@ -18,14 +18,14 @@ function DiveManagement(props) {
 
   useEffect(() => {
     axios
-      .get("/api/dives/open")
-      .then((response) => {
-        setOpenDives(response.data);
-        setPagesNumber(Math.ceil(response.data.length / dataPerPage));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+        .get("/api/dives/open")
+        .then((response) => {
+          setOpenDives(response.data);
+          setPagesNumber(Math.ceil(response.data.length / dataPerPage));
+        })
+        .catch((error) => {
+          console.log(error);
+        });
   }, []);
 
   return (

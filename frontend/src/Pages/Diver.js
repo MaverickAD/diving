@@ -5,40 +5,14 @@ import DiveHistory from "../Component/DiverComponent/DiveHistory/DiveHistory";
 import DiveRegister from "../Component/DiverComponent/DiveRegister/DiveRegister";
 import Information from "../Component/DiverComponent/Information/Information";
 import axios from "axios";
+import useVerifyToken from "../Hooks/useVerifyToken";
 
 function Diver(props) {
     const [pageSelected, setPageSelected] = useState(Number);
     const { page } = useParams();
     const navigate = useNavigate();
 
-    useEffect(() => {
-        if (localStorage.getItem("token") !== null) {
-            axios
-                .post(
-                    "http://localhost:5000/api/users/verify",
-                    {
-                        token: localStorage.getItem("token"),
-                    },
-                    {
-                        headers: {
-                            "Content-Type": "application/json",
-                            "x-access-token": localStorage.getItem("token"),
-                        },
-                    }
-                )
-                .then((response) => {
-                    if (response.status === 200) {
-                    } else {
-                        navigate("/login");
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                });
-        } else {
-            navigate("/login");
-        }
-    }, [navigate]);
+  useVerifyToken("");
 
     return (
         <div className={"flex w-full m-5"}>
