@@ -59,14 +59,21 @@ function DiveCreator(props) {
       .get("/api/sites/all")
       .then((response) => {
         setDiveSite(response.data);
-        console.log(response.data);
+        // console.log(response.data);
       })
       .catch((error) => {
         console.log(error);
       });
 
+    if (dive === "new") {
+      setModifiedData({
+        ...modifiedData,
+        status: 1,
+        registered_place: 0,
+      });
+    }
+
     if (!isNaN(Number(dive))) {
-      console.log("dive", dive);
       axios
         .get("/api/dives/modifier/dive/" + dive)
         .then((response) => {
@@ -81,7 +88,7 @@ function DiveCreator(props) {
         .get("/api/dives/modifier/diveteam/" + dive)
         .then((response) => {
           setPalanquees(response.data);
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -91,7 +98,7 @@ function DiveCreator(props) {
         .get("/api/dives/modifier/divers/" + dive)
         .then((response) => {
           setDivers(response.data);
-          console.log(response.data);
+          // console.log(response.data);
         })
         .catch((error) => {
           console.log(error);
@@ -106,14 +113,26 @@ function DiveCreator(props) {
       palanquees,
       divers,
     });
-    axios
-      .put("/api/dives/modifier/dive/" + dive, modifiedData)
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+
+    if (dive === "new") {
+      axios
+        .post("/api/dives/modifier/dive", modifiedData)
+        .then((response) => {
+          // console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      axios
+        .put("/api/dives/modifier/dive/" + dive, modifiedData)
+        .then((response) => {
+          // console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
 
     let boolPalanquees = false;
     palanquees.map((palanquee) => {
@@ -157,7 +176,9 @@ function DiveCreator(props) {
   return (
     <div>
       <button
-        className={" bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full px-5 py-2.5 mb-6"}
+        className={
+          " bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full px-5 py-2.5 mb-6"
+        }
         onClick={() => navigate("/instructor/dive_management")}
       >
         Return

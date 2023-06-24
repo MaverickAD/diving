@@ -4,7 +4,7 @@ import Pagination from "../../Pagination/Pagination";
 import axios from "axios";
 import ModalDiveSiteAdd from "./ModalDiveSiteAdd";
 import alertify from "alertifyjs";
-import 'alertifyjs/build/css/alertify.css'
+import "alertifyjs/build/css/alertify.css";
 
 function DiveSiteManagement(props) {
   const [sites, setSites] = useState([]);
@@ -27,24 +27,9 @@ function DiveSiteManagement(props) {
     if (showAlertDelete === "true") {
       alertify.error("Dive site deleted successfully");
       // Réinitialiser la valeur du cookie
-      localStorage.removeItem("Delete")
+      localStorage.removeItem("Delete");
     }
   }, []);
-
-  const handleDelete = (id) => {
-    axios
-      .delete("/api/sites/delete/" + id)
-      .then((response) => {
-        console.log(response.data);
-        alertify.error("Dive site deleted successfully");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-
-    localStorage.setItem("showAlertDelete", "true");
-    window.location.reload();
-  };
 
   return (
     <>
