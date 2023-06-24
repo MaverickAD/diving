@@ -6,7 +6,7 @@ function Home() {
       <div className="bg-white p-8 ">
         <h1 className="text-4xl font-bold mb-8 text-center text-gray-800 dark:text-white">Home to the Sub Aquatic Group Wattignies!</h1>
         <div className="mb-12 flex justify-center">
-          <img src={plongeeImage} className="w-1/2 max-w-full max-h-500" alt="Plongee" />
+          <img src={plongeeImage} className=" max-w-full max-h-500" alt="Plongee" />
         </div>
         <p className="text-lg text-gray-600 dark:text-gray-400 mb-8 text-justify">
           The Sub Aquatic Group Wattignies is a passionate and dynamic diving club located in the beautiful city of Wattignies. Whether you are a beginner or an experienced diver, our club offers you the opportunity to discover the hidden wonders of the depths.
