@@ -334,7 +334,9 @@ module.exports = (db) => {
         "       dive.surface_security,\n" +
         "       dive.max_ppo2,\n" +
         "       diver.first_name AS director_first_name,\n" +
-        "       diver.last_name AS director_last_name\n" +
+        "       diver.last_name AS director_last_name,\n" +
+        "       diver.diver_qualification AS director_diver_qualification,\n" +
+        "       diver.instructor_qualification AS director_instructor_qualification\n" +
         "FROM dive\n" +
         "    INNER JOIN dive_site\n" +
         "        ON dive.dive_site = dive_site.id\n" +
@@ -391,6 +393,16 @@ module.exports = (db) => {
     );
   });
 
+  router.post("/modifier/dive", (req, res) => {
+    let data = req.body;
+
+    console.log(data);
+
+    db.query("INSERT INTO dive SET ?", [data], (err, rows) => {
+      if (err) throw err;
+      res.json(rows);
+    });
+  });
   router.put("/modifier/dive/:dive", (req, res) => {
     let dive = req.params.dive;
     let data = req.body;
