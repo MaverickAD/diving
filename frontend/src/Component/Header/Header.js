@@ -101,7 +101,8 @@ function Header(props) {
                 <li className="mx-1">
                   <Link
                     to={"/diver"}
-                    className="font-bold hover:text-header-footer-text-hover"
+                    className=
+                        "border-accent text-white text-center text-sm font-bold uppercase hover:bg-white hover:text-black hover:cursor-pointer rounded px-5 py-2.5 mx-1"
                   >
                     Diver
                   </Link>
@@ -110,7 +111,8 @@ function Header(props) {
                   <li className="mx-1">
                     <Link
                       to={"/instructor"}
-                      className="font-bold hover:text-header-footer-text-hover"
+                      className=
+                          "border-accent text-white text-center text-sm font-bold uppercase hover:bg-white hover:text-black hover:cursor-pointer rounded px-5 py-2.5 mx-1"
                     >
                       Instructor
                     </Link>
