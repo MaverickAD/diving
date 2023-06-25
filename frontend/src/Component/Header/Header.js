@@ -33,7 +33,6 @@ function Header(props) {
   }
 
   getRank();
-  console.log(rank);
 
   return (
       <header className="bg-gradient-to-r from-indigo-500 via-sky-500 to-emerald-500 text-header-footer-text p-4 mb-4 shadow-xl">

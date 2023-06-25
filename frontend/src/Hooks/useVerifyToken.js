@@ -25,6 +25,10 @@ function useVerifyToken(typePage) {
                 )
                 .then((response) => {
                     if (response.status === 200) {
+                        if(new Date(response.data.decoded.timestamp) < Date.now()) {
+                            localStorage.removeItem("token")
+                            navigate('/login');
+                        }
                         if(typePage === "admin") {
                             if (!(response.data.decoded.rank === 2 || response.data.decoded.rank === 1)) {
                                 navigate("/")
