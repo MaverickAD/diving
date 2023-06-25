@@ -25,7 +25,8 @@ function useVerifyToken(typePage) {
                 )
                 .then((response) => {
                     if (response.status === 200) {
-                        if(new Date(response.data.decoded.timestamp) < Date.now()) {
+                        console.log(response.data.decoded.timestamp + (24*60*60*1000))
+                        if(new Date(response.data.decoded.timestamp + (24*60*60*1000)) <= Date.now()) {
                             localStorage.removeItem("token")
                             navigate('/login');
                         }
