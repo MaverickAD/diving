@@ -123,16 +123,9 @@ function DiveCreator(props) {
           }
       }
     }
-    axios
-        .put("/api/dives/modifier/dive/" + dive, modifiedData)
-        .then((response) => {
-          console.log(response);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
 
     if (dive === "new") {
+        console.log("new")
       axios
         .post("/api/dives/modifier/dive", modifiedData)
         .then((response) => {
@@ -142,6 +135,7 @@ function DiveCreator(props) {
           console.log(error);
         });
     } else {
+        console.log("not new")
       axios
         .put("/api/dives/modifier/dive/" + dive, modifiedData)
         .then((response) => {
