@@ -48,21 +48,26 @@ module.exports = (db) => {
                 "       diver.last_name,\n" +
                 "       diver.first_name,\n" +
                 "       diver_role,\n" +
-                "       diver_qualification.name AS diver_qualification,\n" +
+                "       diver_qualification.supervise AS pe,\n" +
+                "       diver_qualification.autonomous AS pa,\n" +
                 "       nitrox_qualification.name AS nitrox_qualification\n" +
                 "FROM dive_team_member\n" +
-                "INNER JOIN diver\n" +
-                "ON dive_team_member.diver = diver.id\n" +
-                "INNER JOIN dive_team\n" +
-                "ON dive_team_member.team = dive_team.id\n" +
-                "INNER JOIN diver_qualification\n" +
-                "ON diver.diver_qualification = diver_qualification.id\n" +
-                "INNER JOIN nitrox_qualification\n" +
-                "ON diver.nitrox_qualification = nitrox_qualification.id\n" +
+                "    INNER JOIN diver\n" +
+                "        ON dive_team_member.diver = diver.id\n" +
+                "    INNER JOIN dive_team\n" +
+                "        ON dive_team_member.team = dive_team.id\n" +
+                "    INNER JOIN diver_qualification\n" +
+                "        ON diver.diver_qualification = diver_qualification.id\n" +
+                "    INNER JOIN nitrox_qualification\n" +
+                "        ON diver.nitrox_qualification = nitrox_qualification.id\n" +
                 "WHERE dive_team.dive = ?",
               [dive],
               (err, result3) => {
                 if (err) throw err;
+
+                // console.log(result1);
+                // console.log(result2);
+                // console.log(result3);
 
                 const date_string = result1[0].date_begin;
                 const date = new Date(date_string);
@@ -100,13 +105,27 @@ module.exports = (db) => {
                           return {
                             nom: member.last_name,
                             prenom: member.first_name,
-                            fonction: member.diver_role,
-                            qualification: member.diver_qualification,
+                            fonction: palanquee.tech_explo,
+                            qualification:
+                              palanquee.tech_explo === "autonome"
+                                ? member.pa === null
+                                  ? "Aucun"
+                                  : "PA" + member.pa.toString()
+                                : member.pe === null
+                                ? "Aucun"
+                                : "PE" + member.pe.toString(),
                             tech_explo:
                               palanquee.tech_explo === "autonome"
                                 ? "Explo"
                                 : "Tech",
-                            nitrox: member.nitrox_qualification,
+                            nitrox:
+                              member.nitrox_qualification === "Aucun"
+                                ? "Aucun"
+                                : member.nitrox_qualification === "NITROX"
+                                ? "PN"
+                                : member.nitrox_qualification === "NITROX"
+                                ? "PN-C"
+                                : "PN-C",
                           };
                         }),
                       parameters: {

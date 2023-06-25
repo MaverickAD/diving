@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, { useState } from "react";
 import axios from "axios";
 import alertify from "alertifyjs";
 
@@ -20,13 +20,13 @@ function ModalAdminAdd(props) {
       });
   };
 
-
-
   return (
     <>
       <button
-          className={"uppercase px-4 py-2 bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"}
-          onClick={() => setShowModal(true)}
+        className={
+          "uppercase px-4 py-2 bg-primary font-bold text-white hover:text-black hover:shadow-[inset_13rem_0_0_0] hover:shadow-accent duration-[1000ms,700ms] transition-[color,box-shadow] rounded-full"
+        }
+        onClick={() => setShowModal(true)}
       >
         Add an admin
       </button>

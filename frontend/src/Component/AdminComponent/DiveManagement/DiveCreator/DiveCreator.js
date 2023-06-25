@@ -132,6 +132,26 @@ function DiveCreator(props) {
           console.log(error);
         });
 
+    if (dive === "new") {
+      axios
+        .post("/api/dives/modifier/dive", modifiedData)
+        .then((response) => {
+          // console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    } else {
+      axios
+        .put("/api/dives/modifier/dive/" + dive, modifiedData)
+        .then((response) => {
+          // console.log(response);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
     let boolPalanquees = false;
     palanquees.map((palanquee) => {
       if (Object.keys(palanquee).includes("new")) {
