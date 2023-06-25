@@ -10,7 +10,6 @@ function DownloadButton(props) {
       responseType: "blob", // Important: responseType must be set to 'blob' for file downloads
     })
       .then((response) => {
-        console.log(response);
         const filename = response.headers["content-disposition"]
           .split("filename=")[1]
           .replace('"', "")

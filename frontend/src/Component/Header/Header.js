@@ -35,7 +35,7 @@ function Header(props) {
   getRank();
 
   return (
-    <header className="bg-gradient-to-r from-secondary via-primary to-accent text-header-footer-text p-4 mb-4 shadow-xl">
+    <header className="bg-gradient-to-r from-secondary via-primary to-accent text-header-footer-text p-4 shadow-xl">
       <div className="container-fluid mx-auto flex justify-between items-center">
         <Link to={"/"} className="text-2xl font-bold">
           Sub Aquatic Group Wattignies
@@ -114,7 +114,7 @@ function Header(props) {
                       className=
                           "border-accent text-white text-center text-sm font-bold uppercase hover:bg-white hover:text-black hover:cursor-pointer rounded px-5 py-2.5 mx-1"
                     >
-                      Instructor
+                      Dive Director
                     </Link>
                   </li>
                 )}

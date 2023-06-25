@@ -195,7 +195,7 @@ function DiveCreator(props) {
           console.log(error);
         });
     }
-    //window.location.reload();
+    navigate("/instructor/dive_management");
   };
 
   return (
@@ -208,7 +208,7 @@ function DiveCreator(props) {
       >
         Return
       </button>
-      <h2 className={"text-light-text text-xl font-bold mb-6"}>Dive Creator</h2>
+      <h2 className={"text-light-text text-xl font-bold mb-6"}>{dive === "new" ? "Dive Creator" : "Dive Management"}</h2>
       {(diveInstructor.length === 0 ||
         diveSite.length === 0 ||
         Object.keys(diveInfo).length === 0) /*||
