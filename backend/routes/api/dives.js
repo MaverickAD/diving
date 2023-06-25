@@ -405,8 +405,6 @@ module.exports = (db) => {
   router.post("/modifier/dive", (req, res) => {
     let data = req.body;
 
-    console.log(data);
-
     db.query("INSERT INTO dive SET ?", [data], (err, rows) => {
       if (err) throw err;
       res.json(rows);
