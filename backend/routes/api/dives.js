@@ -334,9 +334,7 @@ module.exports = (db) => {
         "       dive.surface_security,\n" +
         "       dive.max_ppo2,\n" +
         "       diver.first_name AS director_first_name,\n" +
-        "       diver.last_name AS director_last_name,\n" +
-        "       diver.diver_qualification AS director_diver_qualification,\n" +
-        "       diver.instructor_qualification AS director_instructor_qualification\n" +
+        "       diver.last_name AS director_last_name\n" +
         "FROM dive\n" +
         "    INNER JOIN dive_site\n" +
         "        ON dive.dive_site = dive_site.id\n" +
@@ -362,7 +360,18 @@ module.exports = (db) => {
       [dive],
       (err, rows) => {
         if (err) throw err;
-        res.json(rows);
+        db.query(
+          "SELECT date_begin\n" + "FROM dive\n" + "WHERE id = ?",
+          [dive],
+          (err, rows2) => {
+            if (err) throw err;
+            rows.forEach((row) => {
+              row.date_begin = rows2[0].date_begin;
+            });
+            res.json(rows);
+            console.log(rows);
+          }
+        );
       }
     );
   });
@@ -437,6 +446,15 @@ module.exports = (db) => {
 
     alpha ? res.json({ message: "ok" }) : res.json({ message: "no change" });
   });
+
+  router.delete("/supprimer/diveteam/:team", (req, res) => {
+    let team = req.params.team;
+
+    db.query("DELETE FROM dive_team WHERE id = ?", [team], (err, rows) => {
+      if (err) throw err;
+    });
+  });
+
   router.put("/modifier/divers/:dive", (req, res) => {
     let dive = req.params.dive;
     let data = req.body;
