@@ -195,7 +195,7 @@ function DiveCreator(props) {
           console.log(error);
         });
     }
-    //window.location.reload();
+    navigate("/instructor/dive_management");
   };
 
   return (

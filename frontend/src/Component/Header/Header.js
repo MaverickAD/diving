@@ -35,7 +35,7 @@ function Header(props) {
   getRank();
 
   return (
-    <header className="bg-gradient-to-r from-secondary via-primary to-accent text-header-footer-text p-4 mb-4 shadow-xl">
+    <header className="bg-gradient-to-r from-secondary via-primary to-accent text-header-footer-text p-4 shadow-xl">
       <div className="container-fluid mx-auto flex justify-between items-center">
         <Link to={"/"} className="text-2xl font-bold">
           Sub Aquatic Group Wattignies

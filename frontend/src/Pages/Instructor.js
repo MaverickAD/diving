@@ -29,7 +29,7 @@ function Instructor(props) {
   const isMobile = useMediaQuery({ maxWidth: 767 }); // Vérifie si l'écran est un téléphone (largeur maximale de 767px)
 
   return (
-    <div className="flex flex-col lg:flex-row w-full">
+    <div className="flex flex-col lg:flex-row w-full m-5">
       {isMobile ? (
         // Afficher le menu déroulant pour les téléphones
         <select
